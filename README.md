@@ -1,13 +1,13 @@
 # Claude Code Masterarbeit-System
 
-Dieses Paket enthält: `CLAUDE.md` (PROF-Mentor), 15 Skills, 9 spezialisierte Subagents, Projektvorlagen und Ordner für Manuskript, Literatur, Analysen und Reviews.
+Dieses Paket enthält: `CLAUDE.md` (PROF-Mentor), 8 Skills, 3 spezialisierte Subagents, Projektvorlagen und Ordner für Manuskript, Literatur, Analysen und Reviews. Die Übersicht, welcher Skill und welcher Agent wofür da ist, steht in `CLAUDE.md` unter „Zusammenarbeit“.
 
 ## Installation
 1. Repository klonen.
 2. Terminal im Repository-Ordner öffnen.
 3. `projekt/steckbrief.md` und `projekt/hochschulregeln.md` ausfüllen; offizielle Hochschuldokumente ergänzen.
 4. Im Projektordner `claude` starten. Claude Code erkennt `CLAUDE.md`, Skills und Agents automatisch.
-5. Skill gezielt aufrufen, z. B. `/thesis-architect`, `/research-scout`, `/prof-write`, `/prof-review`, `/bring-es-mir-bei`.
+5. Skill gezielt aufrufen, z. B. `/ma-konzept`, `/ma-recherche`, `/ma-schreiben`, `/ma-review`, `/ma-planung`.
 6. Subagent im Chat beauftragen, z. B. „Lass den independent-examiner Kapitel 2 unabhängig prüfen.“ Verfügbare Agenten auch über `/agents` ansehen.
 
 ## Erster Prompt
@@ -22,13 +22,14 @@ Dieses Paket enthält: `CLAUDE.md` (PROF-Mentor), 15 Skills, 9 spezialisierte Su
 
 ## Werkzeugrechte der Subagents
 Die Rechte sind per `tools:` begrenzt, damit die Regeln technisch greifen und nicht nur im Prompt stehen:
-- nur lesend: `independent-examiner`, `academic-editor`, `defense-examiner`
-- lesend und Websuche: `research-professor`, `methods-professor`
-- dürfen Dateien anlegen: `quality-assurance` (in `reviews/`), `literature-intelligence` (in `literatur/`)
-- darf Dateien bearbeiten: `project-manager` (nur `projekt/fortschritt.md`, nur auf Auftrag)
-- darf Befehle ausführen: `data-analysis-specialist` (um Analyseskripte nachzurechnen)
+- `independent-examiner`: nur lesend; der Hauptagent speichert den Bericht in `reviews/`
+- `literature-intelligence`: lesen, Websuche, neue Dateien in `literatur/` anlegen
+- `data-analysis-specialist`: lesen und Befehle ausführen, um Analyseskripte nachzurechnen
 
-MCP-Tools (z. B. Literaturdatenbanken) stehen Agents mit `tools:`-Liste nur zur Verfügung, wenn sie dort ergänzt werden.
+MCP-Tools (z. B. Literaturdatenbanken wie Consensus oder Zotero) stehen Agents mit `tools:`-Liste nur zur Verfügung, wenn sie dort ergänzt werden, bei `literature-intelligence` als `mcp__<servername>__<toolname>` (den genauen Namen zeigt `/mcp`).
+
+## Warum `ma-` vor den Skill-Namen?
+Das Präfix verhindert Namensgleichheit mit allgemeinen persönlichen Skills (z. B. `prof-write`, `prof-review`). Die `ma-`-Skills sind auf dieses Projekt zugeschnitten: Sie lesen Steckbrief und Hochschulregeln und schreiben in die Projektordner.
 
 ## Hinweise
 - Für wissenschaftliche Recherche können externe Such- und Literaturdienste sinnvoll sein; dieses Paket installiert keine Datenbank- oder MCP-Verbindungen.
