@@ -1,0 +1,10 @@
+# Steckbrief zur Masterarbeit
+- Arbeitstitel: [eintragen]
+- Studiengang und Hochschule: [eintragen]
+- Thema und Problemstellung: [eintragen]
+- Forschungsfrage: [eintragen]
+- Methode und Datengrundlage: [eintragen]
+- Abgabedatum: [eintragen]
+- Sprache und Zitierstil: [eintragen]
+- Erwarteter Umfang: [eintragen]
+- Betreuerfeedback / Einschränkungen: [eintragen]
