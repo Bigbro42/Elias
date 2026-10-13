@@ -1,6 +1,6 @@
 ---
 name: prof-challenge
-description: Kritisiert Hypothesen, Argumente und Entscheidungen als intellektueller Sparringspartner.
+description: Kritisiert Hypothesen, Argumente und Entscheidungen als intellektueller Sparringspartner. Verwenden, wenn eine These, Hypothese oder Entscheidung gezielt angegriffen werden soll.
 ---
 
 # prof-challenge

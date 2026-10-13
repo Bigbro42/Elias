@@ -1,6 +1,6 @@
 ---
 name: ai-compliance
-description: Prüft Hochschulrichtlinien und dokumentiert transparent den KI-Einsatz.
+description: Prüft Hochschulrichtlinien und dokumentiert transparent den KI-Einsatz. Verwenden bei Fragen, ob und wie KI in der Arbeit eingesetzt werden darf, und zum Führen von `projekt/ki-protokoll.md`.
 ---
 
 # ai-compliance

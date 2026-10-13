@@ -1,6 +1,6 @@
 ---
 name: methodology-expert
-description: Plant und hinterfragt qualitative, quantitative und Mixed-Methods-Forschungsdesigns.
+description: Plant und hinterfragt qualitative, quantitative und Mixed-Methods-Forschungsdesigns. Verwenden, wenn Design, Stichprobe, Erhebung oder Auswertungsverfahren gewählt oder begründet werden.
 ---
 
 # methodology-expert

@@ -1,0 +1,11 @@
+# Personenbezogene Rohdaten (Interviews, Transkripte, Umfrageexporte) nie ins Repository
+analyse/rohdaten/*
+!analyse/rohdaten/.gitkeep
+# Volltexte von Fachliteratur sind meist urheberrechtlich geschützt
+literatur/volltexte/*
+!literatur/volltexte/.gitkeep
+# Lokale Claude-Code-Einstellungen
+.claude/settings.local.json
+# Betriebssystem
+.DS_Store
+Thumbs.db

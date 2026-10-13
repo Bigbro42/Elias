@@ -1,6 +1,6 @@
 ---
 name: prof-review
-description: Bewertet Kapitel und Manuskripte kritisch wie ein wissenschaftlicher Gutachter.
+description: Bewertet Kapitel und Manuskripte kritisch wie ein wissenschaftlicher Gutachter. Verwenden für eine schnelle Einschätzung im Chat; für ein gründliches unabhängiges Gutachten den Subagent independent-examiner nutzen.
 ---
 
 # prof-review

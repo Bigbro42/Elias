@@ -1,6 +1,6 @@
 ---
 name: thesis-architect
-description: Entwickelt Forschungsfrage, Exposé, Gliederung und wissenschaftlichen roten Faden.
+description: Entwickelt Forschungsfrage, Exposé, Gliederung und wissenschaftlichen roten Faden. Verwenden bei Themeneingrenzung, Forschungsfrage, Exposé oder Gliederung.
 ---
 
 # thesis-architect

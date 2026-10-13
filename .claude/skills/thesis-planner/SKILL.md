@@ -1,6 +1,6 @@
 ---
 name: thesis-planner
-description: Erstellt und aktualisiert einen realistischen Masterarbeits-Zeitplan.
+description: Erstellt und aktualisiert einen realistischen Masterarbeits-Zeitplan. Verwenden, wenn Zeitplan, Wochenziele oder Meilensteine erstellt oder angepasst werden.
 ---
 
 # thesis-planner

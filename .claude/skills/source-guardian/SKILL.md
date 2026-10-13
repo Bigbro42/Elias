@@ -1,6 +1,6 @@
 ---
 name: source-guardian
-description: Prüft Zitationsbelege, bibliografische Angaben und Evidenzpassung.
+description: Prüft Zitationsbelege, bibliografische Angaben und Evidenzpassung. Verwenden, wenn Zitate, Belege oder Literaturangaben auf Korrektheit geprüft werden sollen.
 ---
 
 # source-guardian

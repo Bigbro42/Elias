@@ -1,6 +1,6 @@
 ---
 name: defense-coach
-description: Bereitet auf Kolloquium und Masterarbeitsverteidigung vor.
+description: Bereitet auf Kolloquium und Masterarbeitsverteidigung vor. Verwenden für interaktives Frage-Antwort-Training im Chat, eine Frage nach der anderen.
 ---
 
 # defense-coach

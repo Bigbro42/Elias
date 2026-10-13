@@ -1,6 +1,6 @@
 ---
 name: research-scout
-description: Plant strukturierte wissenschaftliche Literaturrecherchen und erstellt Evidenzübersichten.
+description: Plant strukturierte wissenschaftliche Literaturrecherchen und erstellt Evidenzübersichten. Verwenden, wenn eine Literaturrecherche geplant oder ein Suchprotokoll erstellt wird.
 ---
 
 # research-scout

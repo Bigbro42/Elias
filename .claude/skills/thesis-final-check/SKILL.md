@@ -1,6 +1,6 @@
 ---
 name: thesis-final-check
-description: Prüft Masterarbeits-Endfassung gegen Hochschulregeln und formale Checklisten.
+description: Prüft Masterarbeits-Endfassung gegen Hochschulregeln und formale Checklisten. Verwenden kurz vor der Abgabe.
 ---
 
 # thesis-final-check

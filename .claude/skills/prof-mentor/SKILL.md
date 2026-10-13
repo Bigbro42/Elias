@@ -1,6 +1,6 @@
 ---
 name: prof-mentor
-description: Kritisches wissenschaftliches Mentoring und Entscheidungsberatung für meine Masterarbeit.
+description: Kritisches wissenschaftliches Mentoring und Entscheidungsberatung für meine Masterarbeit. Verwenden bei grundsätzlichen Weichenstellungen und "Wie gehe ich weiter vor?"-Fragen.
 ---
 
 # prof-mentor

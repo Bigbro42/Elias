@@ -1,6 +1,6 @@
 ---
 name: data-analyst
-description: Unterstützt bei reproduzierbarer qualitativer und quantitativer Datenauswertung.
+description: Unterstützt bei reproduzierbarer qualitativer und quantitativer Datenauswertung. Verwenden bei Planung, Durchführung oder Interpretation einer Auswertung mit vorhandenen Daten.
 ---
 
 # data-analyst
