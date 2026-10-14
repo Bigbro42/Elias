@@ -24,6 +24,10 @@ SHORT: Titel | Erklärtext in kurzen Sätzen | Formel
 QUIZ: Frage zum Short | richtig | falsch
 ```
 
-Mit KI: Lernstoff einfügen, „KI-Auftrag kopieren“, in Claude einfügen, Antwort als neuen Kurs speichern.
+Zusätzlich: `KURZ: MOC` (Kürzel fürs Fach-Emblem), `LANG: en` (Vorlesesprache) und `@12` am Zeilenende (Verweis auf Folie 12).
 
-Fortschritt liegt im Browser (localStorage). Zum Übertragen zwischen Geräten: „Sicherung kopieren“ und auf dem anderen Gerät „Sicherung laden“.
+**Aus Unterlagen erstellen:** Unter „Inhalte“ eine PDF (Folien, Skript) oder Text hochladen. In claude.ai baut Claude daraus direkt in der App den Kurs und speichert die Folien, die dann in Lektionen und Shorts angezeigt werden. Außerhalb von claude.ai gibt es stattdessen „KI-Auftrag kopieren“.
+
+**Fächer:** Oben links das Fach wechseln, wie eine Sprache bei Sprachlern-Apps. Jedes Fach hat seinen eigenen Lernpfad.
+
+In claude.ai wird der Stand mit dem Claude-Konto synchronisiert (Handy und PC). Sonst liegt er im Browser (localStorage); zum Übertragen zwischen Geräten: „Sicherung kopieren“ und auf dem anderen Gerät „Sicherung laden“.

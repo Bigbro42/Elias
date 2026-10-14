@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#F2661C">
+<meta name="theme-color" content="#E85D14">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg">
@@ -15,14 +15,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
 <style>
-/* Layout: one phone-width app column. Header with stats, scrolling view, bottom tab bar; lessons open as a full-screen layer. */
+/* Layout: one phone-width app column. Header with subject switcher and stats, scrolling view, bottom tab bar; lessons, subject sheet and slide viewer open as layers. */
 :root{
   --bg:#F3F5FB; --surface:#FFFFFF; --ink:#18203F; --muted:#5D6688; --line:#DDE2F0;
   --spark:#E85D14; --spark-ink:#FFFFFF; --spark-soft:#FFE7D8;
   --good:#178A5C; --good-ink:#FFFFFF; --good-soft:#DDF5EA;
   --bad:#C8363D; --bad-ink:#FFFFFF; --bad-soft:#FBE3E4;
-  --locked:#C9CFE0; --heart:#D93A55;
+  --locked:#C9CFE0; --heart:#D93A55; --gem:#3B82F6;
   --sa:#1E2A6E; --sb:#0F5D5A; --sc:#6A2C5F; --short-ink:#FFFFFF;
+  --c1:#2F5BD3; --c2:#0E8A6A; --c3:#B03A8C; --c4:#B56F00; --c5:#6A4BD1; --c6:#C8432F; --emb-ink:#FFFFFF;
   --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
   --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
@@ -32,15 +33,17 @@
   --spark:#FF7F36; --spark-ink:#1A0D04; --spark-soft:#3A2414;
   --good:#3CCB8B; --good-ink:#06281A; --good-soft:#123528;
   --bad:#FF6B70; --bad-ink:#2E0A0C; --bad-soft:#3C171B;
-  --locked:#39406A; --heart:#FF6B85;
-  --sa:#26338A; --sb:#11706C; --sc:#7D3570; --short-ink:#FFFFFF; color-scheme:dark}}
+  --locked:#39406A; --heart:#FF6B85; --gem:#6EA8FF;
+  --sa:#26338A; --sb:#11706C; --sc:#7D3570; --short-ink:#FFFFFF;
+  --c1:#4F7BF0; --c2:#1FA582; --c3:#C9529F; --c4:#C98515; --c5:#8467E6; --c6:#E05A45; --emb-ink:#FFFFFF; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#10142A; --surface:#1A2042; --ink:#ECEFFC; --muted:#A3ABCF; --line:#2C3463;
   --spark:#FF7F36; --spark-ink:#1A0D04; --spark-soft:#3A2414;
   --good:#3CCB8B; --good-ink:#06281A; --good-soft:#123528;
   --bad:#FF6B70; --bad-ink:#2E0A0C; --bad-soft:#3C171B;
-  --locked:#39406A; --heart:#FF6B85;
-  --sa:#26338A; --sb:#11706C; --sc:#7D3570; --short-ink:#FFFFFF; color-scheme:dark}
+  --locked:#39406A; --heart:#FF6B85; --gem:#6EA8FF;
+  --sa:#26338A; --sb:#11706C; --sc:#7D3570; --short-ink:#FFFFFF;
+  --c1:#4F7BF0; --c2:#1FA582; --c3:#C9529F; --c4:#C98515; --c5:#8467E6; --c6:#E05A45; --emb-ink:#FFFFFF; color-scheme:dark}
 
 html{height:100%;box-sizing:border-box}
 *,*::before,*::after{box-sizing:border-box}
@@ -54,11 +57,18 @@ h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
 
 .app{height:100%;display:flex;flex-direction:column;max-width:640px;margin:0 auto}
 .top{display:flex;align-items:center;gap:10px;padding-block:10px;border-bottom:1px solid var(--line);background:var(--bg)}
-.top select{flex:1;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-weight:700;font-size:15px}
-.stats{display:flex;gap:12px;font-variant-numeric:tabular-nums;font-weight:700}
-.stat{display:flex;align-items:center;gap:4px}
+.subj{flex:1;min-width:0;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 10px 6px 6px;font-weight:700;font-size:15px;text-align:left}
+.subj .sname{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.subj svg{width:18px;height:18px;flex:none;color:var(--muted)}
+.emb{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:9px;color:var(--emb-ink);font-family:var(--display);font-weight:800;font-size:12px;letter-spacing:.02em}
+.emb.lg{width:52px;height:52px;border-radius:14px;font-size:16px}
+.scard span.emb,.citem span.emb,.subj span.emb{color:var(--emb-ink);font-size:12px}
+.scard span.emb.lg{font-size:16px}
+.scard.add span.emb{color:var(--ink);font-size:22px}
+.stats{display:flex;gap:10px;font-variant-numeric:tabular-nums;font-weight:700;flex:none}
+.stat{display:flex;align-items:center;gap:3px}
 .stat svg{width:20px;height:20px}
-.i-flame{color:var(--spark)} .i-gem{color:#3B82F6} .i-heart{color:var(--heart)}
+.i-flame{color:var(--spark)} .i-gem{color:var(--gem)} .i-heart{color:var(--heart)}
 .stat.dim{opacity:.45}
 
 #view{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
@@ -88,7 +98,7 @@ h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
 .node.locked{background:var(--locked);color:var(--muted);box-shadow:0 6px 0 color-mix(in srgb,var(--locked) 70%,#000);cursor:not-allowed}
 .node.cur{animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{outline:0 solid color-mix(in srgb,var(--spark) 35%,transparent)}50%{outline:10px solid color-mix(in srgb,var(--spark) 0%,transparent)}}
-.lname{font-weight:700;font-size:14px;max-width:180px;text-align:center}
+.lname{font-weight:700;font-size:14px;max-width:190px;text-align:center}
 .start{position:absolute;top:-30px;background:var(--surface);border:2px solid var(--spark);color:var(--spark);font-weight:800;font-size:12px;letter-spacing:.06em;padding:2px 10px;border-radius:10px;font-family:var(--display)}
 
 /* Panels */
@@ -102,12 +112,24 @@ h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
 .btn.small{padding:8px 12px;font-size:14px;border-radius:10px}
 .btn.danger{background:var(--bad);color:var(--bad-ink);box-shadow:0 4px 0 color-mix(in srgb,var(--bad) 62%,#000)}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label{font-size:14px;color:var(--muted);font-weight:700}
+.inp{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--bg)}
+.two-f{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.two-f>*{min-width:0}
+.drop{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;border:2px dashed var(--line);border-radius:14px;padding:18px 12px;text-align:center;cursor:pointer;background:var(--bg)}
+.drop:hover,.drop.over,.drop:focus-within{border-color:var(--spark)}
+.drop b{font-family:var(--display);font-size:17px}
+.drop span{font-size:14px;color:var(--muted)}
+.drop input{position:absolute;width:1px;height:1px;opacity:0}
 textarea{width:100%;min-height:150px;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--bg);font-family:var(--mono);font-size:13px;line-height:1.5;resize:vertical}
-.status{font-size:14px;color:var(--muted)} .status.err{color:var(--bad)}
+.status{font-size:14px;color:var(--muted)} .status.err{color:var(--bad)} .status.ok{color:var(--good)}
+.meter{height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--spark);transition:width .3s}
 .clist{display:flex;flex-direction:column;gap:8px}
 .citem{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid var(--line);border-radius:12px;flex-wrap:wrap}
 .citem b{display:block} .citem span{font-size:13px;color:var(--muted)}
-.citem>div:first-child{min-width:0;flex:1 1 200px}
+.citem>div:first-child{min-width:0;flex:1 1 220px;display:flex;gap:10px;align-items:center}
 .citem.on{border-color:var(--spark)}
 details{border:1px solid var(--line);border-radius:12px;padding:8px 12px}
 summary{cursor:pointer;font-weight:700}
@@ -123,11 +145,15 @@ pre{overflow-x:auto;font-family:var(--mono);font-size:12.5px;background:var(--bg
 .short{height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;background:var(--sa);color:var(--short-ink);position:relative;overflow:hidden}
 .short:nth-child(3n+2){background:var(--sb)} .short:nth-child(3n+3){background:var(--sc)}
 .short::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;right:-160px;top:-140px;background:rgba(255,255,255,.07)}
-.short-in{position:relative;display:flex;flex-direction:column;justify-content:flex-start;gap:14px;width:100%;padding-block:24px;overflow-y:auto}
+.short-in{position:relative;display:flex;flex-direction:column;justify-content:flex-start;gap:12px;width:100%;padding-block:20px;overflow-y:auto}
+.short-in>*{flex-shrink:0}
 .short-in>:first-child{margin-top:auto}.short-in>:last-child{margin-bottom:auto}
 .eyebrow{margin:0;font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;opacity:.75}
-.short h2{font-size:clamp(28px,8vw,40px);font-weight:800}
-.formula{font-family:var(--display);font-size:clamp(20px,5.5vw,26px);font-weight:600;background:rgba(255,255,255,.13);border-radius:12px;padding:10px 14px;align-self:flex-start;max-width:100%;overflow-x:auto}
+.short h2{font-size:clamp(26px,7.5vw,38px);font-weight:800}
+.formula{font-family:var(--display);font-size:clamp(18px,5vw,24px);font-weight:600;background:rgba(255,255,255,.13);border-radius:12px;padding:10px 14px;align-self:flex-start;max-width:100%;overflow-x:auto}
+.slidebox{display:flex;flex-direction:column;align-items:flex-start;gap:4px;background:none;border:0;padding:0;color:inherit;align-self:flex-start;max-width:100%}
+.slidebox canvas{display:block;max-width:100%;max-height:30vh;width:auto;border-radius:10px;background:rgba(255,255,255,.9);aspect-ratio:16/9}
+.slidebox span{font-size:13px;font-weight:700;opacity:.85}
 .sents{font-size:18px;line-height:1.6;max-width:60ch}
 .sent{transition:opacity .25s,background .25s;border-radius:4px}
 .speaking .sent{opacity:.5} .speaking .sent.on{opacity:1;background:rgba(255,255,255,.16)}
@@ -151,31 +177,32 @@ pre{overflow-x:auto;font-family:var(--mono);font-size:12.5px;background:var(--bg
 .bar i{display:block;height:100%;background:var(--spark);border-radius:7px;transition:width .35s}
 .lbody{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:18px;padding-block:8px 20px}
 .kind{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
-.q{font-size:clamp(21px,5.5vw,26px);font-weight:600}
+.q{font-size:clamp(20px,5.5vw,25px);font-weight:600}
 .opts{display:flex;flex-direction:column;gap:10px}
 .opt{text-align:left;padding:14px 16px;border-radius:14px;border:2px solid var(--line);background:var(--surface);box-shadow:0 3px 0 var(--line);font-size:17px}
 .opt.sel{border-color:var(--spark);background:var(--spark-soft);box-shadow:0 3px 0 var(--spark)}
 .opt.ok{border-color:var(--good);background:var(--good-soft);box-shadow:0 3px 0 var(--good)}
 .opt.no{border-color:var(--bad);background:var(--bad-soft);box-shadow:0 3px 0 var(--bad)}
 .opt:disabled{cursor:default}
-.gapq{font-size:clamp(20px,5vw,24px);line-height:2}
-.gapq input{border:0;border-bottom:3px solid var(--spark);background:var(--spark-soft);border-radius:6px 6px 0 0;padding:2px 8px;width:9ch;font-size:inherit;font-weight:700;text-align:center}
+.gapq{font-size:clamp(19px,5vw,23px);line-height:2}
+.gapq input{border:0;border-bottom:3px solid var(--spark);background:var(--spark-soft);border-radius:6px 6px 0 0;padding:2px 8px;width:10ch;font-size:inherit;font-weight:700;text-align:center}
 .pairs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .pairs .col{display:flex;flex-direction:column;gap:10px;min-width:0}
 .pairs .opt{text-align:center;font-size:15px;padding:12px 8px;overflow-wrap:anywhere}
 .pairs .opt.gone{opacity:.3;box-shadow:none;cursor:default}
 .card{min-height:200px;border-radius:18px;border:2px solid var(--line);background:var(--surface);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;gap:12px;box-shadow:0 4px 0 var(--line)}
-.card .front{font-family:var(--display);font-size:24px;font-weight:600}
-.card .back{font-size:20px;padding-top:12px;border-top:2px dashed var(--line);width:100%}
+.card .front{font-family:var(--display);font-size:23px;font-weight:600}
+.card .back{font-size:19px;padding-top:12px;border-top:2px dashed var(--line);width:100%}
 .lfoot{padding-block:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
 .lfoot .btn{width:100%}
 .lfoot.ok{background:var(--good-soft);border-color:transparent}
 .lfoot.no{background:var(--bad-soft);border-color:transparent}
 .lfoot.ok .btn{background:var(--good);color:var(--good-ink);box-shadow:0 4px 0 color-mix(in srgb,var(--good) 62%,#000)}
 .lfoot.no .btn{background:var(--bad);color:var(--bad-ink);box-shadow:0 4px 0 color-mix(in srgb,var(--bad) 62%,#000)}
-.fb{font-family:var(--display);font-size:22px;font-weight:800}
+.fb{font-family:var(--display);font-size:22px;font-weight:800;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .lfoot.ok .fb{color:var(--good)} .lfoot.no .fb{color:var(--bad)}
 .fb small{display:block;font-family:var(--body);font-size:16px;font-weight:400;color:var(--ink)}
+.slidelink{flex:none;background:var(--surface);border:2px solid currentColor;border-radius:10px;padding:4px 10px;font-family:var(--body);font-size:13px;font-weight:700;color:inherit}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .end{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px;position:relative}
 .end h2{font-size:32px;font-weight:800}
@@ -185,30 +212,180 @@ pre{overflow-x:auto;font-family:var(--mono);font-size:12.5px;background:var(--bg
 .tile span{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
 .burst{position:absolute;left:50%;top:22%;width:0;height:0;pointer-events:none}
 .burst i{position:absolute;width:10px;height:10px;border-radius:2px;background:var(--spark);animation:fly 1s ease-out forwards}
-.burst i:nth-child(3n){background:var(--good)} .burst i:nth-child(4n){background:#3B82F6}
+.burst i:nth-child(3n){background:var(--good)} .burst i:nth-child(4n){background:var(--gem)}
 @keyframes fly{from{transform:translate(0,0) rotate(0);opacity:1}to{transform:translate(var(--dx),var(--dy)) rotate(260deg);opacity:0}}
 
-.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:80;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:700;max-width:calc(100% - 32px);text-align:center}
+/* Subject sheet */
+.sheet{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
+.backdrop{position:absolute;inset:0;background:rgba(10,14,35,.45);border:0}
+.sheet-in{position:relative;width:100%;max-width:640px;max-height:85%;overflow-y:auto;background:var(--bg);border-radius:20px 20px 0 0;padding-block:18px calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px}
+.sheet-in h2{font-size:24px;font-weight:800}
+.subjects{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.scard{display:flex;gap:12px;align-items:center;padding:12px;border:2px solid var(--line);border-radius:16px;background:var(--surface);text-align:left;box-shadow:0 3px 0 var(--line)}
+.scard.on{border-color:var(--spark);box-shadow:0 3px 0 var(--spark)}
+.scard>div{min-width:0;flex:1;display:flex;flex-direction:column;gap:4px}
+.scard b{font-family:var(--display);font-size:16px;line-height:1.2}
+.scard span{font-size:13px;color:var(--muted)}
+.scard.add{border-style:dashed;box-shadow:none}
+.scard.add .emb{background:var(--line);color:var(--ink);font-size:22px}
+
+/* Slide viewer */
+.sv{position:fixed;inset:0;z-index:70;background:rgba(8,10,24,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding-top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+.sv canvas{max-width:calc(100% - 32px);max-height:72vh;border-radius:8px;background:#fff}
+.svbar{display:flex;align-items:center;gap:10px;color:#fff;width:100%;max-width:900px;justify-content:space-between}
+.svbar b{font-family:var(--display);font-size:17px}
+.svbar button{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:10px;padding:8px 14px;font-weight:700}
+.sv .status{color:#C9CEE6}
+
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:90;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:700;max-width:calc(100% - 32px);text-align:center}
+@media (max-width:380px){.stats{gap:6px}.stat svg{width:17px;height:17px}}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="top gut">
-    <label for="course" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Kurs</label>
-    <select id="course"></select>
+    <button class="subj" id="subjBtn" data-act="subjects" aria-haspopup="dialog"></button>
     <div class="stats" id="stats"></div>
   </header>
   <main id="view"></main>
   <nav class="nav" id="nav"></nav>
 </div>
 <div class="layer" id="layer" hidden></div>
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="Fach wählen"></div>
+<div class="sv" id="sv" hidden role="dialog" aria-modal="true" aria-label="Folie"></div>
+<input type="file" id="attachFile" accept=".pdf,application/pdf" hidden>
 <div class="toast" id="toast" hidden></div>
 
 <script>
 "use strict";
-/* ---------- Beispielkurs (eigener Stoff kommt über "Inhalte") ---------- */
+/* ---------- Mitgelieferte Kurse ---------- */
+const MOC_PDF = "asset:3ec12f2fac7a84f8a96727d6a8873ee1";
+const MOC = `# MOC: Microeconomics of Competitiveness
+KURZ: MOC
+PDF: ${MOC_PDF}
+LANG: en
+## Prosperity and Competitiveness
+### What is competitiveness?
+MC: According to the MOC framework, a nation is competitive when … | its firms compete successfully in the regional and global economy while maintaining or improving wages and living standards | it has the lowest wages in its region | its currency is weak enough to boost exports | it creates as many jobs as possible @8
+TF: A weak currency is a sign of competitiveness. | falsch @8
+TF: Competitiveness requires sustained improvement in the productivity of the nation as a place to do business. | wahr @8
+MC: Which of these is NOT competitiveness according to the slides? | Low wages | Raising the productivity of existing firms | High participation of citizens in the workforce | Better education and health conditions @8
+GAP: The two elements of competitiveness are productivity and labor ___. | utilization @9
+PAIRS: Productivity = Labor, capital and total factor productivity ; Labor utilization = Participation rate and working hours ; Population age profile = Affects workforce participation @9
+CARD: The dual elements of competitiveness | Productivity (labor, capital, total factor productivity) and labor utilization (workforce participation, working hours) @9
+### Differences in prosperity
+MC: Which index do the slides use to measure income inequality? | Gini index | Social Progress Index | Human Development Index | Corruption Perceptions Index @6
+MC: How is labor productivity measured on the slides? | PPP-adjusted real GDP per labor force participant | Exports per worker | Nominal GDP | Patents per million people @10
+TF: The productivity charts sort countries into quadrants such as "High but Declining" and "Low but Improving". | wahr @10
+MC: Which two countries are compared on employees as share of the working-age population over time? | China and India | USA and Germany | Brazil and Mexico | Japan and Korea @14
+TF: Job creation per se is the definition of competitiveness. | falsch @8
+SHORT: What is competitiveness? | A nation is competitive when its firms can win in regional and global markets while wages and living standards rise. The engine is productivity, not low wages or a weak currency. Productivity comes from existing firms and workers getting better. Labor utilization comes from more people working. Education and health are part of the business environment too. | Competitiveness = Productivity + Labor utilization @9
+QUIZ: Which is NOT a source of competitiveness? | A weak currency | Higher labor productivity | Higher workforce participation
+## Indicators and Enablers
+### Measuring competitiveness
+MC: Which of these is an indicator or enabler of competitiveness on the slides? | Inbound foreign direct investment | A weak currency | Low wages | High tariffs @16
+TF: Indicators and enablers are part of the diagnostic framework for assessing a country's business environment and its progress. | wahr @16
+GAP: Domestic innovation includes the assimilation of foreign ___. | technology @16
+PAIRS: Exports = Share of GDP and composition by type of good ; Inbound FDI = Inward FDI stocks as % of GDP ; Innovation output = US patents per million population ; Global value chains = Domestic value added in gross exports @19
+MC: On the innovation slide, the correlation between patenting intensity and GDP per capita is … | 0.46 | 0.91 | 0.05 | -0.46 @21
+TF: The export composition slide splits exports into processed, semi-processed and unprocessed goods plus services. | wahr @18
+## Economic and Social Development
+### Two sides of development
+TF: Improving competitiveness requires improving economic and social conditions simultaneously. | wahr @23
+MC: What was the traditional paradigm of development? | Economic development measured by GDP will lead to social progress | Social progress automatically creates GDP growth | Economic and social development are unrelated | Only government drives social progress @23
+PAIRS: Basic Human Needs = Nutrition, water, shelter, personal safety ; Foundations of Wellbeing = Basic knowledge, information, health, environment ; Opportunity = Rights, freedom, inclusion, advanced education @35
+MC: Which Social Progress Index dimension includes "Access to Advanced Education"? | Opportunity | Basic Human Needs | Foundations of Wellbeing | Personal Safety @35
+TF: Countries can overperform or underperform on social progress relative to their GDP per capita. | wahr @37
+## Determinants: Macroeconomic Foundations
+### Endowments
+PAIRS: Microeconomic competitiveness = Business environment, clusters, company sophistication ; Macroeconomic competitiveness = Monetary and fiscal policy, public institutions, human and social development ; Endowments = Natural resources, location, population, climate @26
+TF: Natural resource endowments guarantee prosperity. | falsch @29
+MC: In "created prosperity", who are the central actors in improving the economy? | Companies | Government | Owners of natural resources | International donors @28
+GAP: The macroeconomic distortion that resource wealth can cause is called the Dutch ___. | disease @29
+MC: Which is a risk of relying on natural resources? | Government becomes the central actor and slows private sector growth | Prosperity becomes unlimited | Local competition becomes stronger | Corruption declines @29
+CARD: Inherited vs. created prosperity | Inherited: limited by endowments, dividing the pie, government is central. Created: rising productivity, unlimited, expanding the pie, companies are central @28
+### Policies and institutions
+PAIRS: Fiscal policy = Public spending aligned with revenues over time ; Monetary policy = Interest rates, exchange rate, inflation control ; Economic stabilization = Avoiding structural imbalances and overheating @31
+MC: "Rule of law" in effective public institutions includes … | Property rights, personal security and due process | Low interest rates | Export subsidies | Cluster initiatives @32
+MC: Which belongs to macroeconomic competitiveness? | Sound monetary and fiscal policies | Sophistication of company operations | State of cluster development | Quality of the business environment @26
+TF: Human and social development (basic education, health care, equal opportunity) is part of macroeconomic competitiveness. | wahr @34
+SHORT: Inherited vs. created prosperity | Inherited prosperity comes from natural resources. It is limited by the resources themselves, and people fight over dividing the pie. Created prosperity comes from productivity. It is unlimited, because the pie grows. In created prosperity, companies are the central actors and government sets the conditions. | Endowments are a foundation, productivity creates wealth @28
+QUIZ: Who is the central actor in created prosperity? | Companies | Government | Resource owners
+## The Diamond and Clusters
+### The Diamond
+MC: Which is NOT one of the four parts of the Diamond? | Monetary policy | Factor (input) conditions | Demand conditions | Related and supporting industries @40
+PAIRS: Factor conditions = Human resources, capital, infrastructure ; Demand conditions = Sophisticated and demanding local needs ; Context for strategy and rivalry = Incentives and open, vigorous competition ; Related and supporting industries = Availability and quality of suppliers @40
+TF: Strict quality, safety and environmental standards can improve demand conditions. | wahr @40
+GAP: Economic development is a process of successive ___, in which the business environment improves. | upgrading @40
+MC: Which is a weakness in Guyana's business environment? | High-cost, unreliable electricity supply | English-speaking population | Access to natural resources | Trade agreements with CARICOM, UK, EU and US @41
+MC: In the Guyana Diamond, "very small, unsophisticated domestic market" belongs to … | Demand conditions | Factor conditions | Related and supporting industries | Context for strategy and rivalry @41
+### Clusters
+MC: What is a cluster? | A geographic concentration of firms, suppliers and supporting institutions in a particular field | Firms in different countries with the same owner | A government export agency | One large company with many plants @42
+MC: Which cluster illustrates "What is a cluster?" on the slides? | Tourism in Cairns, Australia | Wine in Australia | Cut flowers in Kenya | Machine tools in the Basque Country @43
+TF: Institutions for Collaboration (IFCs) are collective institutions that foster collaboration and improve the business environment. | wahr @45
+MC: Which is an IFC in the Australian wine cluster? | Winemakers' Federation of Australia | A single family winery | A supermarket chain | The World Bank @45
+MC: Which research finding about strong clusters appears on the slides? | Higher wages and patenting rates | Lower new business formation | Slower job growth | Less resilience in downturns @47
+TF: Regions should chase "hot fields" instead of building on existing clusters. | falsch @47
+SHORT: The Diamond in one minute | The Diamond diagnoses the quality of a business environment. Factor conditions are the inputs, like skilled people, capital and infrastructure. Demand conditions are sophisticated and demanding local customers. Related and supporting industries are good local suppliers. The context for strategy and rivalry means fair rules and open, vigorous competition. | Factors, Demand, Suppliers, Rivalry @40
+QUIZ: Strict quality and safety standards strengthen which corner? | Demand conditions | Factor conditions | Related industries
+SHORT: Why clusters matter | A cluster is a geographic concentration of firms, suppliers and institutions in one field, like tourism in Cairns or wine in Australia. Strong clusters bring faster job growth, higher wages, more patents and more new businesses. Regions should build on existing and emerging clusters instead of chasing hot fields. Sound cluster policy supports all clusters and does not pick winners. | Build on what exists @47
+QUIZ: What should regions do according to the research? | Build on existing and emerging clusters | Chase hot fields | Pick single winning firms
+## Company Strategy
+### Competitive advantage
+MC: Companies create competitive advantage through … | Lower cost or differentiation | Lower taxes or subsidies | A weak currency or tariffs | Mergers only @53
+PAIRS: Primary activities = Inbound logistics, operations, marketing and sales ; Support activities = HR management, technology development, procurement ; Value chain = Activities that deliver value to customers @54
+MC: Operational effectiveness means … | Doing the same things better | Doing things differently | Creating a unique position | Choosing what not to do @55
+TF: Operational effectiveness is the same as strategy. | falsch @55
+GAP: Strategic positioning means creating a ___ competitive position. | unique @55
+### Stages of development
+PAIRS: Factor-driven economy = Competes on low-cost inputs ; Investment-driven economy = Productivity in more sophisticated industries ; Innovation-driven economy = Technology, innovation and unique value @56
+MC: In which stage are world-class scientific institutions and cluster upgrading the priorities? | Innovation-driven economy | Factor-driven economy | Investment-driven economy | Resource-driven economy @56
+TF: Market opening and efficient basic infrastructure are priorities of a factor-driven economy. | wahr @56
+SHORT: Effectiveness is not strategy | Operational effectiveness means doing the same things better, for example by copying best practices. Strategic positioning means doing things differently and creating a unique position. Companies win either through lower cost or through differentiation that earns a premium price. Strategy shows in how activities in the value chain are configured and linked. | Same things better is not the same as things differently @55
+QUIZ: "Doing things differently" describes … | Strategic positioning | Operational effectiveness | Labor utilization
+## Geography of Competitiveness
+### Regions and traded clusters
+TF: According to the slides, regions are the most important economic unit for competitiveness. | wahr @59
+PAIRS: Local clusters = Serve the local market, about 64% of US jobs ; Traded clusters = Serve national and global markets, about 36% of US jobs ; Strong clusters = About 44% of traded employment @63
+MC: Average US wages in 2015: traded vs. local clusters? | Traded $71,198 vs. local $38,661 | Traded $38,661 vs. local $71,198 | Both about $50,000 | Traded $52,890 vs. local $83,791 @63
+TF: Local clusters are heavily exposed to international competition. | falsch @63
+### Neighbors and integration
+MC: Why does integration with neighboring countries enhance competitiveness? | It expands the market opportunity in each country | It replaces domestic reforms | It lowers wages | It removes the need for clusters @67
+PAIRS: Traditional model = Market opening through free trade areas and customs unions ; Broader model = Upgrading competitiveness across many dimensions @68
+MC: In the EU Single Market, trade barriers and competition law are mainly the responsibility of … | The EU | Regions | Cities | Companies @69
+SHORT: Traded vs. local clusters | Local clusters serve only the local market, like retail or local services. They hold about 64 percent of US employment. Traded clusters serve national and global markets and face competition from other regions. They hold about 36 percent of employment but pay much higher wages, about 71 thousand versus 39 thousand dollars. | Traded: 36% of jobs, higher wages @63
+QUIZ: Which clusters pay higher average wages? | Traded clusters | Local clusters | Both the same
+## Economic Strategy
+### National strategy
+MC: A national economic strategy combines a national value proposition, developing unique strengths and … | Achieving and maintaining parity with peers | Maximizing subsidies | Lowering wages | Picking winning firms @71
+TF: Choosing what not to do is essential to strategy. | wahr @71
+MC: A national value proposition starts by evaluating which three dimensions? | Positioning in the region and world, unique advantages, cluster development opportunities | GDP, inflation, unemployment | Exports, imports, FDI | Taxes, tariffs, subsidies @72
+MC: A successful development strategy focuses on … | Competitiveness, not jobs or income per se | Job creation per se | A long list of actions without priorities | Only reducing weaknesses @73
+TF: A good development strategy seeks early, visible "wins" to build support among citizens. | wahr @73
+GAP: A successful strategy is data-driven and fact-based, not ___ or based on wishful thinking. | political @73
+SHORT: Building a national strategy | A national economic strategy has three parts. First, a value proposition: what makes the country a distinctive place to do business. Second, unique strengths to build on, including existing clusters. Third, parity with peers: fixing weaknesses that block growth. Priorities and sequencing matter, and so does deciding what not to do. | Value proposition, unique strengths, parity @71
+QUIZ: Which is part of a national economic strategy? | Achieving parity with peers | Maximizing subsidies | Lowering wages
+## Cluster-Based Development
+### Clusters as policy
+PAIRS: Leveraging clusters = Long-term, systemic impact, low risk ; Creating clusters = Short-term, narrow impact, high risk @75
+TF: Sound cluster policy picks winners. | falsch @76
+MC: Why are clusters a useful policy tool? | They strengthen many related firms and institutions at once | They replace traditional economic policy | They only benefit large firms | They distort the market through subsidies @76
+MC: Which region is the example of cluster-based development with initiatives like ACICAE (automotive) and HEGAN (aeronautics)? | Basque Country, Spain | Bavaria, Germany | Lombardy, Italy | Catalonia, Spain @78
+TF: Cluster upgrading fosters more sophisticated competition rather than distorting the market. | wahr @76
+## Government and Private Sector
+### Who drives development?
+MC: In the new model of economic development … | development is a collaborative process of many actors | government drives development top-down | only companies matter | foreign donors lead @80
+TF: Improving competitiveness requires continuity across successive governments. | wahr @81
+MC: Which country's structure is shown with a National Competitiveness and Innovation Commission, Colciencias and Confecamaras? | Colombia | Mexico | Chile | Peru @82
+MC: Which is a role of the private sector in development? | Nurture local suppliers and attract foreign suppliers | Set monetary policy | Write competition law | Run the central bank @84
+GAP: Creating ___ Value means addressing societal needs through the business itself, with a business model. | Shared @85
+TF: According to Porter and Kramer, profit is inconsistent with positive social impact. | falsch @85
+SHORT: Creating shared value | Porter and Kramer argue that profit and social impact are not opposites. Shared value means solving a social problem through the business model itself, for example affordable housing or renewable energy. The private sector also informs government, works with universities, nurtures suppliers and joins competitiveness initiatives. | Social needs, solved through the business model @85
+QUIZ: Shared value means … | Addressing societal needs through the business model | Donating profits to charity | Paying more taxes`;
+
 const SAMPLE = `# Beispiel: Mathe Analysis (Abi)
+KURZ: MA
 ## Ableitungen
 ### Potenzregel
 MC: Was ist f'(x) für f(x) = x³? | 3x² | x² | 3x | 3x³
@@ -232,8 +409,6 @@ MC: f(x) = sin(3x). Was ist f'(x)? | 3cos(3x) | cos(3x) | −3cos(3x) | 3sin(3x)
 TF: Für f(x) = e^(2x) gilt f'(x) = 2e^(2x). | wahr
 SHORT: Ableitung in 30 Sekunden | Die Ableitung gibt die Steigung einer Funktion an einer Stelle an. Stell dir vor, du zoomst so weit in den Graphen hinein, bis er wie eine Gerade aussieht. Die Steigung dieser Geraden ist die Ableitung. Ist sie positiv, steigt die Funktion. Ist sie negativ, fällt sie. Ist sie null, hat der Graph dort eine waagrechte Tangente. | f'(x₀) = Steigung bei x₀
 QUIZ: Was bedeutet f'(3) = 0? | Waagrechte Tangente bei x = 3 | f(3) = 0 | f fällt bei x = 3
-SHORT: Die Potenzregel | Bei x hoch n kommt der Exponent nach vorne, dann wird eins abgezogen. Aus x hoch fünf wird also fünf mal x hoch vier. Konstanten fallen beim Ableiten weg, weil sie keine Steigung haben. Faktoren bleiben einfach stehen. Drei x Quadrat wird zu sechs x. | (xⁿ)' = n·xⁿ⁻¹
-QUIZ: f(x) = 4x³. Was ist f'(x)? | 12x² | 12x³ | 4x²
 SHORT: Die Kettenregel | Bei verketteten Funktionen gilt: äußere Ableitung mal innere Ableitung. Beispiel: Sinus von drei x. Außen steht der Sinus, abgeleitet wird daraus der Kosinus. Innen steht drei x, abgeleitet ist das drei. Ergebnis: drei mal Kosinus von drei x. | f(g(x))' = f'(g(x))·g'(x)
 QUIZ: f(x) = (x²+1)⁵. Was ist f'(x)? | 10x(x²+1)⁴ | 5(x²+1)⁴ | 10x(x²+1)⁵
 ## Kurvendiskussion
@@ -243,50 +418,48 @@ MC: f'(x₀) = 0 und f''(x₀) > 0. Was liegt vor? | Tiefpunkt | Hochpunkt | Wen
 MC: f'(x₀) = 0 und f''(x₀) < 0. Was liegt vor? | Hochpunkt | Tiefpunkt | Wendepunkt | Nullstelle
 MC: f(x) = x² − 4x. Bei welchem x liegt der Extrempunkt? | x = 2 | x = 4 | x = −2 | x = 0
 GAP: Bei f(x) = x² − 4x ist der Tiefpunkt T(2 | ___). | -4 / −4
-### Wendepunkte und Monotonie
-TF: Notwendige Bedingung für einen Wendepunkt: f''(x) = 0. | wahr
-MC: f(x) = x³. Was liegt bei x = 0 vor? | Sattelpunkt | Hochpunkt | Tiefpunkt | Nichts Besonderes
-TF: Ist f'(x) > 0 auf einem Intervall, ist f dort streng monoton steigend. | wahr
-PAIRS: f' > 0 = f steigt ; f' < 0 = f fällt ; f'' > 0 = linksgekrümmt ; f'' < 0 = rechtsgekrümmt
-SHORT: Hoch- oder Tiefpunkt? | Löse zuerst f Strich von x gleich null. Das liefert dir die Kandidaten. Setze sie dann in die zweite Ableitung ein. Ist sie positiv, ist der Graph linksgekrümmt, also liegt ein Tiefpunkt vor. Ist sie negativ, ist er rechtsgekrümmt, also ein Hochpunkt. Ist sie null, prüfst du den Vorzeichenwechsel der ersten Ableitung. | f'(x₀) = 0 und f''(x₀) ≠ 0
-QUIZ: f'(x₀) = 0 und f''(x₀) < 0. Was liegt vor? | Hochpunkt | Tiefpunkt | Wendepunkt
 ## Integrale
-### Stammfunktionen
+### Stammfunktionen und Flächen
 MC: Eine Stammfunktion von f(x) = x² ist | x³/3 | 2x | x³ | 3x²
-MC: Eine Stammfunktion von f(x) = eˣ ist | eˣ | x·eˣ | ln(x) | eˣ⁺¹
 GAP: Eine Stammfunktion von 1/x (für x > 0) ist ___. | ln(x) / ln x
-TF: F ist Stammfunktion von f, wenn F'(x) = f(x) gilt. | wahr
-### Flächen
 CARD: Hauptsatz der Analysis | ∫ₐᵇ f(x) dx = F(b) − F(a)
 MC: Wie groß ist ∫₀² x dx? | 2 | 4 | 1 | 0,5
-MC: Wie groß ist ∫₀¹ 3x² dx? | 1 | 3 | 1/3 | 0
-TF: Liegt der Graph von f unterhalb der x-Achse, ist das Integral dort negativ. | wahr
-GAP: ∫₁³ 2x dx = ___ | 8
-SHORT: Integral als Fläche | Das bestimmte Integral misst die Fläche zwischen Graph und x-Achse. Flächen oberhalb der Achse zählen positiv, Flächen unterhalb negativ. Gerechnet wird mit dem Hauptsatz. Du bildest eine Stammfunktion, setzt die obere Grenze ein, dann die untere, und ziehst ab. | ∫ₐᵇ f(x) dx = F(b) − F(a)
-QUIZ: Wie groß ist ∫₀² x dx? | 2 | 4 | 1`;
+GAP: ∫₁³ 2x dx = ___ | 8`;
 
-const AI_PROMPT = `Wandle den folgenden Lernstoff in einen Kurs für meine Lern-App um. Antworte NUR mit dem Kurstext in genau diesem Format, ohne Einleitung und ohne Codeblock:
+function genPrompt(name, lang, text) {
+  const langRule = lang === "de" ? "Fragen und Antworten auf Deutsch. Fachbegriffe zusätzlich im Original in Klammern. LANG: de"
+    : lang === "en" ? "Questions and answers in English. LANG: en"
+    : "Fragen in derselben Sprache wie die Unterlagen. LANG passend setzen (de oder en).";
+  return `Erstelle aus den folgenden Lernunterlagen einen Kurs für meine Lern-App. Antworte NUR mit dem Kurstext im Format unten, ohne Einleitung und ohne Codeblock.
 
+Format (eine Angabe pro Zeile):
 # Kursname
+KURZ: Kürzel mit 2 bis 4 Buchstaben
+LANG: de oder en
 ## Einheit
 ### Lektion
-MC: Frage | richtige Antwort | falsche Antwort | falsche Antwort | falsche Antwort
-TF: Aussage | wahr   (oder: falsch)
-GAP: Satz mit ___ als Lücke | Lösung / andere Schreibweise
-PAIRS: Begriff = Erklärung ; Begriff = Erklärung ; Begriff = Erklärung
-CARD: Vorderseite | Rückseite
-SHORT: Titel | Erklärung in 4 bis 6 kurzen, gut vorlesbaren Sätzen | Formel oder Merksatz (optional)
-QUIZ: Frage zum vorherigen SHORT | richtige Antwort | falsche Antwort | falsche Antwort
+MC: Frage | richtige Antwort | falsche Antwort | falsche Antwort | falsche Antwort @Folie
+TF: Aussage | wahr   (oder: falsch) @Folie
+GAP: Satz mit ___ als Lücke | Lösung / andere Schreibweise @Folie
+PAIRS: Begriff = Erklärung ; Begriff = Erklärung ; Begriff = Erklärung @Folie
+CARD: Vorderseite | Rückseite @Folie
+SHORT: Titel | Erklärung in 4 bis 6 kurzen, gut vorlesbaren Sätzen | kurzer Merksatz @Folie
+QUIZ: Frage zum SHORT davor | richtige Antwort | falsche Antwort | falsche Antwort
 
 Regeln:
-- 2 bis 4 Einheiten mit je 2 bis 3 Lektionen und je 5 bis 8 Aufgaben, Aufgabentypen gemischt.
-- Pro Einheit 1 bis 2 SHORTs, jeweils mit QUIZ in der Zeile darunter.
-- Die richtige Antwort steht immer an erster Stelle nach der Frage.
-- Das Zeichen | nur als Trenner verwenden. Bei GAP mehrere Lösungen mit " / " (Leerzeichen davor und danach) trennen.
-- Fachlich korrekt, auf Deutsch, prüfungsnah.
+- @Folie ist die Nummer der Folie oder Seite, auf der die Antwort steht (siehe [Folie n] in den Unterlagen). Weglassen, wenn es keine gibt oder sie unklar ist.
+- Folge der Gliederung der Unterlagen: eine Einheit pro Hauptthema, je 1 bis 3 Lektionen mit 5 bis 8 Aufgaben, Aufgabentypen gemischt. Höchstens 90 Aufgaben insgesamt.
+- Pro Einheit ein SHORT, direkt gefolgt von seinem QUIZ.
+- Die richtige Antwort steht immer direkt nach der Frage. Falsche Antworten sind plausibel.
+- Das Zeichen | nur als Trenner verwenden. Bei GAP mehrere Lösungen mit " / " trennen.
+- Nur Inhalte aus den Unterlagen, fachlich korrekt und prüfungsnah. Titel- und Gliederungsfolien überspringen.
+- Sprache: ${langRule}
 
-Lernstoff:
-`;
+Kursname: ${name}
+
+Unterlagen:
+${text}`;
+}
 
 /* ---------- Helfer ---------- */
 const $ = (s, el = document) => el.querySelector(s);
@@ -314,57 +487,65 @@ const ICON = {
   star:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.8 2.8 5.8 6.3.8-4.6 4.4 1.2 6.3L12 17l-5.7 3.1 1.2-6.3L2.9 9.4l6.3-.8L12 2.8Z"/></svg>',
   check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
   lock:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h1Zm2 0h6V8a3 3 0 0 0-6 0v2Z"/></svg>',
-  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>'
 };
 
 /* ---------- Kurs-Parser ---------- */
 function parseCourse(src) {
-  const c = { title: "Ohne Titel", units: [], shorts: [], errors: [] };
+  const c = { title: "Ohne Titel", kurz: "", lang: "de", pdf: "", units: [], shorts: [], errors: [] };
   let unit = null, lesson = null, lastShort = null;
   const needLesson = () => {
     if (!unit) { unit = { title: "Einheit 1", lessons: [] }; c.units.push(unit); }
     if (!lesson) { lesson = { title: "Lektion " + (unit.lessons.length + 1), items: [] }; unit.lessons.push(lesson); }
   };
   String(src).split(/\r?\n/).forEach((raw, i) => {
-    const line = raw.trim();
+    let line = raw.trim();
     if (!line || line.startsWith("//")) return;
     const n = i + 1;
     if (line.startsWith("### ")) { if (!unit) { unit = { title: "Einheit 1", lessons: [] }; c.units.push(unit); } lesson = { title: line.slice(4).trim(), items: [] }; unit.lessons.push(lesson); return; }
     if (line.startsWith("## ")) { unit = { title: line.slice(3).trim(), lessons: [] }; c.units.push(unit); lesson = null; return; }
     if (line.startsWith("# ")) { c.title = line.slice(2).trim(); return; }
+    let slide = 0;
+    const sm = line.match(/\s+@(\d{1,4})\s*$/);
+    if (sm) { slide = +sm[1]; line = line.slice(0, sm.index).trim(); }
     const m = line.match(/^([A-Za-zÄÖÜäöü]+)\s*:\s*(.*)$/);
     if (!m) { c.errors.push(`Zeile ${n}: unbekanntes Format`); return; }
     const tag = m[1].toUpperCase(), body = m[2], p = body.split("|").map(s => s.trim());
+    const push = it => { needLesson(); if (slide) it.slide = slide; lesson.items.push(it); };
     switch (tag) {
+      case "KURZ": c.kurz = body.trim().slice(0, 4); return;
+      case "LANG": c.lang = body.trim().toLowerCase().startsWith("en") ? "en" : "de"; return;
+      case "PDF": c.pdf = body.trim(); return;
       case "SHORT":
         if (!p[0] || !p[1]) { c.errors.push(`Zeile ${n}: SHORT braucht Titel | Text`); return; }
-        lastShort = { title: p[0], text: p[1], formula: p[2] || "", quiz: null }; c.shorts.push(lastShort); return;
+        lastShort = { title: p[0], text: p[1], formula: p[2] || "", quiz: null }; if (slide) lastShort.slide = slide; c.shorts.push(lastShort); return;
       case "QUIZ":
         if (!lastShort) { c.errors.push(`Zeile ${n}: QUIZ ohne SHORT davor`); return; }
         if (p.length < 3) { c.errors.push(`Zeile ${n}: QUIZ braucht Frage | richtig | falsch`); return; }
         lastShort.quiz = { q: p[0], a: p[1], opts: p.slice(2) }; return;
       case "MC":
         if (p.length < 3 || p.some(x => !x)) { c.errors.push(`Zeile ${n}: MC braucht Frage | richtig | mindestens eine falsche`); return; }
-        needLesson(); lesson.items.push({ t: "mc", q: p[0], a: p[1], opts: p.slice(2) }); return;
+        push({ t: "mc", q: p[0], a: p[1], opts: p.slice(2) }); return;
       case "TF": {
         const v = (p[1] || "").toLowerCase();
         const yes = ["wahr","true","richtig","ja"], no = ["falsch","false","nein"];
         if (!p[0] || ![...yes, ...no].includes(v)) { c.errors.push(`Zeile ${n}: TF braucht Aussage | wahr oder falsch`); return; }
-        needLesson(); lesson.items.push({ t: "tf", q: p[0], a: yes.includes(v) }); return;
+        push({ t: "tf", q: p[0], a: yes.includes(v) }); return;
       }
       case "GAP": {
         const q = p.slice(0, -1).join(" | "), ans = p.length > 1 ? p[p.length - 1] : "";
         if (!q || !ans) { c.errors.push(`Zeile ${n}: GAP braucht Satz mit ___ | Lösung`); return; }
-        needLesson(); lesson.items.push({ t: "gap", q, a: ans.split(" / ").map(s => s.trim()).filter(Boolean) }); return;
+        push({ t: "gap", q, a: ans.split(" / ").map(s => s.trim()).filter(Boolean) }); return;
       }
       case "PAIRS": {
         const pairs = body.split(";").map(s => s.trim()).filter(Boolean).map(s => { const k = s.indexOf(" = "); return k < 0 ? null : [s.slice(0, k).trim(), s.slice(k + 3).trim()]; });
         if (pairs.length < 2 || pairs.some(x => !x || !x[0] || !x[1])) { c.errors.push(`Zeile ${n}: PAIRS braucht mindestens zwei Paare A = B ; C = D`); return; }
-        needLesson(); lesson.items.push({ t: "pairs", pairs }); return;
+        push({ t: "pairs", pairs }); return;
       }
       case "CARD":
         if (!p[0] || !p[1]) { c.errors.push(`Zeile ${n}: CARD braucht Vorderseite | Rückseite`); return; }
-        needLesson(); lesson.items.push({ t: "card", front: p[0], back: p.slice(1).join(" | ") }); return;
+        push({ t: "card", front: p[0], back: p.slice(1).join(" | ") }); return;
       default:
         c.errors.push(`Zeile ${n}: unbekannter Typ "${m[1]}"`);
     }
@@ -383,16 +564,33 @@ const countItems = c => c.units.reduce((a, u) => a + u.lessons.reduce((b, l) => 
 const countLessons = c => c.units.reduce((a, u) => a + u.lessons.length, 0);
 const allLessons = c => c.units.flatMap((u, ui) => u.lessons.map((l, li) => ({ u, ui, l, li })));
 const allItems = c => c.units.flatMap(u => u.lessons.flatMap(l => l.items));
+function emblem(c) {
+  const words = c.title.replace(/^Beispiel:\s*/i, "").split(/[\s\-–:()/,]+/).filter(w => w.length > 2 || /^[A-ZÄÖÜ]{2,}$/.test(w));
+  const abbr = (c.kurz || (words[0] && /^[A-ZÄÖÜ]{2,4}$/.test(words[0]) ? words[0] : words.slice(0, 2).map(w => w[0]).join(""))).toUpperCase().slice(0, 4) || "?";
+  return { abbr, col: `var(--c${((c.idx ?? parseInt(hash(c.id), 36)) % 6) + 1})` };
+}
+const embHTML = (c, lg) => { const e = emblem(c); return `<span class="emb${lg ? " lg" : ""}" style="background:${e.col}" aria-hidden="true">${esc(e.abbr)}</span>`; };
+const doneCount = c => allLessons(c).filter(x => S.done[x.l.id]).length;
 
 /* ---------- Zustand ---------- */
 const KEY = "funke.v1";
-const fresh = () => ({ sources: [SAMPLE], active: 0, tab: "path", xp: 0, day: { date: today(), xp: 0 },
-  streak: { count: 0, last: null }, hearts: MAX_HEARTS, heartTs: Date.now(), done: {}, srs: {}, seen: {}, goal: 30, autoplay: true });
+const fresh = () => ({ sources: [MOC, SAMPLE], seed: 3, active: 0, tab: "path", xp: 0, day: { date: today(), xp: 0 },
+  streak: { count: 0, last: null }, hearts: MAX_HEARTS, heartTs: Date.now(), done: {}, srs: {}, seen: {}, goal: 30, autoplay: true, updatedAt: 0 });
 let S = fresh();
-try { const raw = localStorage.getItem(KEY); if (raw) { const d = JSON.parse(raw); if (d && Array.isArray(d.sources)) S = Object.assign(fresh(), d); } } catch (e) {}
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+function adopt(d) {
+  S = Object.assign(fresh(), d);
+  if (!S.seed || S.seed < 2) { if (!S.sources.some(s => s.startsWith("# MOC:"))) { S.sources.unshift(MOC); S.active = 0; } S.seed = 2; }
+  if (S.seed < 3) { S.sources = S.sources.map(s => s.startsWith("# MOC:") && !/^\s*PDF\s*:/m.test(s) ? setPdfLine(s, MOC_PDF) : s); S.seed = 3; }
+}
+try { const raw = localStorage.getItem(KEY); if (raw) { const d = JSON.parse(raw); if (d && Array.isArray(d.sources)) adopt(d); } } catch (e) {}
+let cloudTimer = null;
+const save = () => {
+  S.updatedAt = Date.now();
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
+  if (CLOUD) { clearTimeout(cloudTimer); cloudTimer = setTimeout(pushCloud, 1500); }
+};
 let COURSES = [];
-const rebuild = () => { COURSES = S.sources.map(parseCourse); if (S.active >= COURSES.length) S.active = 0; };
+const rebuild = () => { COURSES = S.sources.map((s, i) => Object.assign(parseCourse(s), { idx: i })); if (S.active >= COURSES.length) S.active = 0; };
 const course = () => COURSES[S.active] || null;
 
 function tick() {
@@ -411,13 +609,132 @@ function addXP(n) {
 function loseHeart() { if (S.hearts >= MAX_HEARTS) S.heartTs = Date.now(); S.hearts = Math.max(0, S.hearts - 1); }
 const dueItems = c => allItems(c).filter(it => S.srs[it.id] && S.srs[it.id].due <= today());
 
+/* ---------- Claude-Funktionen (nur in claude.ai verfügbar) ---------- */
+const CAP = { sample: null, assets: null };
+let CLOUD = null;
+async function initCaps() {
+  if (!window.claude || typeof window.claude.use !== "function") return;
+  const use = n => Promise.resolve(window.claude.use(n)).catch(() => null);
+  const [sample, assets, db, user] = await Promise.all([use("sample"), use("assets"), use("db"), use("user")]);
+  CAP.sample = sample; CAP.assets = assets;
+  refreshEditHints();
+  if (!db || !user) return;
+  try {
+    const uid = await user.id(); if (!uid) return;
+    const ref = db.collection("data/users/" + uid).doc("funke");
+    const snap = await ref.get();
+    const remote = snap.exists ? snap.data() : null;
+    CLOUD = { ref };
+    if (remote && remote.state && (remote.state.updatedAt || 0) > (S.updatedAt || 0)) {
+      adopt(JSON.parse(JSON.stringify(remote.state)));
+      try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
+      rebuild(); if ($("#layer").hidden) render();
+    } else pushCloud();
+    refreshEditHints();
+  } catch (e) { CLOUD = null; }
+}
+let cloudWarned = false;
+function pushCloud() {
+  if (!CLOUD) return;
+  CLOUD.ref.set({ state: JSON.parse(JSON.stringify(S)) }).catch(() => {
+    if (!cloudWarned) { cloudWarned = true; toast("Sync gerade nicht möglich. In diesem Browser ist alles gespeichert."); }
+  });
+}
+function refreshEditHints() {
+  const n = $("#aiNote"); if (n) n.textContent = aiNote();
+  const b = $("#genBtn"); if (b) b.textContent = CAP.sample ? "Kurs mit Claude erstellen" : "KI-Auftrag kopieren";
+  const sy = $("#syncNote"); if (sy) sy.textContent = syncNote();
+}
+const aiNote = () => CAP.sample
+  ? "Claude liest deine Unterlagen und baut daraus Lektionen, Karteikarten und Shorts mit Verweis auf die Folien. Das dauert 1 bis 3 Minuten und nutzt dein Claude-Kontingent."
+  : "Danach kopierst du den KI-Auftrag in Claude und fügst die Antwort unten bei „Neues Fach von Hand“ ein.";
+const syncNote = () => CLOUD
+  ? "Dein Stand wird mit deinem Claude-Konto synchronisiert. Öffne denselben Link auf Handy und PC."
+  : "Dein Stand liegt nur in diesem Browser. Zum Übertragen: Sicherung kopieren und auf dem anderen Gerät laden.";
+
+/* ---------- PDF: Text lesen und Folien zeigen ---------- */
+const PDFJS_BASE = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+let pdfjsP = null;
+const loadScript = src => new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error("script")); document.head.appendChild(s); });
+function pdfjs() {
+  if (!pdfjsP) pdfjsP = (async () => {
+    await loadScript(PDFJS_BASE + "pdf.min.js");
+    await loadScript(PDFJS_BASE + "pdf.worker.min.js");
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_BASE + "pdf.worker.min.js";
+    return window.pdfjsLib;
+  })().catch(e => { pdfjsP = null; throw e; });
+  return pdfjsP;
+}
+const LOCAL_PDFS = [];
+const PDFS = {};
+function getPdf(ref) {
+  if (!ref) return Promise.resolve(null);
+  if (!PDFS[ref]) PDFS[ref] = (async () => {
+    const lib = await pdfjs();
+    let src;
+    if (ref.startsWith("asset:")) src = { url: "/_blob/" + ref.slice(6) };
+    else if (ref.startsWith("local:")) { const b = LOCAL_PDFS[+ref.slice(6)]; if (!b) return null; src = { data: new Uint8Array(await b.arrayBuffer()) }; }
+    else return null;
+    return lib.getDocument(src).promise;
+  })().catch(() => { delete PDFS[ref]; return null; });
+  return PDFS[ref];
+}
+const pdfUsable = ref => !!ref && ((ref.startsWith("asset:") && !!window.claude) || (ref.startsWith("local:") && !!LOCAL_PDFS[+ref.slice(6)]));
+async function drawSlide(canvas, ref, n, width) {
+  const pdf = await getPdf(ref);
+  if (!pdf || n < 1 || n > pdf.numPages) return false;
+  const page = await pdf.getPage(n);
+  const base = page.getViewport({ scale: 1 });
+  const vp = page.getViewport({ scale: (width / base.width) * Math.min(2, window.devicePixelRatio || 1) });
+  canvas.width = Math.round(vp.width); canvas.height = Math.round(vp.height);
+  canvas.style.aspectRatio = `${vp.width} / ${vp.height}`;
+  await page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise;
+  return true;
+}
+async function storePdf(file) {
+  if (CAP.assets) {
+    try { const r = await CAP.assets.upload(file, { type: "application/pdf" }); return "asset:" + r.id; }
+    catch (e) { /* fällt auf lokal zurück */ }
+  }
+  LOCAL_PDFS.push(file); return "local:" + (LOCAL_PDFS.length - 1);
+}
+function setPdfLine(src, ref) {
+  const lines = src.split(/\r?\n/).filter(l => !/^\s*PDF\s*:/i.test(l));
+  const t = lines.findIndex(l => l.trim().startsWith("# "));
+  lines.splice(t >= 0 ? t + 1 : 0, 0, "PDF: " + ref);
+  return lines.join("\n");
+}
+
+/* Folien-Ansicht */
+let SV = null;
+function openSlide(n) {
+  const c = course(); if (!c) return;
+  if (!pdfUsable(c.pdf)) { toast(c.pdf ? "Die Folien sind hier nicht verfügbar. Hänge die PDF unter „Inhalte“ erneut an." : `Folie ${n}. Hänge die PDF unter „Inhalte“ an, um sie hier zu sehen.`); return; }
+  SV = { ref: c.pdf, n, total: 0 };
+  $("#sv").hidden = false; stopSpeech(); drawSV();
+}
+async function drawSV() {
+  const box = $("#sv"), my = SV;
+  box.innerHTML = `<div class="svbar gut"><button data-act="svprev" aria-label="Vorherige Folie">‹</button><b>Folie ${my.n}${my.total ? " von " + my.total : ""}</b><button data-act="svnext" aria-label="Nächste Folie">›</button><button data-act="svclose">Schließen</button></div><canvas id="svc"></canvas><p class="status" id="svs">Folie wird geladen …</p>`;
+  const pdf = await getPdf(my.ref);
+  if (SV !== my) return;
+  if (pdf) my.total = pdf.numPages;
+  const ok = await drawSlide($("#svc"), my.ref, my.n, Math.min(1200, innerWidth - 32)).catch(() => false);
+  if (SV !== my) return;
+  const s = $("#svs"); if (s) s.textContent = ok ? "" : "Die Folie konnte nicht geladen werden.";
+  const b = box.querySelector("b"); if (b && my.total) b.textContent = `Folie ${my.n} von ${my.total}`;
+}
+function closeSV() { SV = null; $("#sv").hidden = true; $("#sv").innerHTML = ""; }
+function moveSV(d) { if (!SV) return; const n = SV.n + d; if (n < 1 || (SV.total && n > SV.total)) return; SV = { ...SV, n }; drawSV(); }
+
 /* ---------- Oberfläche ---------- */
 let toastTimer;
-function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 2600); }
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 3200); }
 
 function renderTop() {
-  const sel = $("#course");
-  sel.innerHTML = COURSES.length ? COURSES.map((c, i) => `<option value="${i}" ${i === S.active ? "selected" : ""}>${esc(c.title)}</option>`).join("") : `<option>Kein Kurs</option>`;
+  const c = course();
+  $("#subjBtn").innerHTML = c ? `${embHTML(c)}<span class="sname">${esc(c.title)}</span>${ICON.chev}` : `<span class="sname">Fach wählen</span>${ICON.chev}`;
+  $("#subjBtn").setAttribute("aria-label", "Fach wechseln. Aktuell: " + (c ? c.title : "keins"));
   const st = streakNow();
   $("#stats").innerHTML =
     `<span class="stat ${st ? "" : "dim"}" title="Streak: Tage in Folge"><span class="i-flame">${ICON.flame}</span>${st}</span>` +
@@ -439,10 +756,28 @@ function render() {
   if (S.tab === "edit") bindEdit();
 }
 
+/* Fach-Auswahl */
+function openSheet() {
+  const sh = $("#sheet");
+  sh.innerHTML = `<button class="backdrop" data-act="closesheet" aria-label="Schließen"></button>
+  <div class="sheet-in gut"><h2>Was lernst du heute?</h2>
+  <div class="subjects">${COURSES.map((c, i) => {
+    const total = countLessons(c), d = doneCount(c), due = dueItems(c).length;
+    return `<button class="scard ${i === S.active ? "on" : ""}" data-act="picksubj" data-i="${i}">${embHTML(c, true)}<div><b>${esc(c.title)}</b>
+      <div class="meter" aria-hidden="true"><i style="width:${total ? Math.round(100 * d / total) : 0}%"></i></div>
+      <span>${d} von ${total} Lektionen${due ? ` · ${due} fällig` : ""}${c.lang === "en" ? " · Englisch" : ""}</span></div></button>`;
+  }).join("")}
+  <button class="scard add" data-act="addsubj"><span class="emb lg" aria-hidden="true">+</span><div><b>Neues Fach</b><span>Aus Folien, Skript oder Text erstellen</span></div></button>
+  </div></div>`;
+  sh.hidden = false; stopSpeech();
+  const on = sh.querySelector(".scard.on") || sh.querySelector(".scard"); if (on) on.focus();
+}
+function closeSheet() { $("#sheet").hidden = true; $("#sheet").innerHTML = ""; }
+
 /* Lernpfad */
 function viewPath() {
   const c = course();
-  if (!c || !countItems(c)) return `<div class="gut empty"><h2>Noch kein Kurs</h2><p>Lege unter „Inhalte“ deinen ersten Kurs an.</p><p style="margin-top:14px"><button class="btn" data-act="tab" data-tab="edit">Kurs anlegen</button></p></div>`;
+  if (!c || !countItems(c)) return `<div class="gut empty"><h2>Noch kein Kurs</h2><p>Lege unter „Inhalte“ dein erstes Fach an.</p><p style="margin-top:14px"><button class="btn" data-act="tab" data-tab="edit">Fach anlegen</button></p></div>`;
   const pct = Math.min(1, S.day.xp / S.goal), C = 2 * Math.PI * 26;
   const flat = allLessons(c);
   const firstOpen = flat.findIndex(x => !S.done[x.l.id]);
@@ -484,8 +819,8 @@ function viewReview() {
       <div class="row"><button class="btn" data-act="practice" ${seenN ? "" : "disabled"}>Wiederholen starten</button></div>
       ${seenN ? "" : `<p>Mach zuerst eine Lektion im Lernpfad.</p>`}
     </section>
-    ${hard.length ? `<section class="panel"><h2>Zuletzt falsch</h2><ul class="hard">${hard.map(it => `<li>${esc(label(it))}</li>`).join("")}</ul></section>` : ""}
-    <section class="panel"><h2>Fortschritt</h2><p>${seenN} von ${countItems(c)} Fragen gesehen · ${Object.keys(S.done).filter(id => id.startsWith(c.id + "/")).length} von ${countLessons(c)} Lektionen geschafft</p></section>
+    ${hard.length ? `<section class="panel"><h2>Zuletzt falsch</h2><ul class="hard">${hard.map(it => `<li>${esc(label(it))}${it.slide ? ` <small>(Folie ${it.slide})</small>` : ""}</li>`).join("")}</ul></section>` : ""}
+    <section class="panel"><h2>Fortschritt in ${esc(c.title)}</h2><p>${seenN} von ${countItems(c)} Fragen gesehen · ${doneCount(c)} von ${countLessons(c)} Lektionen geschafft</p></section>
   </div>`;
 }
 
@@ -494,11 +829,12 @@ const sentences = t => String(t).match(/[^.!?]+[.!?]*/g)?.map(s => s.trim()).fil
 function viewShorts() {
   const c = course();
   if (!c || !c.shorts.length) return `<div class="gut empty"><h2>Noch keine Shorts</h2><p>Füge in deinem Kurs Zeilen mit <code>SHORT:</code> hinzu, dann erscheinen hier kurze Erklärungen zum Durchwischen.</p></div>`;
-  const tts = "speechSynthesis" in window;
+  const tts = "speechSynthesis" in window, pdfOk = pdfUsable(c.pdf);
   return `<div class="feed" id="feed">${c.shorts.map((s, i) => `<section class="short" data-i="${i}"><div class="short-in gut">
     <p class="eyebrow">Short ${i + 1} von ${c.shorts.length}${S.seen[s.id] ? " · gesehen" : ""}</p>
     <h2>${esc(s.title)}</h2>
     ${s.formula ? `<div class="formula">${esc(s.formula)}</div>` : ""}
+    ${s.slide && pdfOk ? `<button class="slidebox" data-act="slide" data-n="${s.slide}" aria-label="Folie ${s.slide} groß ansehen"><canvas data-slide="${s.slide}"></canvas><span>Folie ${s.slide} · antippen zum Vergrößern</span></button>` : s.slide ? `<p class="hint">Folie ${s.slide}</p>` : ""}
     <div class="sents">${sentences(s.text).map((t, j) => `<span class="sent" data-j="${j}">${esc(t)}</span> `).join("")}</div>
     ${s.quiz ? `<div class="sq"><p>${esc(s.quiz.q)}</p>${shuffle([s.quiz.a, ...s.quiz.opts]).map(o => `<button data-act="sq" data-i="${i}" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>` : ""}
     <div class="sctl">${tts ? `<button data-act="play" data-i="${i}">${ICON.play}<span>Vorlesen</span></button>
@@ -507,7 +843,10 @@ function viewShorts() {
   </div></section>`).join("")}</div>`;
 }
 let PLAY = null;
-function deVoice() { const vs = speechSynthesis.getVoices(); return vs.find(v => /^de(-|_)DE/i.test(v.lang)) || vs.find(v => /^de/i.test(v.lang)) || null; }
+function voiceFor(lang) {
+  const vs = speechSynthesis.getVoices(), re = lang === "en" ? /^en/i : /^de/i, pref = lang === "en" ? /^en(-|_)(US|GB)/i : /^de(-|_)DE/i;
+  return vs.find(v => pref.test(v.lang)) || vs.find(v => re.test(v.lang)) || null;
+}
 function stopSpeech() {
   PLAY = null;
   if ("speechSynthesis" in window) speechSynthesis.cancel();
@@ -519,8 +858,7 @@ function playShort(i) {
   if (!c || !sec) return;
   stopSpeech();
   const token = { i }; PLAY = token;
-  const sents = [...sec.querySelectorAll(".sent")], s = c.shorts[i];
-  const formula = sec.querySelector(".formula");
+  const sents = [...sec.querySelectorAll(".sent")], s = c.shorts[i], lang = c.lang === "en" ? "en" : "de";
   sec.classList.add("speaking");
   sec.querySelector('[data-act="play"]').innerHTML = `${ICON.stop}<span>Stopp</span>`;
   let j = 0;
@@ -535,62 +873,85 @@ function playShort(i) {
     }
     sents[j].classList.add("on");
     const u = new SpeechSynthesisUtterance(sents[j].textContent);
-    u.lang = "de-DE"; const v = deVoice(); if (v) u.voice = v; u.rate = 1.03;
+    u.lang = lang === "en" ? "en-US" : "de-DE"; const v = voiceFor(lang); if (v) u.voice = v; u.rate = 1.03;
     u.onend = () => { j++; next(); };
     u.onerror = () => { if (PLAY === token) stopSpeech(); };
     speechSynthesis.speak(u);
   };
   next();
-  if (formula) formula.scrollIntoView({ block: "nearest" });
+}
+function drawShortSlides(idx) {
+  const c = course(); if (!c || !pdfUsable(c.pdf)) return;
+  [idx, idx + 1].forEach(i => {
+    const cv = document.querySelector(`.short[data-i="${i}"] canvas[data-slide]`);
+    if (!cv || cv.dataset.done) return;
+    cv.dataset.done = "1";
+    const hide = () => { const b = cv.closest(".slidebox"); if (b) b.hidden = true; };
+    drawSlide(cv, c.pdf, +cv.dataset.slide, Math.min(560, innerWidth - 32)).then(ok => { if (!ok) hide(); }).catch(hide);
+  });
 }
 function bindFeed() {
   const feed = $("#feed"); if (!feed) return;
+  drawShortSlides(0);
   let t;
   feed.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(() => {
     const idx = Math.round(feed.scrollTop / feed.clientHeight);
     if (PLAY && PLAY.i !== idx) stopSpeech();
+    drawShortSlides(idx);
   }, 150); }, { passive: true });
 }
 
 /* Inhalte */
 let EDIT = 0, delArm = null, resetArm = false;
+const UP = { file: null, name: "", text: "", pages: 0, busy: false, cut: 0 };
+let GEN_CTL = null;
 function viewEdit() {
   if (EDIT >= S.sources.length) EDIT = -1;
-  const src = EDIT >= 0 ? S.sources[EDIT] : "# Neuer Kurs\n## Einheit 1\n### Lektion 1\nMC: Frage | richtige Antwort | falsch | falsch\n";
+  const src = EDIT >= 0 ? S.sources[EDIT] : "# Neues Fach\nKURZ: NF\n## Einheit 1\n### Lektion 1\nMC: Frage | richtige Antwort | falsch | falsch\n";
   return `<div class="gut" style="padding-bottom:24px">
-  <section class="panel"><h2>Deine Kurse</h2>
-    <div class="clist">${COURSES.map((c, i) => `<div class="citem ${i === S.active ? "on" : ""}"><div><b>${esc(c.title)}</b><span>${countLessons(c)} Lektionen · ${countItems(c)} Aufgaben · ${c.shorts.length} Shorts</span></div>
+  <section class="panel" id="genPanel"><h2>Neues Fach aus Unterlagen</h2>
+    <p id="aiNote">${esc(aiNote())}</p>
+    <label class="drop" id="drop"><b>Folien oder Skript wählen</b><span>PDF, TXT oder MD. Du kannst die Datei auch hierher ziehen.</span>
+      <input type="file" id="upFile" accept=".pdf,.txt,.md,application/pdf,text/plain,text/markdown"></label>
+    <div id="upInfo" class="status">${UP.text ? esc(upInfo()) : ""}</div>
+    <div class="field"><label for="upText">Oder Text einfügen</label><textarea id="upText" style="min-height:90px" placeholder="Mitschrift, Stichpunkte, Kapitel …"></textarea></div>
+    <div class="two-f"><div class="field"><label for="upName">Name des Fachs</label><input id="upName" class="inp" value="${esc(UP.name)}" placeholder="z. B. Marketing"></div>
+      <div class="field"><label for="upLang">Sprache der Fragen</label><select id="upLang" class="inp"><option value="auto">Wie die Unterlagen</option><option value="de">Deutsch</option><option value="en">Englisch</option></select></div></div>
+    <div class="row"><button class="btn" data-act="gen" id="genBtn">${CAP.sample ? "Kurs mit Claude erstellen" : "KI-Auftrag kopieren"}</button><button class="btn ghost" data-act="genstop" id="genStop" hidden>Stopp</button></div>
+    <div id="genOut" class="status" aria-live="polite"></div>
+    <textarea id="promptOut" readonly hidden aria-label="KI-Auftrag"></textarea>
+  </section>
+  <section class="panel"><h2>Deine Fächer</h2>
+    <div class="clist">${COURSES.map((c, i) => `<div class="citem ${i === S.active ? "on" : ""}"><div>${embHTML(c)}<div style="min-width:0"><b>${esc(c.title)}</b><span>${countLessons(c)} Lektionen · ${countItems(c)} Aufgaben · ${c.shorts.length} Shorts${c.pdf ? " · Folien" + (pdfUsable(c.pdf) ? "" : " (neu anhängen)") : ""}</span></div></div>
       <div class="row">${i === S.active ? "" : `<button class="btn small ghost" data-act="activate" data-i="${i}">Lernen</button>`}
       <button class="btn small ghost" data-act="editc" data-i="${i}">Bearbeiten</button>
-      <button class="btn small ${delArm === i ? "danger" : "ghost"}" data-act="delc" data-i="${i}">${delArm === i ? "Wirklich löschen" : "Löschen"}</button></div></div>`).join("") || `<p>Noch keine Kurse.</p>`}</div>
-    <div class="row"><button class="btn small" data-act="newc">Neuer Kurs</button></div>
+      <button class="btn small ghost" data-act="attach" data-i="${i}">${c.pdf ? "Folien ersetzen" : "Folien anhängen"}</button>
+      <button class="btn small ${delArm === i ? "danger" : "ghost"}" data-act="delc" data-i="${i}">${delArm === i ? "Wirklich löschen" : "Löschen"}</button></div></div>`).join("") || `<p>Noch keine Fächer.</p>`}</div>
+    <div class="row"><button class="btn small" data-act="newc">Leeres Fach anlegen</button></div>
   </section>
-  <section class="panel"><h2>${EDIT >= 0 ? "Kurs bearbeiten" : "Neuer Kurs"}</h2>
+  <section class="panel"><h2>${EDIT >= 0 ? "Kurs bearbeiten" : "Neues Fach von Hand"}</h2>
     <label for="src" class="status">Kurstext (Format siehe unten)</label>
     <textarea id="src" spellcheck="false" style="min-height:260px">${esc(src)}</textarea>
     <div class="status" id="srcStatus"></div>
     <div class="row"><button class="btn" data-act="savec">Speichern</button></div>
     <details><summary>So ist ein Kurs aufgebaut</summary>
-<pre># Kursname
+<pre># Fachname
+KURZ: MOC          (Kürzel fürs Emblem)
+LANG: en           (Sprache zum Vorlesen: de oder en)
 ## Einheit
 ### Lektion
-MC: Frage | richtig | falsch | falsch
+MC: Frage | richtig | falsch | falsch @12
 TF: Aussage | wahr
 GAP: Satz mit ___ Lücke | Lösung / Alternative
 PAIRS: Begriff = Erklärung ; Begriff = Erklärung
 CARD: Vorderseite | Rückseite
-SHORT: Titel | Erklärtext in kurzen Sätzen | Formel
-QUIZ: Frage zum Short | richtig | falsch</pre></details>
-  </section>
-  <section class="panel"><h2>Kurs mit KI erstellen</h2>
-    <p>Füge deinen Lernstoff ein (Skript, Mitschrift, Stichpunkte). Kopiere dann den Auftrag in Claude oder eine andere KI und füge die Antwort oben als neuen Kurs ein.</p>
-    <label for="notes" class="status">Dein Lernstoff</label>
-    <textarea id="notes" placeholder="z. B. Kapitel 3: Marketing-Mix. Die 4 P sind Product, Price, Place, Promotion …"></textarea>
-    <div class="row"><button class="btn" data-act="prompt">KI-Auftrag kopieren</button></div>
-    <textarea id="promptOut" readonly hidden aria-label="KI-Auftrag"></textarea>
+SHORT: Titel | Erklärtext in kurzen Sätzen | Merksatz @12
+QUIZ: Frage zum Short | richtig | falsch
+
+@12 am Zeilenende = Folie 12 (wird angezeigt, wenn Folien angehängt sind)</pre></details>
   </section>
   <section class="panel"><h2>Sichern und übertragen</h2>
-    <p>So bringst du Kurse und Fortschritt vom PC aufs Handy: Sicherung kopieren, auf dem anderen Gerät einfügen und laden.</p>
+    <p id="syncNote">${esc(syncNote())}</p>
     <div class="row"><button class="btn small ghost" data-act="backup">Sicherung kopieren</button></div>
     <textarea id="backupOut" readonly hidden aria-label="Sicherung"></textarea>
     <label for="restore" class="status">Sicherung einfügen</label>
@@ -599,6 +960,7 @@ QUIZ: Frage zum Short | richtig | falsch</pre></details>
     <button class="btn small ${resetArm ? "danger" : "ghost"}" data-act="reset">${resetArm ? "Wirklich alles zurücksetzen" : "Fortschritt zurücksetzen"}</button></div>
   </section></div>`;
 }
+const upInfo = () => `${UP.file ? UP.file.name + " · " : ""}${UP.pages ? UP.pages + " Seiten · " : ""}${Math.round(UP.text.length / 1000)}k Zeichen gelesen${UP.cut > 0 ? ` · Nur die ersten ${UP.cut} Seiten passen in einen Durchgang. Teile die Datei für den Rest.` : UP.cut < 0 ? " · Der Text wurde gekürzt, weil er für einen Durchgang zu lang ist." : ""}`;
 function bindEdit() {
   const ta = $("#src"), st = $("#srcStatus");
   const upd = () => {
@@ -608,6 +970,98 @@ function bindEdit() {
       (c.errors.length ? "<br>" + c.errors.slice(0, 5).map(esc).join("<br>") + (c.errors.length > 5 ? `<br>… und ${c.errors.length - 5} weitere` : "") : "");
   };
   let t; ta.addEventListener("input", () => { clearTimeout(t); t = setTimeout(upd, 250); }); upd();
+  $("#upFile").addEventListener("change", e => { const f = e.target.files[0]; if (f) readUpload(f); });
+  const drop = $("#drop");
+  drop.addEventListener("dragover", e => { e.preventDefault(); drop.classList.add("over"); });
+  drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+  drop.addEventListener("drop", e => { e.preventDefault(); drop.classList.remove("over"); const f = e.dataTransfer.files[0]; if (f) readUpload(f); });
+}
+const MAX_TEXT = 200000;
+async function readUpload(f) {
+  const setInfo = (t, cls = "") => { const info = $("#upInfo"); if (info) { info.className = "status " + cls; info.textContent = t; } };
+  Object.assign(UP, { file: null, text: "", pages: 0, cut: 0 });
+  const nameEl = $("#upName");
+  UP.name = (nameEl && nameEl.value.trim()) || f.name.replace(/\.[a-z0-9]+$/i, "").replace(/_+/g, " ").replace(/\s+/g, " ").trim();
+  if (nameEl) nameEl.value = UP.name;
+  try {
+    if (/\.pdf$/i.test(f.name) || f.type === "application/pdf") {
+      setInfo("PDF wird gelesen …");
+      const lib = await pdfjs();
+      const pdf = await lib.getDocument({ data: new Uint8Array(await f.arrayBuffer()) }).promise;
+      let text = "";
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const tc = await page.getTextContent();
+        const t = tc.items.map(x => x.str + (x.hasEOL ? "\n" : " ")).join("").replace(/[ \t]+/g, " ").replace(/\n\s*\n+/g, "\n").trim();
+        const chunk = `[Folie ${i}]\n${t}\n\n`;
+        if (text.length + chunk.length > MAX_TEXT) { UP.cut = i - 1; break; }
+        text += chunk;
+        if (i % 5 === 0) setInfo(`PDF wird gelesen … Seite ${i} von ${pdf.numPages}`);
+      }
+      UP.pages = pdf.numPages; UP.file = f;
+      if (text.replace(/\[Folie \d+\]/g, "").trim().length < 200) { setInfo("In dieser PDF steht kaum lesbarer Text (vermutlich eingescannte Bilder). Füge den Text bitte unten ein.", "err"); return; }
+      UP.text = text;
+    } else {
+      const t = await f.text();
+      UP.text = t.slice(0, MAX_TEXT); if (t.length > MAX_TEXT) UP.cut = -1;
+    }
+    setInfo(upInfo(), "ok");
+  } catch (e) {
+    setInfo("Die Datei konnte nicht gelesen werden. Prüfe die Internetverbindung (der PDF-Leser wird nachgeladen) oder füge den Text unten ein.", "err");
+  }
+}
+const GEN_ERR = {
+  not_granted: "Du hast der App nicht erlaubt, Claude zu nutzen. Tippe noch einmal auf den Knopf, um stattdessen den KI-Auftrag zu kopieren.",
+  sampling_disabled: "Claude ist hier für dein Konto nicht verfügbar. Tippe noch einmal, um den KI-Auftrag zu kopieren.",
+  rate_limited: "Gerade zu viele Anfragen oder dein Nutzungslimit ist erreicht. Versuch es später noch einmal.",
+  prompt_too_large: "Die Unterlagen sind zu lang für einen Durchgang. Teile die PDF in Kapitel auf.",
+  refused: "Claude hat diese Anfrage abgelehnt. Versuch es mit einem anderen Ausschnitt.",
+  session_expired: "Bitte melde dich bei Claude neu an und versuch es dann noch einmal.",
+  empty_completion: "Claude hat nichts geliefert. Versuch es mit weniger Text noch einmal."
+};
+function setGenBusy(b) { UP.busy = b; const g = $("#genBtn"), s = $("#genStop"); if (g) g.disabled = b; if (s) s.hidden = !b; }
+async function runGen() {
+  const pasted = ($("#upText").value || "").trim();
+  const text = UP.text || pasted.slice(0, MAX_TEXT);
+  const out = $("#genOut");
+  if (!text) { toast("Wähle zuerst eine Datei oder füge Text ein."); return; }
+  const name = $("#upName").value.trim() || UP.name || "Neues Fach";
+  const prompt = genPrompt(name, $("#upLang").value, text);
+  if (!CAP.sample) { copyText(prompt, "promptOut"); out.className = "status"; out.textContent = "Füge den Auftrag in Claude ein und speichere die Antwort unten als neues Fach. Hängst du danach die PDF an, siehst du die Folien."; EDIT = -1; return; }
+  GEN_CTL = new AbortController(); setGenBusy(true);
+  out.className = "status"; out.textContent = "Claude liest deine Unterlagen … (das dauert 1 bis 3 Minuten)";
+  try {
+    const { text: res, truncated } = await CAP.sample(prompt, {
+      signal: GEN_CTL.signal, modelTier: "default", cache: false,
+      onText: ({ text }) => { const o = $("#genOut"); if (o) o.textContent = `Claude schreibt den Kurs … ${text.split("\n").filter(l => /^(MC|TF|GAP|PAIRS|CARD|SHORT)\s*:/i.test(l.trim())).length} Aufgaben und Shorts bisher`; }
+    });
+    await finishGen(res, truncated, name);
+  } catch (e) {
+    const o = $("#genOut");
+    const code = e && e.code;
+    if (["not_granted", "sampling_disabled", "capability_disabled", "not_declared", "capability_removed"].includes(code)) { CAP.sample = null; refreshEditHints(); }
+    if (o) {
+      if (code === "cancelled") { o.className = "status"; o.textContent = "Abgebrochen."; }
+      else { o.className = "status err"; o.textContent = GEN_ERR[code] || "Das hat nicht geklappt. Versuch es noch einmal."; }
+    }
+    if (e && e.text && code !== "refused" && code !== "cancelled") await finishGen(e.text, true, name);
+  } finally { GEN_CTL = null; setGenBusy(false); }
+}
+async function finishGen(raw, truncated, name) {
+  let src = String(raw).replace(/^```[a-z]*\s*/i, "").replace(/```\s*$/, "").trim();
+  if (!/^#\s/m.test(src)) src = `# ${name}\n` + src;
+  const parsed = parseCourse(src);
+  if (!countItems(parsed)) {
+    EDIT = -1; S.tab = "edit"; render();
+    $("#src").value = src; $("#src").dispatchEvent(new Event("input"));
+    const o = $("#genOut"); if (o) { o.className = "status err"; o.textContent = "Claudes Antwort ließ sich nicht als Kurs lesen. Sie steht unten im Editor, dort kannst du sie korrigieren und speichern."; }
+    return;
+  }
+  if (UP.file) { const o = $("#genOut"); if (o) o.textContent = "Folien werden gespeichert …"; src = setPdfLine(src, await storePdf(UP.file)); }
+  S.sources.push(src); S.active = S.sources.length - 1; EDIT = S.active; S.tab = "path";
+  Object.assign(UP, { file: null, name: "", text: "", pages: 0, cut: 0 });
+  rebuild(); save(); render();
+  toast(`Neues Fach: ${parsed.title} · ${countLessons(parsed)} Lektionen${truncated ? " (Antwort wurde gekürzt)" : ""}`);
 }
 async function copyText(text, fallbackId) {
   try { await navigator.clipboard.writeText(text); toast("Kopiert"); }
@@ -659,12 +1113,17 @@ function exerciseHTML() {
   }
   return "";
 }
+function slideLink(it) {
+  if (!it.slide) return "";
+  const c = course();
+  return c && pdfUsable(c.pdf) ? `<button class="slidelink" data-act="slide" data-n="${it.slide}">Folie ${it.slide}</button>` : `<span class="slidelink" style="border-style:dashed">Folie ${it.slide}</span>`;
+}
 function footHTML() {
   const it = L.cur.item;
   if (L.state === "fb") {
     const ok = L.fb.ok;
     const msg = ok ? ["Richtig!", "Gut gemacht!", "Stark!", "Genau so!"][Math.floor(Math.random() * 4)] : (it.t === "card" ? "Weiter üben" : "Nicht ganz");
-    return `<div class="lfoot gut ${ok ? "ok" : "no"}"><div class="fb">${msg}${!ok && L.fb.answer ? `<small>Richtige Antwort: ${esc(L.fb.answer)}</small>` : ""}</div><button class="btn" data-act="next" id="nextBtn">Weiter</button></div>`;
+    return `<div class="lfoot gut ${ok ? "ok" : "no"}"><div class="fb"><div>${msg}${!ok && L.fb.answer ? `<small>Richtige Antwort: ${esc(L.fb.answer)}</small>` : ""}</div>${slideLink(it)}</div><button class="btn" data-act="next" id="nextBtn">Weiter</button></div>`;
   }
   if (it.t === "pairs") return `<div class="lfoot gut"><button class="btn ghost" data-act="skip">Überspringen</button></div>`;
   if (it.t === "card") return L.cur.flipped
@@ -744,11 +1203,16 @@ function practiceItems() {
 }
 
 /* ---------- Ereignisse ---------- */
+let attachIdx = -1;
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-act]"); if (!b) return;
   const act = b.dataset.act, c = course();
   switch (act) {
     case "tab": S.tab = b.dataset.tab; delArm = null; resetArm = false; save(); render(); break;
+    case "subjects": openSheet(); break;
+    case "closesheet": closeSheet(); break;
+    case "picksubj": S.active = +b.dataset.i; if (S.tab === "edit") S.tab = "path"; closeSheet(); save(); render(); break;
+    case "addsubj": closeSheet(); S.tab = "edit"; save(); render(); setTimeout(() => { const d = $("#upFile"); if (d) { $("#drop").scrollIntoView({ block: "center" }); d.focus(); } }, 50); break;
     case "lesson": {
       const ref = c && allLessons(c).find(x => x.l.id === b.dataset.id); if (!ref) return;
       if (b.classList.contains("locked")) { toast("Schließe zuerst die Lektion davor ab."); return; }
@@ -763,6 +1227,10 @@ document.addEventListener("click", e => {
     case "skip": if (L && L.state === "ask") grade(false, L.cur.item.pairs.map(p => p.join(" = ")).join(" · ")); break;
     case "flip": if (L) { L.cur.flipped = true; drawLesson(); } break;
     case "card": if (L && L.state === "ask") grade(b.dataset.v === "1", L.cur.item.back, true); break;
+    case "slide": openSlide(+b.dataset.n); break;
+    case "svprev": moveSV(-1); break;
+    case "svnext": moveSV(1); break;
+    case "svclose": closeSV(); break;
     case "play": { const i = +b.dataset.i; if (PLAY && PLAY.i === i) stopSpeech(); else playShort(i); break; }
     case "autoplay": S.autoplay = b.checked; save(); document.querySelectorAll('[data-act="autoplay"]').forEach(x => x.checked = S.autoplay); break;
     case "sq": {
@@ -773,16 +1241,19 @@ document.addEventListener("click", e => {
       if (ok) { addXP(2); renderTop(); toast("Richtig! +2 XP"); } else toast("Die grüne Antwort ist richtig.");
       S.seen[s.id] = true; save(); break;
     }
+    case "gen": if (!UP.busy) runGen(); break;
+    case "genstop": if (GEN_CTL) GEN_CTL.abort(); break;
+    case "attach": attachIdx = +b.dataset.i; $("#attachFile").value = ""; $("#attachFile").click(); break;
     case "activate": S.active = +b.dataset.i; S.tab = "path"; save(); render(); break;
-    case "editc": EDIT = +b.dataset.i; delArm = null; render(); $("#src").focus(); break;
-    case "newc": EDIT = -1; delArm = null; render(); $("#src").focus(); break;
+    case "editc": EDIT = +b.dataset.i; delArm = null; render(); $("#src").scrollIntoView({ block: "start" }); $("#src").focus(); break;
+    case "newc": EDIT = -1; delArm = null; render(); $("#src").scrollIntoView({ block: "start" }); $("#src").focus(); break;
     case "delc": {
       const i = +b.dataset.i;
       if (delArm !== i) { delArm = i; render(); return; }
       S.sources.splice(i, 1); delArm = null;
       if (S.active === i) S.active = 0; else if (S.active > i) S.active--;
       if (EDIT === i) EDIT = -1; else if (EDIT > i) EDIT--;
-      rebuild(); save(); render(); toast("Kurs gelöscht"); break;
+      rebuild(); save(); render(); toast("Fach gelöscht"); break;
     }
     case "savec": {
       const text = $("#src").value, parsed = parseCourse(text);
@@ -790,14 +1261,9 @@ document.addEventListener("click", e => {
       if (EDIT >= 0) S.sources[EDIT] = text; else { S.sources.push(text); EDIT = S.sources.length - 1; S.active = EDIT; }
       rebuild(); save(); render(); toast(parsed.errors.length ? `Gespeichert, ${parsed.errors.length} Zeilen übersprungen` : "Gespeichert"); break;
     }
-    case "prompt": {
-      const notes = $("#notes").value.trim();
-      if (!notes) { toast("Füge zuerst deinen Lernstoff ein."); return; }
-      copyText(AI_PROMPT + notes, "promptOut"); break;
-    }
     case "backup": copyText(JSON.stringify(S), "backupOut"); break;
     case "restore": {
-      try { const d = JSON.parse($("#restore").value); if (!d || !Array.isArray(d.sources)) throw 0; S = Object.assign(fresh(), d); EDIT = 0; rebuild(); save(); render(); toast("Sicherung geladen"); }
+      try { const d = JSON.parse($("#restore").value); if (!d || !Array.isArray(d.sources)) throw 0; adopt(d); EDIT = 0; rebuild(); save(); render(); toast("Sicherung geladen"); }
       catch (err) { toast("Das ist keine gültige Sicherung. Kopiere sie vollständig."); }
       break;
     }
@@ -807,8 +1273,18 @@ document.addEventListener("click", e => {
     }
   }
 });
-$("#course").addEventListener("change", e => { S.active = +e.target.value; save(); render(); });
+$("#attachFile").addEventListener("change", async e => {
+  const f = e.target.files[0], i = attachIdx; attachIdx = -1;
+  if (!f || i < 0 || i >= S.sources.length) return;
+  toast("Folien werden gespeichert …");
+  const ref = await storePdf(f);
+  S.sources[i] = setPdfLine(S.sources[i], ref);
+  rebuild(); save(); render();
+  toast(ref.startsWith("asset:") ? "Folien angehängt" : "Folien angehängt (bis die Seite neu geladen wird)");
+});
 document.addEventListener("keydown", e => {
+  if (!$("#sv").hidden) { if (e.key === "Escape") closeSV(); else if (e.key === "ArrowLeft") moveSV(-1); else if (e.key === "ArrowRight") moveSV(1); return; }
+  if (!$("#sheet").hidden) { if (e.key === "Escape") closeSheet(); return; }
   if (!L || $("#layer").hidden) return;
   if (e.key === "Escape") { closeLayer(); return; }
   if (L.state === "ask" && L.cur && (L.cur.item.t === "mc" || L.cur.item.t === "tf") && /^[1-9]$/.test(e.key)) {
@@ -821,8 +1297,8 @@ document.addEventListener("keydown", e => {
 if ("speechSynthesis" in window) speechSynthesis.onvoiceschanged = () => {};
 document.addEventListener("visibilitychange", () => { if (document.hidden) stopSpeech(); else if ($("#layer").hidden) { tick(); renderTop(); } });
 
-rebuild(); render();
-if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+rebuild(); render(); initCaps();
+if ("serviceWorker" in navigator && location.protocol === "https:" && !window.claude) navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
 </body>
 </html>
