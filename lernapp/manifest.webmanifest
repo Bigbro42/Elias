@@ -1,0 +1,14 @@
+{
+  "name": "Funke Lernapp",
+  "short_name": "Funke",
+  "description": "Eigene Lernpfade, Wiederholung und Erklär-Shorts für Prüfungen.",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F3F5FB",
+  "theme_color": "#E85D14",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

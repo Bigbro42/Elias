@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F2661C">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<!--artifact-start-->
+<title>Funke Lernapp</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Layout: one phone-width app column. Header with stats, scrolling view, bottom tab bar; lessons open as a full-screen layer. */
+:root{
+  --bg:#F3F5FB; --surface:#FFFFFF; --ink:#18203F; --muted:#5D6688; --line:#DDE2F0;
+  --spark:#E85D14; --spark-ink:#FFFFFF; --spark-soft:#FFE7D8;
+  --good:#178A5C; --good-ink:#FFFFFF; --good-soft:#DDF5EA;
+  --bad:#C8363D; --bad-ink:#FFFFFF; --bad-soft:#FBE3E4;
+  --locked:#C9CFE0; --heart:#D93A55;
+  --sa:#1E2A6E; --sb:#0F5D5A; --sc:#6A2C5F; --short-ink:#FFFFFF;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10142A; --surface:#1A2042; --ink:#ECEFFC; --muted:#A3ABCF; --line:#2C3463;
+  --spark:#FF7F36; --spark-ink:#1A0D04; --spark-soft:#3A2414;
+  --good:#3CCB8B; --good-ink:#06281A; --good-soft:#123528;
+  --bad:#FF6B70; --bad-ink:#2E0A0C; --bad-soft:#3C171B;
+  --locked:#39406A; --heart:#FF6B85;
+  --sa:#26338A; --sb:#11706C; --sc:#7D3570; --short-ink:#FFFFFF; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10142A; --surface:#1A2042; --ink:#ECEFFC; --muted:#A3ABCF; --line:#2C3463;
+  --spark:#FF7F36; --spark-ink:#1A0D04; --spark-soft:#3A2414;
+  --good:#3CCB8B; --good-ink:#06281A; --good-soft:#123528;
+  --bad:#FF6B70; --bad-ink:#2E0A0C; --bad-soft:#3C171B;
+  --locked:#39406A; --heart:#FF6B85;
+  --sa:#26338A; --sb:#11706C; --sc:#7D3570; --short-ink:#FFFFFF; color-scheme:dark}
+
+html{height:100%;box-sizing:border-box}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{height:100%;margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--spark);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+.app{height:100%;display:flex;flex-direction:column;max-width:640px;margin:0 auto}
+.top{display:flex;align-items:center;gap:10px;padding-block:10px;border-bottom:1px solid var(--line);background:var(--bg)}
+.top select{flex:1;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-weight:700;font-size:15px}
+.stats{display:flex;gap:12px;font-variant-numeric:tabular-nums;font-weight:700}
+.stat{display:flex;align-items:center;gap:4px}
+.stat svg{width:20px;height:20px}
+.i-flame{color:var(--spark)} .i-gem{color:#3B82F6} .i-heart{color:var(--heart)}
+.stat.dim{opacity:.45}
+
+#view{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+.nav{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:var(--surface)}
+.nav button{background:none;border:0;padding:8px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:var(--muted);font-weight:700}
+.nav button svg{width:24px;height:24px}
+.nav button[aria-current="page"]{color:var(--spark)}
+.badge{min-width:18px;padding:0 5px;border-radius:9px;background:var(--spark);color:var(--spark-ink);font-size:11px;line-height:18px;margin-left:2px}
+
+/* Path */
+.today{display:flex;align-items:center;gap:14px;margin-block:16px;padding:14px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
+.ring{width:64px;height:64px;flex:none}
+.ring circle{fill:none;stroke-width:8}
+.ring .bgc{stroke:var(--line)} .ring .fgc{stroke:var(--spark);stroke-linecap:round;transition:stroke-dashoffset .6s}
+.today h2{font-size:18px}
+.today p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.unit{margin-top:22px;padding:16px;border-radius:16px;background:var(--ink);color:var(--bg)}
+.unit small{display:block;text-transform:uppercase;letter-spacing:.08em;font-size:12px;opacity:.75;font-weight:700}
+.unit h2{font-size:21px;margin-top:2px}
+.unit .prog{margin-top:8px;font-size:13px;opacity:.8;font-variant-numeric:tabular-nums}
+.lessons{display:flex;flex-direction:column;align-items:center;gap:26px;padding-block:26px 6px}
+.lwrap{display:flex;flex-direction:column;align-items:center;gap:8px;position:relative}
+.node{width:76px;height:76px;border-radius:50%;border:0;display:grid;place-items:center;background:var(--spark);color:var(--spark-ink);box-shadow:0 6px 0 color-mix(in srgb,var(--spark) 62%,#000);transition:transform .1s}
+.node:active{transform:translateY(4px);box-shadow:0 2px 0 color-mix(in srgb,var(--spark) 62%,#000)}
+.node svg{width:34px;height:34px}
+.node.done{background:var(--good);color:var(--good-ink);box-shadow:0 6px 0 color-mix(in srgb,var(--good) 62%,#000)}
+.node.locked{background:var(--locked);color:var(--muted);box-shadow:0 6px 0 color-mix(in srgb,var(--locked) 70%,#000);cursor:not-allowed}
+.node.cur{animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{outline:0 solid color-mix(in srgb,var(--spark) 35%,transparent)}50%{outline:10px solid color-mix(in srgb,var(--spark) 0%,transparent)}}
+.lname{font-weight:700;font-size:14px;max-width:180px;text-align:center}
+.start{position:absolute;top:-30px;background:var(--surface);border:2px solid var(--spark);color:var(--spark);font-weight:800;font-size:12px;letter-spacing:.06em;padding:2px 10px;border-radius:10px;font-family:var(--display)}
+
+/* Panels */
+.panel{margin-block:16px;padding:16px;border-radius:16px;background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
+.panel h2{font-size:19px}
+.panel p{margin:0;color:var(--muted)}
+.btn{border:0;border-radius:14px;padding:12px 18px;font-weight:700;background:var(--spark);color:var(--spark-ink);box-shadow:0 4px 0 color-mix(in srgb,var(--spark) 62%,#000);font-family:var(--display);font-size:16px;letter-spacing:.02em}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,var(--spark) 62%,#000)}
+.btn:disabled{background:var(--locked);color:var(--muted);box-shadow:none;cursor:not-allowed;transform:none}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+.btn.small{padding:8px 12px;font-size:14px;border-radius:10px}
+.btn.danger{background:var(--bad);color:var(--bad-ink);box-shadow:0 4px 0 color-mix(in srgb,var(--bad) 62%,#000)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+textarea{width:100%;min-height:150px;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--bg);font-family:var(--mono);font-size:13px;line-height:1.5;resize:vertical}
+.status{font-size:14px;color:var(--muted)} .status.err{color:var(--bad)}
+.clist{display:flex;flex-direction:column;gap:8px}
+.citem{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid var(--line);border-radius:12px;flex-wrap:wrap}
+.citem b{display:block} .citem span{font-size:13px;color:var(--muted)}
+.citem>div:first-child{min-width:0;flex:1 1 200px}
+.citem.on{border-color:var(--spark)}
+details{border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+summary{cursor:pointer;font-weight:700}
+pre{overflow-x:auto;font-family:var(--mono);font-size:12.5px;background:var(--bg);padding:10px;border-radius:8px;margin:8px 0 0}
+.big{font-family:var(--display);font-size:56px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;color:var(--spark)}
+.hard{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
+.hard li{padding:8px 10px;border-radius:10px;background:var(--bad-soft);font-size:14px}
+.empty{text-align:center;padding:40px 8px;color:var(--muted)}
+.empty h2{color:var(--ink);margin-bottom:8px}
+
+/* Shorts */
+.feed{height:100%;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain}
+.short{height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;background:var(--sa);color:var(--short-ink);position:relative;overflow:hidden}
+.short:nth-child(3n+2){background:var(--sb)} .short:nth-child(3n+3){background:var(--sc)}
+.short::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;right:-160px;top:-140px;background:rgba(255,255,255,.07)}
+.short-in{position:relative;display:flex;flex-direction:column;justify-content:flex-start;gap:14px;width:100%;padding-block:24px;overflow-y:auto}
+.short-in>:first-child{margin-top:auto}.short-in>:last-child{margin-bottom:auto}
+.eyebrow{margin:0;font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;opacity:.75}
+.short h2{font-size:clamp(28px,8vw,40px);font-weight:800}
+.formula{font-family:var(--display);font-size:clamp(20px,5.5vw,26px);font-weight:600;background:rgba(255,255,255,.13);border-radius:12px;padding:10px 14px;align-self:flex-start;max-width:100%;overflow-x:auto}
+.sents{font-size:18px;line-height:1.6;max-width:60ch}
+.sent{transition:opacity .25s,background .25s;border-radius:4px}
+.speaking .sent{opacity:.5} .speaking .sent.on{opacity:1;background:rgba(255,255,255,.16)}
+.sq{background:rgba(0,0,0,.2);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.sq p{margin:0;font-weight:700}
+.sq button{text-align:left;border:2px solid rgba(255,255,255,.35);background:transparent;color:var(--short-ink);border-radius:10px;padding:8px 12px}
+.sq button.ok{background:#1E9E68;border-color:#1E9E68} .sq button.no{background:#B93A44;border-color:#B93A44}
+.sctl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sctl button{border:0;border-radius:999px;padding:10px 18px;font-weight:800;background:var(--short-ink);color:#141833;display:flex;gap:6px;align-items:center;font-family:var(--display)}
+.sctl button svg{width:18px;height:18px}
+.sctl label{font-size:14px;display:flex;gap:6px;align-items:center;opacity:.9}
+.hint{font-size:13px;opacity:.7;margin:0}
+
+/* Lesson layer */
+.layer{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;justify-content:center;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.lin{width:100%;max-width:640px;display:flex;flex-direction:column;height:100%}
+.lhead{display:flex;align-items:center;gap:12px;padding-block:14px}
+.x{background:none;border:0;padding:4px;color:var(--muted);display:grid}
+.x svg{width:26px;height:26px}
+.bar{flex:1;height:14px;border-radius:7px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--spark);border-radius:7px;transition:width .35s}
+.lbody{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:18px;padding-block:8px 20px}
+.kind{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+.q{font-size:clamp(21px,5.5vw,26px);font-weight:600}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{text-align:left;padding:14px 16px;border-radius:14px;border:2px solid var(--line);background:var(--surface);box-shadow:0 3px 0 var(--line);font-size:17px}
+.opt.sel{border-color:var(--spark);background:var(--spark-soft);box-shadow:0 3px 0 var(--spark)}
+.opt.ok{border-color:var(--good);background:var(--good-soft);box-shadow:0 3px 0 var(--good)}
+.opt.no{border-color:var(--bad);background:var(--bad-soft);box-shadow:0 3px 0 var(--bad)}
+.opt:disabled{cursor:default}
+.gapq{font-size:clamp(20px,5vw,24px);line-height:2}
+.gapq input{border:0;border-bottom:3px solid var(--spark);background:var(--spark-soft);border-radius:6px 6px 0 0;padding:2px 8px;width:9ch;font-size:inherit;font-weight:700;text-align:center}
+.pairs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pairs .col{display:flex;flex-direction:column;gap:10px;min-width:0}
+.pairs .opt{text-align:center;font-size:15px;padding:12px 8px;overflow-wrap:anywhere}
+.pairs .opt.gone{opacity:.3;box-shadow:none;cursor:default}
+.card{min-height:200px;border-radius:18px;border:2px solid var(--line);background:var(--surface);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;gap:12px;box-shadow:0 4px 0 var(--line)}
+.card .front{font-family:var(--display);font-size:24px;font-weight:600}
+.card .back{font-size:20px;padding-top:12px;border-top:2px dashed var(--line);width:100%}
+.lfoot{padding-block:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.lfoot .btn{width:100%}
+.lfoot.ok{background:var(--good-soft);border-color:transparent}
+.lfoot.no{background:var(--bad-soft);border-color:transparent}
+.lfoot.ok .btn{background:var(--good);color:var(--good-ink);box-shadow:0 4px 0 color-mix(in srgb,var(--good) 62%,#000)}
+.lfoot.no .btn{background:var(--bad);color:var(--bad-ink);box-shadow:0 4px 0 color-mix(in srgb,var(--bad) 62%,#000)}
+.fb{font-family:var(--display);font-size:22px;font-weight:800}
+.lfoot.ok .fb{color:var(--good)} .lfoot.no .fb{color:var(--bad)}
+.fb small{display:block;font-family:var(--body);font-size:16px;font-weight:400;color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.end{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px;position:relative}
+.end h2{font-size:32px;font-weight:800}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:420px}
+.tile{border:2px solid var(--line);border-radius:14px;padding:10px 6px;background:var(--surface)}
+.tile b{display:block;font-family:var(--display);font-size:26px;font-variant-numeric:tabular-nums}
+.tile span{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.burst{position:absolute;left:50%;top:22%;width:0;height:0;pointer-events:none}
+.burst i{position:absolute;width:10px;height:10px;border-radius:2px;background:var(--spark);animation:fly 1s ease-out forwards}
+.burst i:nth-child(3n){background:var(--good)} .burst i:nth-child(4n){background:#3B82F6}
+@keyframes fly{from{transform:translate(0,0) rotate(0);opacity:1}to{transform:translate(var(--dx),var(--dy)) rotate(260deg);opacity:0}}
+
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:80;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:700;max-width:calc(100% - 32px);text-align:center}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top gut">
+    <label for="course" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Kurs</label>
+    <select id="course"></select>
+    <div class="stats" id="stats"></div>
+  </header>
+  <main id="view"></main>
+  <nav class="nav" id="nav"></nav>
+</div>
+<div class="layer" id="layer" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+"use strict";
+/* ---------- Beispielkurs (eigener Stoff kommt über "Inhalte") ---------- */
+const SAMPLE = `# Beispiel: Mathe Analysis (Abi)
+## Ableitungen
+### Potenzregel
+MC: Was ist f'(x) für f(x) = x³? | 3x² | x² | 3x | 3x³
+MC: f(x) = 5x². Was ist f'(x)? | 10x | 5x | 10x² | 25x
+TF: Die Ableitung einer Konstanten ist 0. | wahr
+GAP: Für f(x) = xⁿ gilt f'(x) = ___ · xⁿ⁻¹ | n
+MC: f(x) = 1/x = x⁻¹. Was ist f'(x)? | −1/x² | 1/x² | ln(x) | −1/x
+TF: Die Ableitung von √x ist 1/(2√x). | wahr
+### Wichtige Funktionen
+PAIRS: sin(x) = cos(x) ; cos(x) = −sin(x) ; eˣ = eˣ ; ln(x) = 1/x
+MC: Was ist die Ableitung von eˣ? | eˣ | x·eˣ⁻¹ | ln(x) | 1
+TF: Die Ableitung von cos(x) ist sin(x). | falsch
+GAP: Die Ableitung von ln(x) ist ___. | 1/x / x^-1
+CARD: Ableitung von aˣ | aˣ · ln(a)
+### Produkt- und Kettenregel
+CARD: Produktregel | (u·v)' = u'·v + u·v'
+CARD: Kettenregel | f(g(x))' = f'(g(x)) · g'(x)
+MC: f(x) = x·eˣ. Was ist f'(x)? | eˣ + x·eˣ | x·eˣ | eˣ | x²·eˣ
+MC: f(x) = (2x+1)³. Was ist f'(x)? | 6(2x+1)² | 3(2x+1)² | 6(2x+1)³ | 2(2x+1)²
+MC: f(x) = sin(3x). Was ist f'(x)? | 3cos(3x) | cos(3x) | −3cos(3x) | 3sin(3x)
+TF: Für f(x) = e^(2x) gilt f'(x) = 2e^(2x). | wahr
+SHORT: Ableitung in 30 Sekunden | Die Ableitung gibt die Steigung einer Funktion an einer Stelle an. Stell dir vor, du zoomst so weit in den Graphen hinein, bis er wie eine Gerade aussieht. Die Steigung dieser Geraden ist die Ableitung. Ist sie positiv, steigt die Funktion. Ist sie negativ, fällt sie. Ist sie null, hat der Graph dort eine waagrechte Tangente. | f'(x₀) = Steigung bei x₀
+QUIZ: Was bedeutet f'(3) = 0? | Waagrechte Tangente bei x = 3 | f(3) = 0 | f fällt bei x = 3
+SHORT: Die Potenzregel | Bei x hoch n kommt der Exponent nach vorne, dann wird eins abgezogen. Aus x hoch fünf wird also fünf mal x hoch vier. Konstanten fallen beim Ableiten weg, weil sie keine Steigung haben. Faktoren bleiben einfach stehen. Drei x Quadrat wird zu sechs x. | (xⁿ)' = n·xⁿ⁻¹
+QUIZ: f(x) = 4x³. Was ist f'(x)? | 12x² | 12x³ | 4x²
+SHORT: Die Kettenregel | Bei verketteten Funktionen gilt: äußere Ableitung mal innere Ableitung. Beispiel: Sinus von drei x. Außen steht der Sinus, abgeleitet wird daraus der Kosinus. Innen steht drei x, abgeleitet ist das drei. Ergebnis: drei mal Kosinus von drei x. | f(g(x))' = f'(g(x))·g'(x)
+QUIZ: f(x) = (x²+1)⁵. Was ist f'(x)? | 10x(x²+1)⁴ | 5(x²+1)⁴ | 10x(x²+1)⁵
+## Kurvendiskussion
+### Extrempunkte
+TF: Notwendige Bedingung für einen Extrempunkt: f'(x) = 0. | wahr
+MC: f'(x₀) = 0 und f''(x₀) > 0. Was liegt vor? | Tiefpunkt | Hochpunkt | Wendepunkt | Sattelpunkt
+MC: f'(x₀) = 0 und f''(x₀) < 0. Was liegt vor? | Hochpunkt | Tiefpunkt | Wendepunkt | Nullstelle
+MC: f(x) = x² − 4x. Bei welchem x liegt der Extrempunkt? | x = 2 | x = 4 | x = −2 | x = 0
+GAP: Bei f(x) = x² − 4x ist der Tiefpunkt T(2 | ___). | -4 / −4
+### Wendepunkte und Monotonie
+TF: Notwendige Bedingung für einen Wendepunkt: f''(x) = 0. | wahr
+MC: f(x) = x³. Was liegt bei x = 0 vor? | Sattelpunkt | Hochpunkt | Tiefpunkt | Nichts Besonderes
+TF: Ist f'(x) > 0 auf einem Intervall, ist f dort streng monoton steigend. | wahr
+PAIRS: f' > 0 = f steigt ; f' < 0 = f fällt ; f'' > 0 = linksgekrümmt ; f'' < 0 = rechtsgekrümmt
+SHORT: Hoch- oder Tiefpunkt? | Löse zuerst f Strich von x gleich null. Das liefert dir die Kandidaten. Setze sie dann in die zweite Ableitung ein. Ist sie positiv, ist der Graph linksgekrümmt, also liegt ein Tiefpunkt vor. Ist sie negativ, ist er rechtsgekrümmt, also ein Hochpunkt. Ist sie null, prüfst du den Vorzeichenwechsel der ersten Ableitung. | f'(x₀) = 0 und f''(x₀) ≠ 0
+QUIZ: f'(x₀) = 0 und f''(x₀) < 0. Was liegt vor? | Hochpunkt | Tiefpunkt | Wendepunkt
+## Integrale
+### Stammfunktionen
+MC: Eine Stammfunktion von f(x) = x² ist | x³/3 | 2x | x³ | 3x²
+MC: Eine Stammfunktion von f(x) = eˣ ist | eˣ | x·eˣ | ln(x) | eˣ⁺¹
+GAP: Eine Stammfunktion von 1/x (für x > 0) ist ___. | ln(x) / ln x
+TF: F ist Stammfunktion von f, wenn F'(x) = f(x) gilt. | wahr
+### Flächen
+CARD: Hauptsatz der Analysis | ∫ₐᵇ f(x) dx = F(b) − F(a)
+MC: Wie groß ist ∫₀² x dx? | 2 | 4 | 1 | 0,5
+MC: Wie groß ist ∫₀¹ 3x² dx? | 1 | 3 | 1/3 | 0
+TF: Liegt der Graph von f unterhalb der x-Achse, ist das Integral dort negativ. | wahr
+GAP: ∫₁³ 2x dx = ___ | 8
+SHORT: Integral als Fläche | Das bestimmte Integral misst die Fläche zwischen Graph und x-Achse. Flächen oberhalb der Achse zählen positiv, Flächen unterhalb negativ. Gerechnet wird mit dem Hauptsatz. Du bildest eine Stammfunktion, setzt die obere Grenze ein, dann die untere, und ziehst ab. | ∫ₐᵇ f(x) dx = F(b) − F(a)
+QUIZ: Wie groß ist ∫₀² x dx? | 2 | 4 | 1`;
+
+const AI_PROMPT = `Wandle den folgenden Lernstoff in einen Kurs für meine Lern-App um. Antworte NUR mit dem Kurstext in genau diesem Format, ohne Einleitung und ohne Codeblock:
+
+# Kursname
+## Einheit
+### Lektion
+MC: Frage | richtige Antwort | falsche Antwort | falsche Antwort | falsche Antwort
+TF: Aussage | wahr   (oder: falsch)
+GAP: Satz mit ___ als Lücke | Lösung / andere Schreibweise
+PAIRS: Begriff = Erklärung ; Begriff = Erklärung ; Begriff = Erklärung
+CARD: Vorderseite | Rückseite
+SHORT: Titel | Erklärung in 4 bis 6 kurzen, gut vorlesbaren Sätzen | Formel oder Merksatz (optional)
+QUIZ: Frage zum vorherigen SHORT | richtige Antwort | falsche Antwort | falsche Antwort
+
+Regeln:
+- 2 bis 4 Einheiten mit je 2 bis 3 Lektionen und je 5 bis 8 Aufgaben, Aufgabentypen gemischt.
+- Pro Einheit 1 bis 2 SHORTs, jeweils mit QUIZ in der Zeile darunter.
+- Die richtige Antwort steht immer an erster Stelle nach der Frage.
+- Das Zeichen | nur als Trenner verwenden. Bei GAP mehrere Lösungen mit " / " (Leerzeichen davor und danach) trennen.
+- Fachlich korrekt, auf Deutsch, prüfungsnah.
+
+Lernstoff:
+`;
+
+/* ---------- Helfer ---------- */
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ymd = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const today = () => ymd(new Date());
+const addDays = n => { const d = new Date(); d.setDate(d.getDate()+n); return ymd(d); };
+const hash = s => { let h = 5381; for (const ch of s) h = ((h << 5) + h + ch.codePointAt(0)) | 0; return (h >>> 0).toString(36); };
+const slug = s => s.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "kurs";
+const shuffle = a => { a = [...a]; for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const norm = s => String(s).toLowerCase().replace(/[\s·*]/g, "").replace(/[−–]/g, "-").replace(/,/g, ".");
+const INTERVALS = [0, 1, 2, 4, 8, 16];
+const HEART_MS = 30 * 60 * 1000;
+const MAX_HEARTS = 5;
+
+const ICON = {
+  flame:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c1 3.5 5 5.6 5 10.5A5 5 0 0 1 7 12.6c0-2 1-3.6 2.2-4.6.2 1.6 1 2.7 2.1 3.1C10.7 8.2 11 5 12 2Z"/></svg>',
+  gem:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 3h10l4 6-9 12L3 9l4-6Zm1.2 2L6 8.5h4.3L8.2 5Zm7.6 0-2.1 3.5H18L15.8 5ZM12 5.6 10.6 8.5h2.8L12 5.6Zm-5.8 5 4.6 6.1-1.6-6.1h-3Zm5.8 0h-2.3L12 18l2.3-7.4H12Zm2.8 0-1.6 6.1 4.6-6.1h-3Z"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.6 3 5 6.4 5c2 0 3.4 1.1 4.1 2.3h3C14.2 6.1 15.6 5 17.6 5 21 5 23.1 8.6 21.6 11.8 19.5 16.4 12 21 12 21Z"/></svg>',
+  path:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="5" r="2.5"/><circle cx="17" cy="12" r="2.5"/><circle cx="7" cy="19" r="2.5"/><path d="M9.2 6.3 14.8 10.7M14.8 13.3 9.2 17.7"/></svg>',
+  play:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.9l12-7.5a1 1 0 0 0 0-1.8l-12-7.5A1 1 0 0 0 7 4.5Z"/></svg>',
+  stop:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>',
+  repeat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 9M20 4v5h-5M20 12a8 8 0 0 1-13.7 5.6L4 15M4 20v-5h5"/></svg>',
+  pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.8 2.8 5.8 6.3.8-4.6 4.4 1.2 6.3L12 17l-5.7 3.1 1.2-6.3L2.9 9.4l6.3-.8L12 2.8Z"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 10V8a5 5 0 0 1 10 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h1Zm2 0h6V8a3 3 0 0 0-6 0v2Z"/></svg>',
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>'
+};
+
+/* ---------- Kurs-Parser ---------- */
+function parseCourse(src) {
+  const c = { title: "Ohne Titel", units: [], shorts: [], errors: [] };
+  let unit = null, lesson = null, lastShort = null;
+  const needLesson = () => {
+    if (!unit) { unit = { title: "Einheit 1", lessons: [] }; c.units.push(unit); }
+    if (!lesson) { lesson = { title: "Lektion " + (unit.lessons.length + 1), items: [] }; unit.lessons.push(lesson); }
+  };
+  String(src).split(/\r?\n/).forEach((raw, i) => {
+    const line = raw.trim();
+    if (!line || line.startsWith("//")) return;
+    const n = i + 1;
+    if (line.startsWith("### ")) { if (!unit) { unit = { title: "Einheit 1", lessons: [] }; c.units.push(unit); } lesson = { title: line.slice(4).trim(), items: [] }; unit.lessons.push(lesson); return; }
+    if (line.startsWith("## ")) { unit = { title: line.slice(3).trim(), lessons: [] }; c.units.push(unit); lesson = null; return; }
+    if (line.startsWith("# ")) { c.title = line.slice(2).trim(); return; }
+    const m = line.match(/^([A-Za-zÄÖÜäöü]+)\s*:\s*(.*)$/);
+    if (!m) { c.errors.push(`Zeile ${n}: unbekanntes Format`); return; }
+    const tag = m[1].toUpperCase(), body = m[2], p = body.split("|").map(s => s.trim());
+    switch (tag) {
+      case "SHORT":
+        if (!p[0] || !p[1]) { c.errors.push(`Zeile ${n}: SHORT braucht Titel | Text`); return; }
+        lastShort = { title: p[0], text: p[1], formula: p[2] || "", quiz: null }; c.shorts.push(lastShort); return;
+      case "QUIZ":
+        if (!lastShort) { c.errors.push(`Zeile ${n}: QUIZ ohne SHORT davor`); return; }
+        if (p.length < 3) { c.errors.push(`Zeile ${n}: QUIZ braucht Frage | richtig | falsch`); return; }
+        lastShort.quiz = { q: p[0], a: p[1], opts: p.slice(2) }; return;
+      case "MC":
+        if (p.length < 3 || p.some(x => !x)) { c.errors.push(`Zeile ${n}: MC braucht Frage | richtig | mindestens eine falsche`); return; }
+        needLesson(); lesson.items.push({ t: "mc", q: p[0], a: p[1], opts: p.slice(2) }); return;
+      case "TF": {
+        const v = (p[1] || "").toLowerCase();
+        const yes = ["wahr","true","richtig","ja"], no = ["falsch","false","nein"];
+        if (!p[0] || ![...yes, ...no].includes(v)) { c.errors.push(`Zeile ${n}: TF braucht Aussage | wahr oder falsch`); return; }
+        needLesson(); lesson.items.push({ t: "tf", q: p[0], a: yes.includes(v) }); return;
+      }
+      case "GAP": {
+        const q = p.slice(0, -1).join(" | "), ans = p.length > 1 ? p[p.length - 1] : "";
+        if (!q || !ans) { c.errors.push(`Zeile ${n}: GAP braucht Satz mit ___ | Lösung`); return; }
+        needLesson(); lesson.items.push({ t: "gap", q, a: ans.split(" / ").map(s => s.trim()).filter(Boolean) }); return;
+      }
+      case "PAIRS": {
+        const pairs = body.split(";").map(s => s.trim()).filter(Boolean).map(s => { const k = s.indexOf(" = "); return k < 0 ? null : [s.slice(0, k).trim(), s.slice(k + 3).trim()]; });
+        if (pairs.length < 2 || pairs.some(x => !x || !x[0] || !x[1])) { c.errors.push(`Zeile ${n}: PAIRS braucht mindestens zwei Paare A = B ; C = D`); return; }
+        needLesson(); lesson.items.push({ t: "pairs", pairs }); return;
+      }
+      case "CARD":
+        if (!p[0] || !p[1]) { c.errors.push(`Zeile ${n}: CARD braucht Vorderseite | Rückseite`); return; }
+        needLesson(); lesson.items.push({ t: "card", front: p[0], back: p.slice(1).join(" | ") }); return;
+      default:
+        c.errors.push(`Zeile ${n}: unbekannter Typ "${m[1]}"`);
+    }
+  });
+  c.units = c.units.filter(u => u.lessons.some(l => l.items.length));
+  c.units.forEach(u => u.lessons = u.lessons.filter(l => l.items.length));
+  c.id = slug(c.title);
+  c.units.forEach((u, ui) => u.lessons.forEach(l => {
+    l.id = `${c.id}/${ui}-${slug(l.title)}`;
+    l.items.forEach(it => it.id = l.id + "#" + hash(JSON.stringify(it)));
+  }));
+  c.shorts.forEach(s => s.id = c.id + "~" + hash(s.title + s.text));
+  return c;
+}
+const countItems = c => c.units.reduce((a, u) => a + u.lessons.reduce((b, l) => b + l.items.length, 0), 0);
+const countLessons = c => c.units.reduce((a, u) => a + u.lessons.length, 0);
+const allLessons = c => c.units.flatMap((u, ui) => u.lessons.map((l, li) => ({ u, ui, l, li })));
+const allItems = c => c.units.flatMap(u => u.lessons.flatMap(l => l.items));
+
+/* ---------- Zustand ---------- */
+const KEY = "funke.v1";
+const fresh = () => ({ sources: [SAMPLE], active: 0, tab: "path", xp: 0, day: { date: today(), xp: 0 },
+  streak: { count: 0, last: null }, hearts: MAX_HEARTS, heartTs: Date.now(), done: {}, srs: {}, seen: {}, goal: 30, autoplay: true });
+let S = fresh();
+try { const raw = localStorage.getItem(KEY); if (raw) { const d = JSON.parse(raw); if (d && Array.isArray(d.sources)) S = Object.assign(fresh(), d); } } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+let COURSES = [];
+const rebuild = () => { COURSES = S.sources.map(parseCourse); if (S.active >= COURSES.length) S.active = 0; };
+const course = () => COURSES[S.active] || null;
+
+function tick() {
+  if (S.day.date !== today()) S.day = { date: today(), xp: 0 };
+  if (S.hearts >= MAX_HEARTS) { S.heartTs = Date.now(); return; }
+  const n = Math.floor((Date.now() - S.heartTs) / HEART_MS);
+  if (n > 0) { S.hearts = Math.min(MAX_HEARTS, S.hearts + n); S.heartTs = S.hearts >= MAX_HEARTS ? Date.now() : S.heartTs + n * HEART_MS; }
+}
+const streakNow = () => (S.streak.last === today() || S.streak.last === addDays(-1)) ? S.streak.count : 0;
+function addXP(n) {
+  if (n <= 0) return;
+  tick(); S.xp += n; S.day.xp += n;
+  if (S.streak.last !== today()) { S.streak.count = S.streak.last === addDays(-1) ? S.streak.count + 1 : 1; S.streak.last = today(); }
+  save();
+}
+function loseHeart() { if (S.hearts >= MAX_HEARTS) S.heartTs = Date.now(); S.hearts = Math.max(0, S.hearts - 1); }
+const dueItems = c => allItems(c).filter(it => S.srs[it.id] && S.srs[it.id].due <= today());
+
+/* ---------- Oberfläche ---------- */
+let toastTimer;
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 2600); }
+
+function renderTop() {
+  const sel = $("#course");
+  sel.innerHTML = COURSES.length ? COURSES.map((c, i) => `<option value="${i}" ${i === S.active ? "selected" : ""}>${esc(c.title)}</option>`).join("") : `<option>Kein Kurs</option>`;
+  const st = streakNow();
+  $("#stats").innerHTML =
+    `<span class="stat ${st ? "" : "dim"}" title="Streak: Tage in Folge"><span class="i-flame">${ICON.flame}</span>${st}</span>` +
+    `<span class="stat" title="XP gesamt"><span class="i-gem">${ICON.gem}</span>${S.xp}</span>` +
+    `<span class="stat" title="Herzen"><span class="i-heart">${ICON.heart}</span>${S.hearts}</span>`;
+}
+function renderNav() {
+  const c = course(), due = c ? dueItems(c).length : 0;
+  const tabs = [["path", "Lernen", ICON.path], ["shorts", "Shorts", ICON.play], ["review", "Wiederholen", ICON.repeat], ["edit", "Inhalte", ICON.pen]];
+  $("#nav").innerHTML = tabs.map(([k, label, ic]) =>
+    `<button data-act="tab" data-tab="${k}" ${S.tab === k ? 'aria-current="page"' : ""}>${ic}<span>${label}${k === "review" && due ? `<span class="badge">${due}</span>` : ""}</span></button>`).join("");
+}
+function render() {
+  tick(); stopSpeech(); renderTop(); renderNav();
+  const v = $("#view");
+  v.innerHTML = ({ path: viewPath, shorts: viewShorts, review: viewReview, edit: viewEdit })[S.tab]();
+  v.scrollTop = 0;
+  if (S.tab === "shorts") bindFeed();
+  if (S.tab === "edit") bindEdit();
+}
+
+/* Lernpfad */
+function viewPath() {
+  const c = course();
+  if (!c || !countItems(c)) return `<div class="gut empty"><h2>Noch kein Kurs</h2><p>Lege unter „Inhalte“ deinen ersten Kurs an.</p><p style="margin-top:14px"><button class="btn" data-act="tab" data-tab="edit">Kurs anlegen</button></p></div>`;
+  const pct = Math.min(1, S.day.xp / S.goal), C = 2 * Math.PI * 26;
+  const flat = allLessons(c);
+  const firstOpen = flat.findIndex(x => !S.done[x.l.id]);
+  let k = 0;
+  const units = c.units.map((u, ui) => {
+    const doneN = u.lessons.filter(l => S.done[l.id]).length;
+    const nodes = u.lessons.map(l => {
+      const idx = k++;
+      const done = !!S.done[l.id], unlocked = idx === 0 || done || idx <= (firstOpen < 0 ? flat.length : firstOpen);
+      const cur = idx === firstOpen;
+      const off = Math.round(Math.sin(idx * 1.1) * 64);
+      const cls = done ? "done" : unlocked ? (cur ? "cur" : "") : "locked";
+      return `<div class="lwrap" style="transform:translateX(${off}px)">${cur ? '<span class="start">START</span>' : ""}
+        <button class="node ${cls}" data-act="lesson" data-id="${esc(l.id)}" aria-label="${esc(l.title)}${done ? " (geschafft)" : unlocked ? "" : " (gesperrt)"}">${done ? ICON.check : unlocked ? ICON.star : ICON.lock}</button>
+        <span class="lname">${esc(l.title)}</span></div>`;
+    }).join("");
+    return `<div class="unit"><small>Einheit ${ui + 1}</small><h2>${esc(u.title)}</h2><div class="prog">${doneN} von ${u.lessons.length} Lektionen geschafft</div></div><div class="lessons">${nodes}</div>`;
+  }).join("");
+  return `<div class="gut" style="padding-bottom:24px">
+    <div class="today">
+      <svg class="ring" viewBox="0 0 64 64" aria-hidden="true"><circle class="bgc" cx="32" cy="32" r="26"/><circle class="fgc" cx="32" cy="32" r="26" transform="rotate(-90 32 32)" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct)}"/></svg>
+      <div><h2>${S.day.xp >= S.goal ? "Tagesziel erreicht" : "Tagesziel"}</h2><p>${S.day.xp} von ${S.goal} XP heute · Level ${Math.floor(S.xp / 100) + 1}</p>
+      ${S.hearts < MAX_HEARTS ? `<p>Nächstes Herz in ${Math.max(1, Math.ceil((HEART_MS - (Date.now() - S.heartTs)) / 60000))} Min.</p>` : ""}</div>
+    </div>${units}</div>`;
+}
+
+/* Wiederholen */
+function viewReview() {
+  const c = course();
+  if (!c || !countItems(c)) return `<div class="gut empty"><h2>Nichts zu wiederholen</h2><p>Sobald du Lektionen machst, landen die Fragen hier.</p></div>`;
+  const due = dueItems(c);
+  const hard = allItems(c).filter(it => S.srs[it.id] && S.srs[it.id].box === 0).slice(0, 6);
+  const seenN = allItems(c).filter(it => S.srs[it.id]).length;
+  const label = it => it.t === "card" ? it.front : it.t === "pairs" ? it.pairs.map(p => p[0]).join(", ") : it.q;
+  return `<div class="gut" style="padding-bottom:24px">
+    <section class="panel"><span class="big">${due.length}</span>
+      <h2>${due.length === 1 ? "Frage ist fällig" : "Fragen sind fällig"}</h2>
+      <p>Wiederholen kostet keine Herzen. Jede Runde füllt 2 Herzen auf. Fragen, die du richtig hast, kommen nach 1, 2, 4, 8 und 16 Tagen wieder.</p>
+      <div class="row"><button class="btn" data-act="practice" ${seenN ? "" : "disabled"}>Wiederholen starten</button></div>
+      ${seenN ? "" : `<p>Mach zuerst eine Lektion im Lernpfad.</p>`}
+    </section>
+    ${hard.length ? `<section class="panel"><h2>Zuletzt falsch</h2><ul class="hard">${hard.map(it => `<li>${esc(label(it))}</li>`).join("")}</ul></section>` : ""}
+    <section class="panel"><h2>Fortschritt</h2><p>${seenN} von ${countItems(c)} Fragen gesehen · ${Object.keys(S.done).filter(id => id.startsWith(c.id + "/")).length} von ${countLessons(c)} Lektionen geschafft</p></section>
+  </div>`;
+}
+
+/* Shorts */
+const sentences = t => String(t).match(/[^.!?]+[.!?]*/g)?.map(s => s.trim()).filter(Boolean) || [];
+function viewShorts() {
+  const c = course();
+  if (!c || !c.shorts.length) return `<div class="gut empty"><h2>Noch keine Shorts</h2><p>Füge in deinem Kurs Zeilen mit <code>SHORT:</code> hinzu, dann erscheinen hier kurze Erklärungen zum Durchwischen.</p></div>`;
+  const tts = "speechSynthesis" in window;
+  return `<div class="feed" id="feed">${c.shorts.map((s, i) => `<section class="short" data-i="${i}"><div class="short-in gut">
+    <p class="eyebrow">Short ${i + 1} von ${c.shorts.length}${S.seen[s.id] ? " · gesehen" : ""}</p>
+    <h2>${esc(s.title)}</h2>
+    ${s.formula ? `<div class="formula">${esc(s.formula)}</div>` : ""}
+    <div class="sents">${sentences(s.text).map((t, j) => `<span class="sent" data-j="${j}">${esc(t)}</span> `).join("")}</div>
+    ${s.quiz ? `<div class="sq"><p>${esc(s.quiz.q)}</p>${shuffle([s.quiz.a, ...s.quiz.opts]).map(o => `<button data-act="sq" data-i="${i}" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>` : ""}
+    <div class="sctl">${tts ? `<button data-act="play" data-i="${i}">${ICON.play}<span>Vorlesen</span></button>
+      <label><input type="checkbox" data-act="autoplay" ${S.autoplay ? "checked" : ""}> Automatisch weiter</label>` : `<p class="hint">Dein Browser kann nicht vorlesen.</p>`}</div>
+    ${i < c.shorts.length - 1 ? `<p class="hint">Nach oben wischen für den nächsten Short</p>` : ""}
+  </div></section>`).join("")}</div>`;
+}
+let PLAY = null;
+function deVoice() { const vs = speechSynthesis.getVoices(); return vs.find(v => /^de(-|_)DE/i.test(v.lang)) || vs.find(v => /^de/i.test(v.lang)) || null; }
+function stopSpeech() {
+  PLAY = null;
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  document.querySelectorAll(".short.speaking").forEach(el => el.classList.remove("speaking"));
+  document.querySelectorAll('[data-act="play"]').forEach(b => b.innerHTML = `${ICON.play}<span>Vorlesen</span>`);
+}
+function playShort(i) {
+  const c = course(), sec = document.querySelector(`.short[data-i="${i}"]`);
+  if (!c || !sec) return;
+  stopSpeech();
+  const token = { i }; PLAY = token;
+  const sents = [...sec.querySelectorAll(".sent")], s = c.shorts[i];
+  const formula = sec.querySelector(".formula");
+  sec.classList.add("speaking");
+  sec.querySelector('[data-act="play"]').innerHTML = `${ICON.stop}<span>Stopp</span>`;
+  let j = 0;
+  const next = () => {
+    if (PLAY !== token) return;
+    sents.forEach(x => x.classList.remove("on"));
+    if (j >= sents.length) {
+      stopSpeech(); S.seen[s.id] = true; save();
+      const nx = sec.nextElementSibling;
+      if (S.autoplay && !s.quiz && nx) { nx.scrollIntoView({ behavior: "smooth" }); setTimeout(() => playShort(i + 1), 800); }
+      return;
+    }
+    sents[j].classList.add("on");
+    const u = new SpeechSynthesisUtterance(sents[j].textContent);
+    u.lang = "de-DE"; const v = deVoice(); if (v) u.voice = v; u.rate = 1.03;
+    u.onend = () => { j++; next(); };
+    u.onerror = () => { if (PLAY === token) stopSpeech(); };
+    speechSynthesis.speak(u);
+  };
+  next();
+  if (formula) formula.scrollIntoView({ block: "nearest" });
+}
+function bindFeed() {
+  const feed = $("#feed"); if (!feed) return;
+  let t;
+  feed.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(() => {
+    const idx = Math.round(feed.scrollTop / feed.clientHeight);
+    if (PLAY && PLAY.i !== idx) stopSpeech();
+  }, 150); }, { passive: true });
+}
+
+/* Inhalte */
+let EDIT = 0, delArm = null, resetArm = false;
+function viewEdit() {
+  if (EDIT >= S.sources.length) EDIT = -1;
+  const src = EDIT >= 0 ? S.sources[EDIT] : "# Neuer Kurs\n## Einheit 1\n### Lektion 1\nMC: Frage | richtige Antwort | falsch | falsch\n";
+  return `<div class="gut" style="padding-bottom:24px">
+  <section class="panel"><h2>Deine Kurse</h2>
+    <div class="clist">${COURSES.map((c, i) => `<div class="citem ${i === S.active ? "on" : ""}"><div><b>${esc(c.title)}</b><span>${countLessons(c)} Lektionen · ${countItems(c)} Aufgaben · ${c.shorts.length} Shorts</span></div>
+      <div class="row">${i === S.active ? "" : `<button class="btn small ghost" data-act="activate" data-i="${i}">Lernen</button>`}
+      <button class="btn small ghost" data-act="editc" data-i="${i}">Bearbeiten</button>
+      <button class="btn small ${delArm === i ? "danger" : "ghost"}" data-act="delc" data-i="${i}">${delArm === i ? "Wirklich löschen" : "Löschen"}</button></div></div>`).join("") || `<p>Noch keine Kurse.</p>`}</div>
+    <div class="row"><button class="btn small" data-act="newc">Neuer Kurs</button></div>
+  </section>
+  <section class="panel"><h2>${EDIT >= 0 ? "Kurs bearbeiten" : "Neuer Kurs"}</h2>
+    <label for="src" class="status">Kurstext (Format siehe unten)</label>
+    <textarea id="src" spellcheck="false" style="min-height:260px">${esc(src)}</textarea>
+    <div class="status" id="srcStatus"></div>
+    <div class="row"><button class="btn" data-act="savec">Speichern</button></div>
+    <details><summary>So ist ein Kurs aufgebaut</summary>
+<pre># Kursname
+## Einheit
+### Lektion
+MC: Frage | richtig | falsch | falsch
+TF: Aussage | wahr
+GAP: Satz mit ___ Lücke | Lösung / Alternative
+PAIRS: Begriff = Erklärung ; Begriff = Erklärung
+CARD: Vorderseite | Rückseite
+SHORT: Titel | Erklärtext in kurzen Sätzen | Formel
+QUIZ: Frage zum Short | richtig | falsch</pre></details>
+  </section>
+  <section class="panel"><h2>Kurs mit KI erstellen</h2>
+    <p>Füge deinen Lernstoff ein (Skript, Mitschrift, Stichpunkte). Kopiere dann den Auftrag in Claude oder eine andere KI und füge die Antwort oben als neuen Kurs ein.</p>
+    <label for="notes" class="status">Dein Lernstoff</label>
+    <textarea id="notes" placeholder="z. B. Kapitel 3: Marketing-Mix. Die 4 P sind Product, Price, Place, Promotion …"></textarea>
+    <div class="row"><button class="btn" data-act="prompt">KI-Auftrag kopieren</button></div>
+    <textarea id="promptOut" readonly hidden aria-label="KI-Auftrag"></textarea>
+  </section>
+  <section class="panel"><h2>Sichern und übertragen</h2>
+    <p>So bringst du Kurse und Fortschritt vom PC aufs Handy: Sicherung kopieren, auf dem anderen Gerät einfügen und laden.</p>
+    <div class="row"><button class="btn small ghost" data-act="backup">Sicherung kopieren</button></div>
+    <textarea id="backupOut" readonly hidden aria-label="Sicherung"></textarea>
+    <label for="restore" class="status">Sicherung einfügen</label>
+    <textarea id="restore" style="min-height:80px"></textarea>
+    <div class="row"><button class="btn small ghost" data-act="restore">Sicherung laden</button>
+    <button class="btn small ${resetArm ? "danger" : "ghost"}" data-act="reset">${resetArm ? "Wirklich alles zurücksetzen" : "Fortschritt zurücksetzen"}</button></div>
+  </section></div>`;
+}
+function bindEdit() {
+  const ta = $("#src"), st = $("#srcStatus");
+  const upd = () => {
+    const c = parseCourse(ta.value);
+    st.className = "status" + (c.errors.length ? " err" : "");
+    st.innerHTML = `${esc(c.title)}: ${c.units.length} Einheiten · ${countLessons(c)} Lektionen · ${countItems(c)} Aufgaben · ${c.shorts.length} Shorts` +
+      (c.errors.length ? "<br>" + c.errors.slice(0, 5).map(esc).join("<br>") + (c.errors.length > 5 ? `<br>… und ${c.errors.length - 5} weitere` : "") : "");
+  };
+  let t; ta.addEventListener("input", () => { clearTimeout(t); t = setTimeout(upd, 250); }); upd();
+}
+async function copyText(text, fallbackId) {
+  try { await navigator.clipboard.writeText(text); toast("Kopiert"); }
+  catch (e) { const o = $("#" + fallbackId); o.hidden = false; o.value = text; o.focus(); o.select(); toast("Text markiert. Bitte selbst kopieren."); }
+}
+
+/* ---------- Lektion ---------- */
+let L = null;
+function openLayer() { $("#layer").hidden = false; stopSpeech(); }
+function closeLayer() { $("#layer").hidden = true; L = null; render(); }
+function startLesson(items, opts) {
+  if (!items.length) return;
+  if (!opts.practice && S.hearts <= 0) { toast("Keine Herzen mehr. Wiederhole, um Herzen aufzufüllen."); return; }
+  L = { queue: items.slice(), pos: 0, mist: new Set(), requeued: new Set(), firstOk: 0, xp: 0, practice: !!opts.practice, lessonId: opts.lessonId || null, state: "ask", fb: null, cur: null, total: items.length };
+  openLayer(); prep(); drawLesson();
+}
+function prep() {
+  const it = L.queue[L.pos];
+  L.state = "ask"; L.fb = null;
+  L.cur = { item: it, sel: null };
+  if (it.t === "mc") L.cur.opts = shuffle([it.a, ...it.opts]);
+  if (it.t === "tf") L.cur.opts = ["Wahr", "Falsch"];
+  if (it.t === "pairs") Object.assign(L.cur, { left: shuffle(it.pairs.map((_, i) => i)), right: shuffle(it.pairs.map((_, i) => i)), matched: new Set(), selL: null, selR: null, err: false, wrong: null });
+  if (it.t === "card") L.cur.flipped = false;
+}
+function exerciseHTML() {
+  const { item: it } = L.cur, fb = L.state === "fb";
+  if (it.t === "mc" || it.t === "tf") {
+    const right = it.t === "mc" ? it.a : (it.a ? "Wahr" : "Falsch");
+    return `<p class="kind">${it.t === "mc" ? "Wähle die richtige Antwort" : "Stimmt das?"}</p><h2 class="q">${esc(it.q)}</h2>
+      <div class="opts">${L.cur.opts.map(o => {
+        let cls = "opt"; if (fb) { if (o === right) cls += " ok"; else if (o === L.cur.sel) cls += " no"; } else if (o === L.cur.sel) cls += " sel";
+        return `<button class="${cls}" data-act="pick" data-v="${esc(o)}" ${fb ? "disabled" : ""}>${esc(o)}</button>`; }).join("")}</div>`;
+  }
+  if (it.t === "gap") {
+    const parts = it.q.split("___"), val = esc(L.cur.sel || "");
+    const input = `<input id="gap" autocomplete="off" autocapitalize="off" spellcheck="false" value="${val}" ${fb ? "disabled" : ""} aria-label="Lücke">`;
+    return `<p class="kind">Fülle die Lücke</p><div class="gapq">${parts.length > 1 ? esc(parts[0]) + input + esc(parts.slice(1).join("___")) : esc(it.q) + "<br>" + input}</div>`;
+  }
+  if (it.t === "pairs") {
+    const c = L.cur;
+    const btn = (side, i) => { const txt = it.pairs[i][side === "l" ? 0 : 1], gone = c.matched.has(i);
+      const sel = (side === "l" ? c.selL : c.selR) === i, wrong = c.wrong && c.wrong[side === "l" ? 0 : 1] === i;
+      return `<button class="opt ${gone ? "gone" : ""} ${sel ? "sel" : ""} ${wrong ? "no" : ""}" data-act="p${side}" data-i="${i}" ${gone || fb ? "disabled" : ""}>${esc(txt)}</button>`; };
+    return `<p class="kind">Finde die Paare</p><div class="pairs"><div class="col">${c.left.map(i => btn("l", i)).join("")}</div><div class="col">${c.right.map(i => btn("r", i)).join("")}</div></div>`;
+  }
+  if (it.t === "card") {
+    return `<p class="kind">Karteikarte</p><div class="card"><div class="front">${esc(it.front)}</div>${L.cur.flipped ? `<div class="back">${esc(it.back)}</div>` : `<p style="margin:0;color:var(--muted)">Überleg dir die Antwort, dann umdrehen.</p>`}</div>`;
+  }
+  return "";
+}
+function footHTML() {
+  const it = L.cur.item;
+  if (L.state === "fb") {
+    const ok = L.fb.ok;
+    const msg = ok ? ["Richtig!", "Gut gemacht!", "Stark!", "Genau so!"][Math.floor(Math.random() * 4)] : (it.t === "card" ? "Weiter üben" : "Nicht ganz");
+    return `<div class="lfoot gut ${ok ? "ok" : "no"}"><div class="fb">${msg}${!ok && L.fb.answer ? `<small>Richtige Antwort: ${esc(L.fb.answer)}</small>` : ""}</div><button class="btn" data-act="next" id="nextBtn">Weiter</button></div>`;
+  }
+  if (it.t === "pairs") return `<div class="lfoot gut"><button class="btn ghost" data-act="skip">Überspringen</button></div>`;
+  if (it.t === "card") return L.cur.flipped
+    ? `<div class="lfoot gut"><div class="two"><button class="btn ghost" data-act="card" data-v="0">Nicht gewusst</button><button class="btn" data-act="card" data-v="1">Gewusst</button></div></div>`
+    : `<div class="lfoot gut"><button class="btn" data-act="flip">Umdrehen</button></div>`;
+  return `<div class="lfoot gut"><button class="btn" data-act="check" id="checkBtn" ${L.cur.sel ? "" : "disabled"}>Prüfen</button></div>`;
+}
+function drawLesson() {
+  const prog = Math.round(100 * (L.pos + (L.state === "fb" ? 1 : 0)) / L.queue.length);
+  $("#layer").innerHTML = `<div class="lin"><div class="lhead gut"><button class="x" data-act="quit" aria-label="Lektion beenden">${ICON.x}</button>
+    <div class="bar" role="progressbar" aria-valuenow="${prog}" aria-valuemin="0" aria-valuemax="100"><i style="width:${prog}%"></i></div>
+    ${L.practice ? `<span class="stat" style="font-weight:700;color:var(--muted)">Üben</span>` : `<span class="stat"><span class="i-heart">${ICON.heart}</span>${S.hearts}</span>`}</div>
+    <div class="lbody gut">${exerciseHTML()}</div>${footHTML()}</div>`;
+  const g = $("#gap");
+  if (g && L.state === "ask") { g.addEventListener("input", () => { L.cur.sel = g.value.trim() || null; $("#checkBtn").disabled = !L.cur.sel; }); g.addEventListener("keydown", e => { if (e.key === "Enter" && L.cur.sel) check(); }); g.focus(); }
+  const nb = $("#nextBtn"); if (nb) nb.focus();
+}
+function grade(ok, answer, noHeart) {
+  const it = L.cur.item, r = S.srs[it.id] || { box: 0, due: today() };
+  if (ok) {
+    if (!L.mist.has(it.id)) { r.box = Math.min(5, r.box + 1); L.firstOk++; L.xp += L.practice ? 1 : 2; }
+    r.due = addDays(INTERVALS[r.box]);
+  } else {
+    r.box = 0; r.due = today(); L.mist.add(it.id);
+    if (!L.requeued.has(it.id)) { L.queue.push(it); L.requeued.add(it.id); }
+    if (!noHeart && !L.practice) loseHeart();
+  }
+  S.srs[it.id] = r; save();
+  L.state = "fb"; L.fb = { ok, answer };
+  drawLesson();
+}
+function check() {
+  const it = L.cur.item;
+  if (it.t === "mc") grade(L.cur.sel === it.a, it.a);
+  else if (it.t === "tf") grade((L.cur.sel === "Wahr") === it.a, it.a ? "Wahr" : "Falsch");
+  else if (it.t === "gap") grade(it.a.some(a => norm(a) === norm(L.cur.sel || "")), it.a[0]);
+}
+function pairTap(side, i) {
+  const c = L.cur; if (c.matched.has(i) || c.wrong) return;
+  if (side === "l") c.selL = c.selL === i ? null : i; else c.selR = c.selR === i ? null : i;
+  if (c.selL !== null && c.selR !== null) {
+    if (c.selL === c.selR) { c.matched.add(c.selL); c.selL = c.selR = null; }
+    else { c.err = true; c.wrong = [c.selL, c.selR]; c.selL = c.selR = null; drawLesson(); setTimeout(() => { if (L && L.cur === c) { c.wrong = null; drawLesson(); } }, 550); return; }
+  }
+  if (c.matched.size === c.item.pairs.length) { grade(!c.err, c.err ? c.item.pairs.map(p => p.join(" = ")).join(" · ") : ""); return; }
+  drawLesson();
+}
+function nextStep() {
+  L.pos++;
+  if (!L.practice && S.hearts <= 0) return finish(false);
+  if (L.pos >= L.queue.length) return finish(true);
+  prep(); drawLesson();
+}
+function finish(success) {
+  let bonus = 0;
+  if (success) {
+    bonus = L.practice ? 5 : 10 + (L.mist.size === 0 ? 5 : 0);
+    if (L.lessonId) S.done[L.lessonId] = true;
+    if (L.practice) S.hearts = Math.min(MAX_HEARTS, S.hearts + 2);
+  }
+  const gained = L.xp + bonus; addXP(gained); save();
+  const acc = Math.round(100 * L.firstOk / Math.max(1, L.total));
+  const sparks = success ? Array.from({ length: 18 }, (_, i) => { const a = i / 18 * Math.PI * 2, d = 90 + (i % 3) * 40; return `<i style="--dx:${Math.round(Math.cos(a) * d)}px;--dy:${Math.round(Math.sin(a) * d)}px"></i>`; }).join("") : "";
+  $("#layer").innerHTML = `<div class="lin"><div class="end gut"><div class="burst" aria-hidden="true">${sparks}</div>
+    <h2>${success ? (L.practice ? "Wiederholung geschafft" : "Lektion geschafft") : "Keine Herzen mehr"}</h2>
+    <p style="margin:0;color:var(--muted);max-width:40ch">${success ? (L.mist.size === 0 ? "Ohne Fehler. Sehr stark." : "Deine Fehler kommen in der Wiederholung wieder.") : "Wiederhole ein paar Fragen. Das kostet keine Herzen und füllt 2 Herzen auf."}</p>
+    <div class="tiles"><div class="tile"><b>+${gained}</b><span>XP</span></div><div class="tile"><b>${acc}%</b><span>Genau</span></div><div class="tile"><b>${streakNow()}</b><span>Streak</span></div></div>
+  </div><div class="lfoot gut">${success ? `<button class="btn" data-act="quit" id="nextBtn">Weiter</button>` : `<button class="btn" data-act="practice" id="nextBtn">Wiederholen</button><button class="btn ghost" data-act="quit">Zurück</button>`}</div></div>`;
+  L.state = "end"; const nb = $("#nextBtn"); if (nb) nb.focus();
+}
+function practiceItems() {
+  const c = course(); if (!c) return [];
+  const seen = allItems(c).filter(it => S.srs[it.id]);
+  const due = shuffle(seen.filter(it => S.srs[it.id].due <= today()));
+  const rest = seen.filter(it => !due.includes(it)).sort((a, b) => S.srs[a.id].box - S.srs[b.id].box || (S.srs[a.id].due < S.srs[b.id].due ? -1 : 1));
+  return [...due, ...rest].slice(0, 10);
+}
+
+/* ---------- Ereignisse ---------- */
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b) return;
+  const act = b.dataset.act, c = course();
+  switch (act) {
+    case "tab": S.tab = b.dataset.tab; delArm = null; resetArm = false; save(); render(); break;
+    case "lesson": {
+      const ref = c && allLessons(c).find(x => x.l.id === b.dataset.id); if (!ref) return;
+      if (b.classList.contains("locked")) { toast("Schließe zuerst die Lektion davor ab."); return; }
+      startLesson(shuffle(ref.l.items), { lessonId: ref.l.id }); break;
+    }
+    case "practice": { const items = practiceItems(); if (!items.length) { toast("Mach zuerst eine Lektion."); return; } L = null; startLesson(items, { practice: true }); break; }
+    case "quit": closeLayer(); break;
+    case "pick": if (L && L.state === "ask") { L.cur.sel = b.dataset.v; drawLesson(); } break;
+    case "check": if (L && L.state === "ask" && L.cur.sel) check(); break;
+    case "next": if (L) nextStep(); break;
+    case "pl": case "pr": if (L && L.state === "ask") pairTap(act[1], +b.dataset.i); break;
+    case "skip": if (L && L.state === "ask") grade(false, L.cur.item.pairs.map(p => p.join(" = ")).join(" · ")); break;
+    case "flip": if (L) { L.cur.flipped = true; drawLesson(); } break;
+    case "card": if (L && L.state === "ask") grade(b.dataset.v === "1", L.cur.item.back, true); break;
+    case "play": { const i = +b.dataset.i; if (PLAY && PLAY.i === i) stopSpeech(); else playShort(i); break; }
+    case "autoplay": S.autoplay = b.checked; save(); document.querySelectorAll('[data-act="autoplay"]').forEach(x => x.checked = S.autoplay); break;
+    case "sq": {
+      const s = c.shorts[+b.dataset.i]; if (!s || !s.quiz) return;
+      const box = b.parentElement; if (box.dataset.done) return; box.dataset.done = "1";
+      const ok = b.dataset.v === s.quiz.a;
+      box.querySelectorAll("button").forEach(x => { if (x.dataset.v === s.quiz.a) x.classList.add("ok"); else if (x === b) x.classList.add("no"); });
+      if (ok) { addXP(2); renderTop(); toast("Richtig! +2 XP"); } else toast("Die grüne Antwort ist richtig.");
+      S.seen[s.id] = true; save(); break;
+    }
+    case "activate": S.active = +b.dataset.i; S.tab = "path"; save(); render(); break;
+    case "editc": EDIT = +b.dataset.i; delArm = null; render(); $("#src").focus(); break;
+    case "newc": EDIT = -1; delArm = null; render(); $("#src").focus(); break;
+    case "delc": {
+      const i = +b.dataset.i;
+      if (delArm !== i) { delArm = i; render(); return; }
+      S.sources.splice(i, 1); delArm = null;
+      if (S.active === i) S.active = 0; else if (S.active > i) S.active--;
+      if (EDIT === i) EDIT = -1; else if (EDIT > i) EDIT--;
+      rebuild(); save(); render(); toast("Kurs gelöscht"); break;
+    }
+    case "savec": {
+      const text = $("#src").value, parsed = parseCourse(text);
+      if (!countItems(parsed) && !parsed.shorts.length) { toast("Der Kurs hat noch keine Aufgaben oder Shorts."); return; }
+      if (EDIT >= 0) S.sources[EDIT] = text; else { S.sources.push(text); EDIT = S.sources.length - 1; S.active = EDIT; }
+      rebuild(); save(); render(); toast(parsed.errors.length ? `Gespeichert, ${parsed.errors.length} Zeilen übersprungen` : "Gespeichert"); break;
+    }
+    case "prompt": {
+      const notes = $("#notes").value.trim();
+      if (!notes) { toast("Füge zuerst deinen Lernstoff ein."); return; }
+      copyText(AI_PROMPT + notes, "promptOut"); break;
+    }
+    case "backup": copyText(JSON.stringify(S), "backupOut"); break;
+    case "restore": {
+      try { const d = JSON.parse($("#restore").value); if (!d || !Array.isArray(d.sources)) throw 0; S = Object.assign(fresh(), d); EDIT = 0; rebuild(); save(); render(); toast("Sicherung geladen"); }
+      catch (err) { toast("Das ist keine gültige Sicherung. Kopiere sie vollständig."); }
+      break;
+    }
+    case "reset": {
+      if (!resetArm) { resetArm = true; render(); return; }
+      const keep = S.sources; S = fresh(); S.sources = keep; S.tab = "edit"; resetArm = false; rebuild(); save(); render(); toast("Fortschritt zurückgesetzt"); break;
+    }
+  }
+});
+$("#course").addEventListener("change", e => { S.active = +e.target.value; save(); render(); });
+document.addEventListener("keydown", e => {
+  if (!L || $("#layer").hidden) return;
+  if (e.key === "Escape") { closeLayer(); return; }
+  if (L.state === "ask" && L.cur && (L.cur.item.t === "mc" || L.cur.item.t === "tf") && /^[1-9]$/.test(e.key)) {
+    const o = L.cur.opts[+e.key - 1]; if (o) { L.cur.sel = o; drawLesson(); }
+  }
+  if (e.key === "Enter" && e.target.id !== "gap" && e.target.tagName !== "BUTTON") {
+    if (L.state === "ask" && L.cur.sel && L.cur.item.t !== "pairs" && L.cur.item.t !== "card") { e.preventDefault(); check(); }
+  }
+});
+if ("speechSynthesis" in window) speechSynthesis.onvoiceschanged = () => {};
+document.addEventListener("visibilitychange", () => { if (document.hidden) stopSpeech(); else if ($("#layer").hidden) { tick(); renderTop(); } });
+
+rebuild(); render();
+if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>
