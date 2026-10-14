@@ -574,13 +574,14 @@ const doneCount = c => allLessons(c).filter(x => S.done[x.l.id]).length;
 
 /* ---------- Zustand ---------- */
 const KEY = "funke.v1";
-const fresh = () => ({ sources: [MOC, SAMPLE], seed: 3, active: 0, tab: "path", xp: 0, day: { date: today(), xp: 0 },
+const fresh = () => ({ sources: [MOC], seed: 4, active: 0, tab: "path", xp: 0, day: { date: today(), xp: 0 },
   streak: { count: 0, last: null }, hearts: MAX_HEARTS, heartTs: Date.now(), done: {}, srs: {}, seen: {}, goal: 30, autoplay: true, updatedAt: 0 });
 let S = fresh();
 function adopt(d) {
   S = Object.assign(fresh(), d);
   if (!S.seed || S.seed < 2) { if (!S.sources.some(s => s.startsWith("# MOC:"))) { S.sources.unshift(MOC); S.active = 0; } S.seed = 2; }
   if (S.seed < 3) { S.sources = S.sources.map(s => s.startsWith("# MOC:") && !/^\s*PDF\s*:/m.test(s) ? setPdfLine(s, MOC_PDF) : s); S.seed = 3; }
+  if (S.seed < 4) { const before = S.sources.length; S.sources = S.sources.filter(s => !s.startsWith("# Beispiel: Mathe Analysis")); if (S.sources.length !== before) S.active = 0; if (!S.sources.length) S.sources = [MOC]; S.seed = 4; }
 }
 try { const raw = localStorage.getItem(KEY); if (raw) { const d = JSON.parse(raw); if (d && Array.isArray(d.sources)) adopt(d); } } catch (e) {}
 let cloudTimer = null;

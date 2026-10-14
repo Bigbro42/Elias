@@ -1,5 +1,5 @@
 // Offline-Cache: App-Dateien zuerst aus dem Netz, bei Offline aus dem Cache.
-const CACHE = "funke-v1";
+const CACHE = "funke-v2";
 const FILES = ["./", "index.html", "manifest.webmanifest", "icon.svg"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
