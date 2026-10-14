@@ -264,6 +264,7 @@ const MOC_PDF = "asset:3ec12f2fac7a84f8a96727d6a8873ee1";
 const MOC = `# MOC: Microeconomics of Competitiveness
 KURZ: MOC
 PDF: ${MOC_PDF}
+BILDER: slides/moc 86
 LANG: en
 ## Prosperity and Competitiveness
 ### What is competitiveness?
@@ -493,7 +494,7 @@ const ICON = {
 
 /* ---------- Kurs-Parser ---------- */
 function parseCourse(src) {
-  const c = { title: "Ohne Titel", kurz: "", lang: "de", pdf: "", units: [], shorts: [], errors: [] };
+  const c = { title: "Ohne Titel", kurz: "", lang: "de", pdf: "", img: null, units: [], shorts: [], errors: [] };
   let unit = null, lesson = null, lastShort = null;
   const needLesson = () => {
     if (!unit) { unit = { title: "Einheit 1", lessons: [] }; c.units.push(unit); }
@@ -517,6 +518,7 @@ function parseCourse(src) {
       case "KURZ": c.kurz = body.trim().slice(0, 4); return;
       case "LANG": c.lang = body.trim().toLowerCase().startsWith("en") ? "en" : "de"; return;
       case "PDF": c.pdf = body.trim(); return;
+      case "BILDER": { const [base, cnt] = body.trim().split(/\s+/); if (base && +cnt > 0) c.img = { base: base.replace(/\/$/, ""), count: +cnt }; return; }
       case "SHORT":
         if (!p[0] || !p[1]) { c.errors.push(`Zeile ${n}: SHORT braucht Titel | Text`); return; }
         lastShort = { title: p[0], text: p[1], formula: p[2] || "", quiz: null }; if (slide) lastShort.slide = slide; c.shorts.push(lastShort); return;
@@ -574,7 +576,7 @@ const doneCount = c => allLessons(c).filter(x => S.done[x.l.id]).length;
 
 /* ---------- Zustand ---------- */
 const KEY = "funke.v1";
-const fresh = () => ({ sources: [MOC], seed: 4, active: 0, tab: "path", xp: 0, day: { date: today(), xp: 0 },
+const fresh = () => ({ sources: [MOC], seed: 5, active: 0, tab: "path", xp: 0, day: { date: today(), xp: 0 },
   streak: { count: 0, last: null }, hearts: MAX_HEARTS, heartTs: Date.now(), done: {}, srs: {}, seen: {}, goal: 30, autoplay: true, updatedAt: 0 });
 let S = fresh();
 function adopt(d) {
@@ -582,6 +584,7 @@ function adopt(d) {
   if (!S.seed || S.seed < 2) { if (!S.sources.some(s => s.startsWith("# MOC:"))) { S.sources.unshift(MOC); S.active = 0; } S.seed = 2; }
   if (S.seed < 3) { S.sources = S.sources.map(s => s.startsWith("# MOC:") && !/^\s*PDF\s*:/m.test(s) ? setPdfLine(s, MOC_PDF) : s); S.seed = 3; }
   if (S.seed < 4) { const before = S.sources.length; S.sources = S.sources.filter(s => !s.startsWith("# Beispiel: Mathe Analysis")); if (S.sources.length !== before) S.active = 0; if (!S.sources.length) S.sources = [MOC]; S.seed = 4; }
+  if (S.seed < 5) { S.sources = S.sources.map(s => s.startsWith("# MOC:") && !/^\s*BILDER\s*:/m.test(s) ? s.replace(/^(# MOC:[^\n]*\n)/, "$1BILDER: slides/moc 86\n") : s); S.seed = 5; }
 }
 try { const raw = localStorage.getItem(KEY); if (raw) { const d = JSON.parse(raw); if (d && Array.isArray(d.sources)) adopt(d); } } catch (e) {}
 let cloudTimer = null;
@@ -685,6 +688,18 @@ function getPdf(ref) {
   })().catch(() => { delete PDFS[ref]; return null; });
   return PDFS[ref];
 }
+const slidesAvail = c => !!c && (pdfUsable(c.pdf) || !!c.img);
+const imgUrl = (c, n) => `${c.img.base}/s-${String(n).padStart(String(c.img.count).length, "0")}.jpg`;
+const loadImg = src => new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = src; });
+async function slideCount(c) { if (pdfUsable(c.pdf)) { const pdf = await getPdf(c.pdf); if (pdf) return pdf.numPages; } return c.img ? c.img.count : 0; }
+async function drawSlideC(canvas, c, n, width) {
+  if (pdfUsable(c.pdf)) { const ok = await drawSlide(canvas, c.pdf, n, width).catch(() => false); if (ok) return true; }
+  if (!c.img || n < 1 || n > c.img.count) return false;
+  const im = await loadImg(imgUrl(c, n));
+  canvas.width = im.naturalWidth; canvas.height = im.naturalHeight; canvas.style.aspectRatio = `${im.naturalWidth} / ${im.naturalHeight}`;
+  canvas.getContext("2d").drawImage(im, 0, 0);
+  return true;
+}
 const pdfUsable = ref => !!ref && ((ref.startsWith("asset:") && !!window.claude) || ref.startsWith("idb:") || (ref.startsWith("local:") && !!LOCAL_PDFS[+ref.slice(6)]));
 async function drawSlide(canvas, ref, n, width) {
   const pdf = await getPdf(ref);
@@ -717,17 +732,16 @@ function setPdfLine(src, ref) {
 let SV = null;
 function openSlide(n) {
   const c = course(); if (!c) return;
-  if (!pdfUsable(c.pdf)) { toast(c.pdf ? "Die Folien sind hier nicht verfügbar. Hänge die PDF unter „Inhalte“ erneut an." : `Folie ${n}. Hänge die PDF unter „Inhalte“ an, um sie hier zu sehen.`); return; }
-  SV = { ref: c.pdf, n, total: 0 };
+  if (!slidesAvail(c)) { toast(c.pdf ? "Die Folien sind hier nicht verfügbar. Hänge die PDF unter „Inhalte“ erneut an." : `Folie ${n}. Hänge die PDF unter „Inhalte“ an, um sie hier zu sehen.`); return; }
+  SV = { c, n, total: 0 };
   $("#sv").hidden = false; stopSpeech(); drawSV();
 }
 async function drawSV() {
   const box = $("#sv"), my = SV;
   box.innerHTML = `<div class="svbar gut"><button data-act="svprev" aria-label="Vorherige Folie">‹</button><b>Folie ${my.n}${my.total ? " von " + my.total : ""}</b><button data-act="svnext" aria-label="Nächste Folie">›</button><button data-act="svclose">Schließen</button></div><canvas id="svc"></canvas><p class="status" id="svs">Folie wird geladen …</p>`;
-  const pdf = await getPdf(my.ref);
+  my.total = await slideCount(my.c).catch(() => 0);
   if (SV !== my) return;
-  if (pdf) my.total = pdf.numPages;
-  const ok = await drawSlide($("#svc"), my.ref, my.n, Math.min(1200, innerWidth - 32)).catch(() => false);
+  const ok = await drawSlideC($("#svc"), my.c, my.n, Math.min(1200, innerWidth - 32)).catch(() => false);
   if (SV !== my) return;
   const s = $("#svs"); if (s) s.textContent = ok ? "" : "Die Folie konnte nicht geladen werden.";
   const b = box.querySelector("b"); if (b && my.total) b.textContent = `Folie ${my.n} von ${my.total}`;
@@ -837,7 +851,7 @@ const sentences = t => String(t).match(/[^.!?]+[.!?]*/g)?.map(s => s.trim()).fil
 function viewShorts() {
   const c = course();
   if (!c || !c.shorts.length) return `<div class="gut empty"><h2>Noch keine Shorts</h2><p>Füge in deinem Kurs Zeilen mit <code>SHORT:</code> hinzu, dann erscheinen hier kurze Erklärungen zum Durchwischen.</p></div>`;
-  const tts = "speechSynthesis" in window, pdfOk = pdfUsable(c.pdf);
+  const tts = "speechSynthesis" in window, pdfOk = slidesAvail(c);
   return `<div class="feed" id="feed">${c.shorts.map((s, i) => `<section class="short" data-i="${i}"><div class="short-in gut">
     <p class="eyebrow">Short ${i + 1} von ${c.shorts.length}${S.seen[s.id] ? " · gesehen" : ""}</p>
     <h2>${esc(s.title)}</h2>
@@ -889,13 +903,13 @@ function playShort(i) {
   next();
 }
 function drawShortSlides(idx) {
-  const c = course(); if (!c || !pdfUsable(c.pdf)) return;
+  const c = course(); if (!slidesAvail(c)) return;
   [idx, idx + 1].forEach(i => {
     const cv = document.querySelector(`.short[data-i="${i}"] canvas[data-slide]`);
     if (!cv || cv.dataset.done) return;
     cv.dataset.done = "1";
     const hide = () => { const b = cv.closest(".slidebox"); if (b) b.hidden = true; };
-    drawSlide(cv, c.pdf, +cv.dataset.slide, Math.min(560, innerWidth - 32)).then(ok => { if (!ok) hide(); }).catch(hide);
+    drawSlideC(cv, c, +cv.dataset.slide, Math.min(560, innerWidth - 32)).then(ok => { if (!ok) hide(); }).catch(hide);
   });
 }
 function bindFeed() {
@@ -930,7 +944,7 @@ function viewEdit() {
     <textarea id="promptOut" readonly hidden aria-label="KI-Auftrag"></textarea>
   </section>
   <section class="panel"><h2>Deine Fächer</h2>
-    <div class="clist">${COURSES.map((c, i) => `<div class="citem ${i === S.active ? "on" : ""}"><div>${embHTML(c)}<div style="min-width:0"><b>${esc(c.title)}</b><span>${countLessons(c)} Lektionen · ${countItems(c)} Aufgaben · ${c.shorts.length} Shorts${c.pdf ? " · Folien" + (pdfUsable(c.pdf) ? "" : " (neu anhängen)") : ""}</span></div></div>
+    <div class="clist">${COURSES.map((c, i) => `<div class="citem ${i === S.active ? "on" : ""}"><div>${embHTML(c)}<div style="min-width:0"><b>${esc(c.title)}</b><span>${countLessons(c)} Lektionen · ${countItems(c)} Aufgaben · ${c.shorts.length} Shorts${c.pdf || c.img ? " · Folien" + (slidesAvail(c) ? "" : " (neu anhängen)") : ""}</span></div></div>
       <div class="row">${i === S.active ? "" : `<button class="btn small ghost" data-act="activate" data-i="${i}">Lernen</button>`}
       <button class="btn small ghost" data-act="editc" data-i="${i}">Bearbeiten</button>
       <button class="btn small ghost" data-act="attach" data-i="${i}">${c.pdf ? "Folien ersetzen" : "Folien anhängen"}</button>
@@ -1124,7 +1138,7 @@ function exerciseHTML() {
 function slideLink(it) {
   if (!it.slide) return "";
   const c = course();
-  return c && pdfUsable(c.pdf) ? `<button class="slidelink" data-act="slide" data-n="${it.slide}">Folie ${it.slide}</button>` : `<span class="slidelink" style="border-style:dashed">Folie ${it.slide}</span>`;
+  return slidesAvail(c) ? `<button class="slidelink" data-act="slide" data-n="${it.slide}">Folie ${it.slide}</button>` : `<span class="slidelink" style="border-style:dashed">Folie ${it.slide}</span>`;
 }
 function footHTML() {
   const it = L.cur.item;
