@@ -1,14 +1,16 @@
-# Change Log v4 – "Energy Cluster Norway" deck (Group 1) · 20 slides
+# Change Log v5 – "Energy Cluster Norway" deck (Group 1) · 20 slides
 
-> **Task for Cowork**
-> Edit the PowerPoint file **`Energy_Cluster_Norway_neu.pptx`** (18 slides) exactly as this log describes, and save the result as **`Energy_Cluster_Norway_v4.pptx`**.
-> - **Target:** exactly **20 slides**, 16:9, speaker notes for about 25 minutes (≈ 3,300 words).
+*Supersedes v4. New in v5: final values on slide 10 (no more placeholders), CEO quote on slide 11, time comparison on slide 14, updated speaker notes.*
+
+> **Task for the designer / Cowork**
+> Edit the PowerPoint file **`Energy_Cluster_Norway_neu.pptx`** (18 slides) exactly as this log describes, and save the result as **`Energy_Cluster_Norway_v5.pptx`**.
+> - **Target:** exactly **20 slides**, 16:9, speaker notes for about 26 minutes (≈ 3,400 words).
 > - **Rule 1:** Keep the existing design exactly (colours, fonts, card style, positions). Do not introduce new styles.
 > - **Rule 2:** Replace text **verbatim** (old → new). Format new elements like the neighbouring elements on the same slide.
-> - **Rule 3:** Fields marked `[ add ]` stay visible as placeholders. The group fills them in later.
+> - **Rule 3:** There are no placeholders left. Every value is final.
 > - **Rule 4:** Finally, replace all speaker notes with those in the appendix (replace completely, do not append).
 > - **Required files:** `Energy_Cluster_Norway_neu.pptx` and the chart `exhibit2_quadrants.png` (Exhibit 2 from the report: two quadrant charts). If the PNG is missing, export it from `Group_1_Energy_Cluster_Norway_report_v2.docx` (first image in the document, section 2.1).
-> - **Reference:** `Energy_Cluster_Norway_v4_preview.pdf` shows the target result.
+> - **Reference:** `Energy_Cluster_Norway_v5_preview.pdf` shows the target result; `Energy_Cluster_Norway_v5.pptx` is the finished reference file.
 
 ---
 
@@ -25,7 +27,6 @@
 | Card | `#FFFDF9`, border `#D9DEDD` 0.5 pt | Cards, slightly rounded corners |
 | Light text on dark | `#F5F3EE` | Text in dark bands |
 | Background 1 / 2 | `#F5F3EE` / `#E4EBEC` | as in the original |
-| Placeholder | fill `#FFF4EA`, border `#E9A15B` | `[ add ]` tiles |
 
 - **Fonts:** headlines Source Serif 4 bold 32 pt · everything else Public Sans · kicker 12 pt bold, all caps, Teal · body 13–14 pt · source line 12 pt Muted.
 - **Dark band:** full width, Navy, rounded. Label on the left (12 pt bold, all caps, `#E9A15B`), statement on the right (14–16 pt, `#F5F3EE`).
@@ -46,10 +47,10 @@
 | 8 | 8 | Five phases: from discovery to energy transition | notes only |
 | 9 | 9 | Offshore energy technology and services | notes only |
 | 10 | – | A large, export-oriented cluster in transition | ➕ **new** |
-| 11 | 10 | One national platform, three equal regions | notes only |
+| 11 | 10 | One national platform, three equal regions | ✏️ add CEO quote |
 | 12 | 11 | Strong inputs, weak demand for new technology at scale | notes only |
 | 13 | 12 | Strategic issues and policies already in place | ✏️ text and source |
-| 14 | 13 | Validation alone does not create scale | notes only |
+| 14 | 13 | Validation alone does not create scale | ✏️ add time comparison |
 | 15 | – | Three North Sea locations compete for the same role | ➕ **new** |
 | 16 | 14 | National value proposition | notes only |
 | 17 | **16** | One national pipeline from industrial need to first order | ✏️ add box at the bottom |
@@ -132,17 +133,39 @@ Source line: after `… rank 10.` append the sentence ` Output shares are depres
 | Top centre | 350+ | Navy | member companies in ECN |
 | Top right | 67% | Orange | state share in Equinor, the largest buyer |
 | Bottom left | 1.5 → 5+ Mt | Teal | Northern Lights CO₂ capacity, phase 1 → phase 2 |
-| Bottom centre | [ add ] | Orange, placeholder style | employees in the supplier industry, 2014 → latest year |
-| Bottom right | [ add ] | Orange, placeholder style | share of supplier revenue from wind, CCS, electrification |
+| Bottom centre | 67k → 69k | Navy | direct petroleum jobs, 2014 → 2025 (est.), after the first-ever fall in 2014–18 |
+| Bottom right | ≈ 17% | Orange | of supplier turnover outside petroleum (2024; total ≈ NOK 600bn) |
 
-- Band: `READING` · `Strong export base; the question is how fast new segments grow.`
-- Source: `Sources: Norwegian Energy Partners (2026); Energy Cluster Norway (2026); Equinor (2026, n.d.-b). [add]: supplier-industry statistics, see report Section 5.2.`
+All six tiles use the same normal card style (`#FFFDF9`, border `#D9DEDD`).
+
+- Band: `READING` · `Strong export base, but only a sixth of turnover is outside petroleum.`
+- Source (may run to two lines): `Sources: Norwegian Energy Partners (2026); Energy Cluster Norway (2026); Equinor (2026, n.d.-b); Norsk Petroleum (n.d.), employment; supplier turnover 2024 as reported by EnergyWatch.`
+
+### Slide 11 – One national platform, three equal regions (old 10) + CEO quote
+In the free area between the dark box "FROM OUR CEO INTERVIEW" and the source line, add:
+- **Quote** (Source Serif 4, 16 pt, italic, Navy, full width, one line):
+  `“It has been a key principle that all regions of the three owner clusters should be equal partners.”`
+- **Attribution** below it (Public Sans, 12 pt, bold, Teal): `Owe Hagesæther, CEO of Energy Cluster Norway`
+- Basis: verbatim from the written interview of 25 Oct 2026 (answer 2). The CEO allowed us to quote him by name. The source line already names the interview.
 
 ### Slide 13 – Strategic issues
 | Old | New |
 |---|---|
 | Enova floating-wind rounds | Enova support for Hywind Tampen |
 | Sources: Own assessment; Ministry of Energy (2026); Enova (2026); Research Council (2026); European Commission (2026b). | Sources: Own assessment; Innovation Norway (n.d.); Ministry of Energy (2026); Equinor (n.d.-b); European Commission (2026b). |
+
+### Slide 14 – Validation alone does not create scale (old 13) + time comparison
+In the free area between the statement "Both paths moved forward…" and the source line, add a small horizontal bar chart:
+- **Label** (12 pt, bold, all caps, Teal, one line): `TIME TO COMMERCIAL OPERATION`
+- **Two rows**, each with a name on the left (13 pt, bold, Navy), a bar (no rounding) and the text to the right of the bar (12 pt; the duration bold in the bar colour, then the detail in body text):
+
+| Name | Bar length | Bar colour | Text right of the bar |
+|---|---|---|---|
+| Hywind | 13 units | Orange `#B85C1E` | **13+ years** demonstrator 2009 → Hywind Tampen 2022/23 |
+| Northern Lights | 5 units | Teal `#1D7874` | **5 years** investment decision 2020 → first CO₂ stored 2025 |
+
+- Bar lengths in proportion: Northern Lights ≈ 38% of Hywind. Hywind takes about 40% of the content width, so the text still fits on the right.
+- Basis: dates from the table on the same slide (Equinor n.d.-a, n.d.-b; Northern Lights JV 2026). No new source needed.
 
 ### Slide 15 – NEW: Three North Sea locations compete for the same role (background 1)
 - Kicker: `POSITIONING · WHY NORWAY?`
@@ -198,7 +221,9 @@ Add a **white card (full width)** below the dark scorecard band:
 - [ ] Every headline on one line (slide 12 may take two, as in the original)
 - [ ] No new text smaller than 12 pt
 - [ ] All notes replaced from the appendix (≈ 3,300 words in total)
-- [ ] `[ add ]` placeholders on slide 10 still visible
+- [ ] Slide 10: six tiles in a uniform style, no placeholders
+- [ ] Slide 11: quote not overlapping the dark box or the source line
+- [ ] Slide 14: bar labels on one line, nothing runs past the right edge
 
 ---
 
@@ -242,11 +267,11 @@ Here is how we drew the cluster boundary. The core is offshore energy technology
 
 ### Slide 10 – A large, export-oriented cluster in transition
 
-How big is this cluster? Norwegian energy suppliers export around 200 billion kroner a year. ECN alone brings together more than 350 member companies. On the demand side the picture is concentrated: the largest buyer, Equinor, is 67 percent state-owned. In the new segments, Northern Lights shows what scale can look like. Its storage capacity is planned to grow from 1.5 to at least 5 million tonnes of CO₂ a year in phase two. [Fill in once the data is in: number of employees in the supplier industry and how it developed since 2014; share of supplier revenue from wind, CCS and electrification.] Together, these figures show a strong export base. The open question is how fast the new segments grow compared with oil and gas, and that is exactly where ECN comes in.
+How big is this cluster? Norwegian energy suppliers export around 200 billion kroner a year, and ECN alone has more than 350 member companies. Employment mirrors the history we just described. Direct petroleum employment grew to about 67,000 in 2014, then fell for the first time ever after the oil-price shock, and has since recovered to an estimated 69,000. Around 95,000 more people work in the offshore supplier industry. On the demand side, the picture is concentrated: the largest buyer, Equinor, is 67 percent state-owned. And in money terms, the transition is still small. Of a total supplier turnover of roughly 600 billion kroner in 2024, about 497 billion were still related to petroleum. So only around 17 percent came from other segments; offshore wind suppliers alone turned over about 60 billion kroner. Northern Lights shows what scale can look like in CCS, with capacity planned to rise from 1.5 to at least 5 million tonnes a year. The reading is clear: the export base is strong, but only about a sixth of turnover comes from the new segments. That is exactly the share ECN has to grow.
 
 ### Slide 11 – One national platform, three equal regions
 
-ECN brings together three regional cluster organisations: GCE Ocean Technology in Bergen, Energy Transition Norway in Stavanger and Energy Valley in Oslo. Each region contributes something different, from subsea deep tech in Bergen to operators and first customers in Stavanger and finance and AI in Oslo. To understand how this works in practice, we contacted ECN’s CEO, Owe Hagesæther. Three points stood out. The model was built bottom-up, after interviews with more than a hundred companies. Governance is deliberately balanced, with one third of the shares and three board seats per region. And services are distributed rather than duplicated: the MIT scale-up programme runs in Bergen and Boston, the Technical Committee in Stavanger serves members nationwide. We noticed that ECN currently measures success by integration milestones and member feedback. That is where our recommendations come in. Two further points from the interview are worth stressing. By the end of 2027 all regional operations are to be integrated into ECN, with offices in Bergen, Stavanger and Oslo. And the board and management want to secure the funding model in spring 2027. The CEO himself calls these the decisive milestones for whether ECN can be considered a success. We take that seriously, but we would add a third test: whether more projects actually reach a first commercial order.
+ECN brings together three regional cluster organisations: GCE Ocean Technology in Bergen, Energy Transition Norway in Stavanger and Energy Valley in Oslo. Each region contributes something different, from subsea deep tech in Bergen to operators and first customers in Stavanger and finance and AI in Oslo. To understand how this works in practice, we contacted ECN’s CEO, Owe Hagesæther. Three points stood out. The model was built bottom-up, after interviews with more than a hundred companies. Governance is deliberately balanced, with one third of the shares and three board seats per region. In his words, quoted at the bottom of the slide: it has been a key principle that all three regions should be equal partners. And services are distributed rather than duplicated: the MIT scale-up programme runs in Bergen and Boston, the Technical Committee in Stavanger serves members nationwide. We noticed that ECN currently measures success by integration milestones and member feedback. That is where our recommendations come in. Two further points from the interview are worth stressing. By the end of 2027 all regional operations are to be integrated into ECN, with offices in Bergen, Stavanger and Oslo. And the board and management want to secure the funding model in spring 2027. The CEO himself calls these the decisive milestones for whether ECN can be considered a success. We take that seriously, but we would add a third test: whether more projects actually reach a first commercial order.
 
 ### Slide 12 – Strong inputs, weak demand for new technology at scale
 
@@ -258,7 +283,7 @@ This slide brings the strategic issues together with the policies that already e
 
 ### Slide 14 – Validation alone does not create scale
 
-Two Norwegian flagship projects illustrate this bottleneck. Hywind started as a floating wind demonstrator in 2009. It took more than a decade, and an operator, Equinor, using the power for its own oil fields, before Hywind Tampen went into operation. The next step, Utsira Nord, still depends on a state-aid competition, and its terms were revised this year because the supply chain is not yet mature. Northern Lights followed a different path. It began as a public project, but anchor customers in Norway and then emitters from the Netherlands, Denmark and Sweden turned it into a commercial storage service. The lesson: technologies scale when a buyer and a market route are built in from the start. We are aware that both cases are state-backed flagships; we come back to that under limitations. Note also the time dimension. From the Hywind demonstrator in 2009 to Hywind Tampen it took well over a decade. Northern Lights went from investment decision in 2020 to first stored CO₂ in 2025, and it is already expanding. The difference is not technology. It is whether a committed buyer existed.
+Two Norwegian flagship projects illustrate this bottleneck. Hywind started as a floating wind demonstrator in 2009. It took more than a decade, and an operator, Equinor, using the power for its own oil fields, before Hywind Tampen went into operation. The next step, Utsira Nord, still depends on a state-aid competition, and its terms were revised this year because the supply chain is not yet mature. Northern Lights followed a different path. It began as a public project, but anchor customers in Norway and then emitters from the Netherlands, Denmark and Sweden turned it into a commercial storage service. The lesson: technologies scale when a buyer and a market route are built in from the start. We are aware that both cases are state-backed flagships; we come back to that under limitations. The bars at the bottom show the time dimension. From the Hywind demonstrator in 2009 to Hywind Tampen it took more than thirteen years. Northern Lights went from investment decision in 2020 to first stored CO₂ in 2025, and it is already expanding. The difference is not technology. It is whether a committed buyer existed.
 
 ### Slide 15 – Three North Sea locations compete for the same role
 
