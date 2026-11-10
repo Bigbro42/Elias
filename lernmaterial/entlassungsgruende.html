@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entlassungsgründe Arbeitsrecht</title>
+<style>
+  @page { size: A4; margin: 0; }
+  :root{
+    --ink:#14213d; --ink2:#3d4a63; --mute:#6b7488; --line:#dfe3ea; --paper:#ffffff; --bg:#e9edf2;
+    --navy:#0f1e3d; --gold:#ffcf5a;
+    --ang:#2458d6;  --ang-t:#edf2fd;
+    --gew:#dc560d;  --gew-t:#fdf1e8;
+    --bag:#0b8a7d;  --bag-t:#e6f5f3;
+    --msch:#cf2f74; --msch-t:#fcedf4;
+    --apsg:#5f7317; --apsg-t:#f1f5e4;
+    --arb:#6d3fd6;  --arb-t:#f2edfd;
+    --warn:#d42a2a; --warn-t:#fdeeee;
+    --add:#8a5a00;  --add-t:#fff3cf;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg)}
+  body{font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);
+       -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .page{width:210mm;height:297mm;margin:0 auto;background:var(--paper);padding:6.5mm 7mm 5mm;
+        display:flex;flex-direction:column;gap:5px;overflow:hidden;position:relative}
+  .page > *{flex-shrink:0}
+  @media screen{ .page{margin:16px auto;box-shadow:0 4px 30px rgba(15,30,61,.15)} }
+  @media print{ html,body{background:#fff} .page{margin:0;box-shadow:none} }
+
+  svg.i{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+  /* ---------- Header ---------- */
+  .hdr{background:var(--navy);color:#fff;border-radius:10px;padding:8px 10px 8px 10px;display:flex;gap:11px;align-items:center;position:relative;overflow:hidden}
+  .hdr::before{content:"§";position:absolute;right:250px;top:-38px;font-size:150px;font-weight:800;color:rgba(255,255,255,.045);font-family:"Inter Display",sans-serif;line-height:1}
+  .hdr .logo{width:42px;height:42px;border-radius:10px;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-size:25px;flex:none}
+  .hdr h1{font-family:"Inter Display","Inter",sans-serif;font-size:24px;line-height:1;font-weight:800;letter-spacing:-.4px}
+  .hdr h1 small{display:block;font-size:13.5px;font-weight:700;color:var(--gold);letter-spacing:0;margin-top:2px}
+  .hdr .sub{font-size:8.4px;color:#c6cfe2;margin-top:3px;letter-spacing:.2px}
+  .hdr .def{margin-left:auto;width:318px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:8px;padding:5px 8px;font-size:8.2px;line-height:1.35;color:#e5eaf5;position:relative;z-index:1}
+  .hdr .def b{color:#fff}
+  .hdr .def .u{display:inline-flex;align-items:center;gap:2px;color:var(--gold);font-weight:700}
+
+  /* ---------- Tags ---------- */
+  .tag{display:inline-flex;align-items:center;gap:2.5px;font-size:7.2px;font-weight:700;letter-spacing:.25px;border-radius:99px;padding:1.5px 5px 1.5px 4px;text-transform:uppercase;line-height:1.1;white-space:nowrap}
+  .tag svg{font-size:8.3px}
+  .tag.demo{background:#fff;color:var(--ang);border:1px dashed var(--ang)}
+  .tag.tax{background:var(--ink);color:#fff;border:1px solid var(--ink)}
+  .tag.form{background:#fff;color:var(--bag);border:1px solid var(--bag)}
+  .tag.court{background:#fff;color:var(--ink);border:1px solid var(--ink)}
+  .ico{display:inline-grid;place-items:center;width:13px;height:13px;border-radius:50%;font-size:8px;vertical-align:-2.5px;flex:none}
+  .ico.late{background:var(--add-t);color:var(--add);border:1px solid #e2c36f}
+  .ico.mood{background:#fff;color:var(--msch);border:1px solid var(--msch)}
+
+  /* ---------- Legend line ---------- */
+  .legend{display:flex;flex-wrap:nowrap;align-items:center;justify-content:space-between;gap:6px;font-size:7.6px;color:var(--ink2);padding:3px 8px;border:1px solid var(--line);border-radius:7px;background:#fafbfc}
+  .legend .k{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+  .legend .lt{font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.8px;font-size:7.4px}
+
+  /* ---------- Section titles ---------- */
+  .sec{display:flex;align-items:center;gap:6px;font-size:8.4px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--ink);line-height:1;margin-top:1px}
+  .sec .n{width:15px;height:15px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:8px;letter-spacing:0}
+  .sec::after{content:"";flex:1;height:1px;background:var(--line)}
+  .sec .hint{font-weight:600;letter-spacing:.1px;text-transform:none;color:var(--mute);font-size:8px}
+
+  /* ---------- Cards ---------- */
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:7px;align-items:stretch}
+  .col{display:flex;flex-direction:column;gap:6px}
+  .card{border-radius:9px;border:1.2px solid color-mix(in srgb,var(--c) 32%,transparent);background:#fff;overflow:hidden;display:flex;flex-direction:column}
+  .card .ch{background:var(--c);color:#fff;padding:5px 8px 5px 7px;display:flex;align-items:center;gap:7px}
+  .card .ch .ic{width:25px;height:25px;border-radius:7px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:15px;flex:none}
+  .card .ch .t{display:flex;flex-direction:column;line-height:1.1}
+  .card .ch .t b{font-size:12.2px;font-weight:800;letter-spacing:-.1px}
+  .card .ch .t span{font-size:8px;opacity:.92;font-weight:500}
+  .card .ch .tags{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end}
+  .card .ch .tag.demo{border-color:#fff;color:#fff;background:transparent}
+  .card .ch .tag.tax{background:#fff;color:var(--c);border-color:#fff}
+  .card .ch .tag.form{background:transparent;color:#fff;border-color:#fff}
+  .card .note{background:var(--t);font-size:7.9px;color:var(--ink2);padding:3px 8px;line-height:1.3;border-bottom:1px solid color-mix(in srgb,var(--c) 18%,transparent)}
+  .card .note b{color:var(--c)}
+
+  ul.list{list-style:none;padding:2px 8px 4px 7px}
+  .it{display:grid;grid-template-columns:18px 25px 1fr;align-items:start;gap:0 4px;padding:3px 0;border-bottom:1px dotted #e0e4ea;font-size:8.95px;line-height:1.28}
+  .it:last-child{border-bottom:none}
+  .it .ic{width:18px;height:18px;border-radius:5px;background:var(--t);color:var(--c);display:grid;place-items:center;font-size:11px;margin-top:-1px}
+  .it .no{font-weight:800;color:var(--c);font-size:8.4px;white-space:nowrap;padding-top:.5px;font-variant-numeric:tabular-nums}
+  .it .tx .s{display:block;font-size:7.7px;color:var(--mute);line-height:1.22;margin-top:.5px}
+  .add{background:var(--add-t);color:var(--add);border-radius:3px;padding:0 3px;font-weight:600;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .add::before{content:"+ ";font-weight:800}
+
+  .bag ul.list{column-count:2;column-gap:16px;column-rule:1px solid #edf0f3}
+  .bag .it{break-inside:avoid}
+
+  /* Spezialität box */
+  .spez{flex:1;border-radius:9px;border:1.2px dashed #b9c1cf;background:#f7f9fb;padding:6px 9px;display:flex;gap:8px;align-items:flex-start;font-size:8.2px;line-height:1.34;color:var(--ink2)}
+  .spez .bi{font-size:18px;color:var(--ink);margin-top:1px}
+  .spez b{color:var(--ink)}
+  .spez .h{font-weight:800;color:var(--ink);font-size:8.6px;text-transform:uppercase;letter-spacing:.6px;display:block;margin-bottom:1px}
+  .spez ul{list-style:none;margin-top:2px}
+  .spez li{padding-left:9px;position:relative}
+  .spez li::before{content:"";position:absolute;left:1px;top:5px;width:4px;height:4px;border-radius:50%;background:var(--ink2)}
+
+  /* ---------- Comparison table ---------- */
+  .cmp{border:1.2px solid #cdd3de;border-radius:10px;overflow:hidden;background:#fff}
+  .cmp .banner{background:linear-gradient(90deg,#16243f,#2b3c63);color:#fff;padding:5px 9px;display:flex;align-items:center;gap:7px;font-size:8.6px;line-height:1.25}
+  .cmp .banner .ic{font-size:17px;color:var(--gold)}
+  .cmp .banner b{font-size:10.2px}
+  .cmp .banner .r{margin-left:auto;font-size:7.8px;color:#cfd7ea;text-align:right;line-height:1.25}
+  .grid{display:grid;grid-template-columns:54px repeat(3,1fr)}
+  .grid > div{border-bottom:1px solid var(--line);border-left:1px solid var(--line);padding:3.5px 6px;font-size:8.75px;line-height:1.28}
+  .grid > div.lab{border-left:none;background:#f6f7f9;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px;font-size:7.2px;font-weight:700;color:var(--ink2);line-height:1.12;padding:3px 2px}
+  .grid > div.lab svg{font-size:14px;color:var(--ink)}
+  .grid > div.colh{padding:0;border-left:1px solid rgba(255,255,255,.35)}
+  .colh .ch{background:var(--c);color:#fff;padding:4px 6px 5px;display:flex;align-items:flex-start;gap:6px;height:100%}
+  .colh .ch .ic{width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:13px;flex:none;margin-top:1px}
+  .colh .ch b{display:block;font-size:10.8px;line-height:1.1}
+  .colh .ch span{font-size:7.3px;opacity:.95;line-height:1.2;display:block}
+  .colh .ch span.w{opacity:1;font-weight:600;margin-top:1px}
+  .z{display:inline-block;background:var(--c);color:#fff;font-weight:800;font-size:7.8px;border-radius:4px;padding:0 4px;margin-right:3px;font-variant-numeric:tabular-nums;line-height:1.45;vertical-align:.5px}
+  .cell.none{background:repeating-linear-gradient(-45deg,#fafbfc,#fafbfc 5px,#f0f2f5 5px,#f0f2f5 10px);color:var(--mute);font-style:italic;display:flex;align-items:center;justify-content:center;text-align:center;font-size:8px}
+  .cell.warn{background:var(--warn-t);outline:1.5px dashed var(--warn);outline-offset:-3px;color:#7d1414;font-size:8.15px;line-height:1.26;padding:5px 8px!important}
+  .cell.warn .wt{display:flex;align-items:center;gap:4px;font-weight:800;color:var(--warn);font-size:8.3px;margin-bottom:1px;text-transform:uppercase;letter-spacing:.4px}
+  .cell.warn strong{color:var(--warn)}
+  .merged{grid-column:2 / span 3;padding:2.5px 0 3.5px!important;background:#f9fafc}
+  .merged .zs{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;margin-bottom:1px}
+  .merged .zs > span{display:flex;justify-content:center;gap:2px;align-items:center}
+  .merged .mt{text-align:center;padding:0 10px}
+  .merged .same{display:inline-block;font-size:6.6px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.5px;border:1px solid #d3d8e0;border-radius:99px;padding:0 5px;margin-left:5px;vertical-align:1px;background:#fff}
+  .grid > div.foot{background:#fbfbfc;font-size:7.8px;color:var(--ink2);border-bottom:none;line-height:1.28}
+  .grid > div.foot b{color:var(--c)}
+  .grid > div.lab.footlab{border-bottom:none}
+
+  .ft{display:flex;justify-content:space-between;align-items:center;font-size:7.3px;color:var(--mute);margin-top:auto}
+  .ft span{display:inline-flex;align-items:center;gap:4px}
+  .ft b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<!-- ===== Icon sprite (line icons) ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-door" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></symbol>
+    <symbol id="i-brief" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+    <symbol id="i-hat" viewBox="0 0 24 24"><path d="M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5"/><path d="M14 6a6 6 0 0 1 6 6v3"/><path d="M4 15v-3a6 6 0 0 1 6-6"/><rect x="2" y="15" width="20" height="4" rx="1"/></symbol>
+    <symbol id="i-cap" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol>
+    <symbol id="i-baby" viewBox="0 0 24 24"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-coins" viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></symbol>
+    <symbol id="i-userx" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" x2="22" y1="8" y2="13"/><line x1="22" x2="17" y1="8" y2="13"/></symbol>
+    <symbol id="i-swords" viewBox="0 0 24 24"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" x2="9" y1="14" y2="18"/><line x1="7" x2="4" y1="17" y2="20"/><line x1="3" x2="5" y1="19" y2="21"/></symbol>
+    <symbol id="i-calx" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="m14 14-4 4"/><path d="m10 14 4 4"/></symbol>
+    <symbol id="i-bars" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 3v18"/><path d="M12 3v18"/><path d="M16 3v18"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+    <symbol id="i-filex" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m14.5 12.5-5 5"/><path d="m9.5 12.5 5 5"/></symbol>
+    <symbol id="i-gavel" viewBox="0 0 24 24"><path d="m14.5 12.5-8 8a2.119 2.119 0 1 1-3-3l8-8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/></symbol>
+    <symbol id="i-unlock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></symbol>
+    <symbol id="i-mega" viewBox="0 0 24 24"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+    <symbol id="i-wine" viewBox="0 0 24 24"><path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/></symbol>
+    <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></symbol>
+    <symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></symbol>
+    <symbol id="i-clipx" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m15 11-6 6"/><path d="m9 11 6 6"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></symbol>
+    <symbol id="i-listplus" viewBox="0 0 24 24"><path d="M11 12H3"/><path d="M16 6H3"/><path d="M16 18H3"/><path d="M18 9v6"/><path d="M21 12h-6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol>
+  </defs>
+</svg>
+
+<div class="page">
+
+  <!-- ================= HEADER ================= -->
+  <header class="hdr">
+    <div class="logo"><svg class="i"><use href="#i-door"/></svg></div>
+    <div>
+      <h1>Entlassungsgründe<small>im österreichischen Arbeitsrecht</small></h1>
+      <div class="sub">Gesetzliche Entlassungsgründe nach den Spezialgesetzen · Lernübersicht</div>
+    </div>
+    <div class="def">
+      <b>Fristlose Entlassung</b> = dienstgeberseitige sofortige Auflösung des Dienstverhältnisses aus wichtigem Grund. Muss
+      <span class="u"><svg class="i"><use href="#i-clock"/></svg>unverzüglich</span> nach Kenntnis ausgesprochen werden, sonst ist der Grund verwirkt.
+    </div>
+  </header>
+
+  <!-- ================= LEGEND ================= -->
+  <div class="legend">
+    <span class="lt">Legende</span>
+    <span class="k"><span class="tag demo"><svg class="i"><use href="#i-listplus"/></svg>demonstrativ</span>beispielhaft</span>
+    <span class="k"><span class="tag tax"><svg class="i"><use href="#i-lock"/></svg>taxativ</span>abschließend</span>
+    <span class="k"><span class="tag court"><svg class="i"><use href="#i-scale"/></svg>Gericht</span>Zustimmung vorher</span>
+    <span class="k"><span class="ico late"><svg class="i"><use href="#i-clock"/></svg></span>Zustimmung nachträglich</span>
+    <span class="k"><span class="ico mood"><svg class="i"><use href="#i-heart"/></svg></span>Gemütszustand</span>
+    <span class="k"><span class="add">Ergänzung</span>lt. Skript</span>
+  </div>
+
+  <!-- ================= SECTION 1 ================= -->
+  <div class="sec"><span class="n">1</span>Allgemeine Entlassungsgründe nach Arbeitnehmergruppe</div>
+
+  <div class="row2">
+    <div class="col">
+      <!-- AngG -->
+      <article class="card" style="--c:var(--ang);--t:var(--ang-t)">
+        <div class="ch">
+          <span class="ic"><svg class="i"><use href="#i-brief"/></svg></span>
+          <div class="t"><b>§ 27 AngG</b><span>Angestelltengesetz · Angestellte</span></div>
+          <div class="tags"><span class="tag demo"><svg class="i"><use href="#i-listplus"/></svg>demonstrative Aufzählung</span></div>
+        </div>
+        <div class="note">Als <b>einziges</b> Gesetz mit „<b>insbesondere</b>“ → auch andere, gleich schwere Gründe denkbar.</div>
+        <ul class="list">
+          <li class="it"><span class="ic"><svg class="i"><use href="#i-coins"/></svg></span><span class="no">Z 1</span>
+            <span class="tx">Untreue, unberechtigte Vorteilsannahme; Vertrauensunwürdigkeit
+              <span class="s">Vertrauensunwürdigkeit nur bei Angestellten – schon Fahrlässigkeit genügt</span></span></li>
+          <li class="it"><span class="ic"><svg class="i"><use href="#i-userx"/></svg></span><span class="no">Z 2</span>
+            <span class="tx">Dienstunfähigkeit</span></li>
+          <li class="it"><span class="ic"><svg class="i"><use href="#i-swords"/></svg></span><span class="no">Z 3</span>
+            <span class="tx">Selbständige unternehmerische Tätigkeit oder Konkurrenzierung des Dienstgebers</span></li>
+          <li class="it"><span class="ic"><svg class="i"><use href="#i-calx"/></svg></span><span class="no">Z 4</span>
+            <span class="tx">Dienstversäumnis während einer den Umständen nach erheblichen Zeit; beharrliche Dienstverweigerung
+              <span class="add">Verleitung anderer zum Ungehorsam</span></span></li>
+          <li class="it"><span class="ic"><svg class="i"><use href="#i-bars"/></svg></span><span class="no">Z 5</span>
+            <span class="tx">Längere Freiheitsstrafe oder Abwesenheit während einer den Umständen nach erheblichen Zeit
+              <span class="s">ausgenommen Krankheit oder Unglücksfall</span></span></li>
+          <li class="it"><span class="ic"><svg class="i"><use href="#i-zap"/></svg></span><span class="no">Z 6</span>
+            <span class="tx">Tätlichkeiten; Verletzungen der Sittlichkeit; erhebliche Ehrverletzungen</span></li>
+        </ul>
+      </article>
+
+      <div class="spez">
+        <svg class="i bi"><use href="#i-layers"/></svg>
+        <div>
+          <span class="h">Grundsatz der Spezialität</span>
+          Solange der besondere Schutz nach <b>MSchG/VKG, APSG</b> oder <b>ArbVG</b> besteht, gelten <b>ausschließlich deren</b> Entlassungsgründe – AngG bzw. GewO sind dann nicht anwendbar.
+          <ul>
+            <li>Dort fehlt die <b>Vertrauensunwürdigkeit</b>.</li>
+            <li>Dienstunfähigkeit ist dort nur <b>Kündigungsgrund</b>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- GewO -->
+    <article class="card" style="--c:var(--gew);--t:var(--gew-t)">
+      <div class="ch">
+        <span class="ic"><svg class="i"><use href="#i-hat"/></svg></span>
+        <div class="t"><b>§ 82 GewO 1859</b><span>Gewerbeordnung 1859 · Arbeiter</span></div>
+        <div class="tags"><span class="tag tax"><svg class="i"><use href="#i-lock"/></svg>taxative Aufzählung</span></div>
+      </div>
+      <div class="note">Bloße Vertrauensunwürdigkeit, Untreue, Geschenkannahme: bei Arbeitern <b>kein</b> Grund.</div>
+      <ul class="list">
+        <li class="it"><span class="ic"><svg class="i"><use href="#i-filex"/></svg></span><span class="no">lit a</span>
+          <span class="tx">Vorlage falscher Arbeitspapiere</span></li>
+        <li class="it"><span class="ic"><svg class="i"><use href="#i-userx"/></svg></span><span class="no">lit b</span>
+          <span class="tx"><span class="add">Dienstunfähigkeit (Unfähigkeit zur vereinbarten Arbeit)</span></span></li>
+        <li class="it"><span class="ic"><svg class="i"><use href="#i-wine"/></svg></span><span class="no">lit c</span>
+          <span class="tx">Trunksucht <span class="s" style="display:inline">· nur nach wiederholter fruchtloser Verwarnung</span></span></li>
+        <li class="it"><span class="ic"><svg class="i"><use href="#i-gavel"/></svg></span><span class="no">lit d</span>
+          <span class="tx">Diebstahl, Veruntreuung oder sonstige strafbare Handlungen</span></li>
+        <li class="it"><span class="ic"><svg class="i"><use href="#i-unlock"/></svg></span><span class="no">lit e</span>
+          <span class="tx">Verrat von Betriebsgeheimnissen oder Betreiben eines abträglichen Nebengeschäfts</span></li>
+        <li class="it"><span class="ic"><svg class="i"><use href="#i-mega"/></svg></span><span class="no">lit f</span>
+          <span class="tx">Dienstversäumnis während einer den Umständen nach erheblichen Zeit; beharrliche Pflichtenvernachlässigung; unbefugtes Verlassen des Arbeitsplatzes; Aufforderung zum Ungehorsam</span></li>
+        <li class="it"><span class="ic"><svg class="i"><use href="#i-flame"/></svg></span><span class="no">lit g</span>
+          <span class="tx">Tätlichkeiten und erhebliche Ehrverletzungen; Gefährlicher Umgang mit Feuer und Licht</span></li>
+        <li class="it"><span class="ic"><svg class="i"><use href="#i-thermo"/></svg></span><span class="no">lit h</span>
+          <span class="tx">Abschreckende Krankheit; selbstverschuldete Arbeitsunfähigkeit</span></li>
+        <li class="it"><span class="ic"><svg class="i"><use href="#i-bars"/></svg></span><span class="no">lit i</span>
+          <span class="tx">Dienstabwesenheit und gefängliche Anhaltung durch mehr als 14 Tage</span></li>
+      </ul>
+    </article>
+  </div>
+
+  <!-- ================= SECTION 2 ================= -->
+  <div class="sec"><span class="n">2</span>Lehrlinge – vorzeitige Auflösung durch den Lehrberechtigten</div>
+
+  <article class="card bag" style="--c:var(--bag);--t:var(--bag-t)">
+    <div class="ch">
+      <span class="ic"><svg class="i"><use href="#i-cap"/></svg></span>
+      <div class="t"><b>§ 15 Abs. 3 BAG</b><span>Berufsausbildungsgesetz · Lehrlinge</span></div>
+      <div class="tags"><span class="tag tax"><svg class="i"><use href="#i-lock"/></svg>taxative Aufzählung</span><span class="tag form"><svg class="i"><use href="#i-pen"/></svg>zwingend Schriftform</span></div>
+    </div>
+    <div class="note"><b>Schriftform</b> = Wirksamkeitsvoraussetzung (§ 15 Abs. 2 BAG, eigenhändige Unterschrift – SMS/E-Mail genügt <b>nicht</b>) · ohne gültigen Grund bleibt das Lehrverhältnis aufrecht.</div>
+    <ul class="list">
+      <li class="it"><span class="ic"><svg class="i"><use href="#i-gavel"/></svg></span><span class="no">lit a</span>
+        <span class="tx">Diebstahl, Veruntreuung oder sonstige strafbare Handlung / Haft von mehr als 1 Monat (ausgenommen Untersuchungshaft)</span></li>
+      <li class="it"><span class="ic"><svg class="i"><use href="#i-zap"/></svg></span><span class="no">lit b</span>
+        <span class="tx">Tätliche oder erhebliche wörtliche Beleidigung, gefährliche Bedrohung / Verleitung zu betrieblicher Ungehorsamkeit oder unsittlichen/gesetzwidrigen Handlungen</span></li>
+      <li class="it"><span class="ic"><svg class="i"><use href="#i-clipx"/></svg></span><span class="no">lit c</span>
+        <span class="tx">Beharrliche Pflichtenverletzung oder -vernachlässigung (Betrieb und Berufsschule)
+          <span class="s">trotz wiederholter Ermahnungen</span></span></li>
+      <li class="it"><span class="ic"><svg class="i"><use href="#i-unlock"/></svg></span><span class="no">lit d</span>
+        <span class="tx">Verrat von Geschäfts- oder Betriebsgeheimnissen / abträglicher Nebenerwerb / Entgeltarbeit im Lehrberuf für Dritte</span></li>
+      <li class="it"><span class="ic"><svg class="i"><use href="#i-door"/></svg></span><span class="no">lit e</span>
+        <span class="tx">Unbefugtes Verlassen des Lehrplatzes</span></li>
+      <li class="it"><span class="ic"><svg class="i"><use href="#i-cap"/></svg></span><span class="no">lit f</span>
+        <span class="tx">Unfähigkeit zur Erlangung der Fertigkeiten und Kenntnisse des Lehrberufs
+          <span class="s">nur ohne Aussicht auf Wiedererlangung in der Lehrzeit; schlechte Noten ≠ Grund</span></span></li>
+      <li class="it"><span class="ic"><svg class="i"><use href="#i-share"/></svg></span><span class="no">lit g</span>
+        <span class="tx">Erhebliche Pflichtverletzung im Ausbildungsverbund</span></li>
+    </ul>
+  </article>
+
+  <!-- ================= SECTION 3 ================= -->
+  <div class="sec"><span class="n">3</span>Besonderer Entlassungsschutz im Vergleich<span class="hint">– Zeilen nach Thema geordnet, Z-Nummern beachten!</span></div>
+
+  <section class="cmp">
+    <div class="banner">
+      <svg class="i ic"><use href="#i-scale"/></svg>
+      <div><b>Entlassung nur mit vorheriger Zustimmung des Gerichts (ASG)</b> – sonst rechtsunwirksam</div>
+      <div class="r">Zustimmungsklage = Rechtsgestaltungsklage des Arbeitgebers</div>
+    </div>
+
+    <div class="grid">
+      <!-- column heads -->
+      <div class="lab"><svg class="i"><use href="#i-bulb"/></svg>Thema</div>
+      <div class="colh" style="--c:var(--msch)">
+        <div class="ch"><span class="ic"><svg class="i"><use href="#i-baby"/></svg></span><div><b>§ 12 MSchG / VKG</b><span>Mutterschutzgesetz · Väter-Karenzgesetz</span><span class="w">Schwangere · Karenz · Elternteilzeit</span></div></div>
+      </div>
+      <div class="colh" style="--c:var(--apsg)">
+        <div class="ch"><span class="ic"><svg class="i"><use href="#i-shield"/></svg></span><div><b>§ 15 APSG</b><span>Arbeitsplatzsicherungsgesetz</span><span class="w">Präsenz-, Ausbildungs-, Zivildiener</span></div></div>
+      </div>
+      <div class="colh" style="--c:var(--arb)">
+        <div class="ch"><span class="ic"><svg class="i"><use href="#i-users"/></svg></span><div><b>§ 122 ArbVG</b><span>Arbeitsverfassungsgesetz</span><span class="w">Betriebsräte, BR-Wahlwerber u. ä.</span></div></div>
+      </div>
+
+      <!-- Row: Täuschung -->
+      <div class="lab"><svg class="i"><use href="#i-eyeoff"/></svg>Täuschung</div>
+      <div class="cell none">kein Entlassungsgrund im MSchG</div>
+      <div class="cell" style="--c:var(--apsg)"><span class="z">Z 1</span>Absichtliche Täuschung über Umstände, die für den Vertragsabschluss oder Vollzug wesentlich sind</div>
+      <div class="cell" style="--c:var(--arb)"><span class="z">Z 1</span>Absichtliche Täuschung bei Vertragsabschluss über wesentliche Umstände</div>
+
+      <!-- Row: Pflichtverletzung -->
+      <div class="lab"><svg class="i"><use href="#i-clipx"/></svg>Pflicht&shy;verletzung</div>
+      <div class="cell" style="--c:var(--msch)"><span class="z">Z 1</span><span class="ico mood"><svg class="i"><use href="#i-heart"/></svg></span> Schuldhafte gröbliche Pflichtverletzung (insbesondere Unterlassen der Arbeitsleistung während erheblicher Zeit)</div>
+      <div class="cell" style="--c:var(--apsg)"><span class="z">Z 2</span>Schuldhafte gröbliche Pflichtverletzung (insbesondere Unterlassen der Arbeitsleistung)</div>
+      <div class="cell warn">
+        <div class="wt"><svg class="i"><use href="#i-alert"/></svg>Abgrenzung!</div>
+        Die beharrliche Pflichtenvernachlässigung ist beim Betriebsrat nach <strong>§ 121 Z 3 ArbVG</strong> nur ein <strong>Kündigungsgrund</strong>, <strong>KEIN Entlassungsgrund!</strong></div>
+
+      <!-- Row: Untreue (identisch) -->
+      <div class="lab"><svg class="i"><use href="#i-coins"/></svg>Untreue / Vorteil</div>
+      <div class="merged">
+        <div class="zs"><span><span class="z" style="--c:var(--msch)">Z 2</span></span><span><span class="z" style="--c:var(--apsg)">Z 3</span></span><span><span class="z" style="--c:var(--arb)">Z 3</span></span></div>
+        <div class="mt">Untreue im Dienst oder unberechtigte Vorteilsannahme von dritten Personen<span class="same">gleicher Wortlaut</span></div>
+      </div>
+
+      <!-- Row: Verrat (identisch) -->
+      <div class="lab"><svg class="i"><use href="#i-unlock"/></svg>Geheimnis&shy;verrat</div>
+      <div class="merged">
+        <div class="zs"><span><span class="z" style="--c:var(--msch)">Z 3</span></span><span><span class="z" style="--c:var(--apsg)">Z 4</span></span><span><span class="z" style="--c:var(--arb)">Z 4</span></span></div>
+        <div class="mt">Verrat von Geschäfts- oder Betriebsgeheimnissen oder Betreiben eines abträglichen Nebengeschäfts<span class="same">gleicher Wortlaut</span></div>
+      </div>
+
+      <!-- Row: Tätlichkeiten -->
+      <div class="lab"><svg class="i"><use href="#i-zap"/></svg>Tätlichkeit / Ehre</div>
+      <div class="cell" style="--c:var(--msch)"><span class="z">Z 4</span><span class="ico late"><svg class="i"><use href="#i-clock"/></svg></span> <span class="ico mood"><svg class="i"><use href="#i-heart"/></svg></span> Tätlichkeiten oder erhebliche Ehrverletzungen gegen Dienstgeber, Angehörige oder Mitarbeiter</div>
+      <div class="cell" style="--c:var(--apsg)"><span class="z">Z 5</span>Tätlichkeiten oder erhebliche Ehrverletzungen</div>
+      <div class="cell" style="--c:var(--arb)"><span class="z">Z 5</span><span class="ico late"><svg class="i"><use href="#i-clock"/></svg></span> Tätlichkeiten oder erhebliche Ehrverletzungen</div>
+
+      <!-- Row: Strafbare Handlung (identisch) -->
+      <div class="lab"><svg class="i"><use href="#i-gavel"/></svg>Strafbare Handlung</div>
+      <div class="merged">
+        <div class="zs">
+          <span><span class="z" style="--c:var(--msch)">Z 5</span><span class="ico late"><svg class="i"><use href="#i-clock"/></svg></span></span>
+          <span><span class="z" style="--c:var(--apsg)">Z 6</span></span>
+          <span><span class="z" style="--c:var(--arb)">Z 2</span><span class="ico late"><svg class="i"><use href="#i-clock"/></svg></span></span>
+        </div>
+        <div class="mt">Gerichtlich strafbare Handlung (vorsätzlich mit &gt; 1 Jahr Strafdrohung <b>ODER</b> mit Bereicherungsvorsatz)<span class="same">gleicher Wortlaut</span></div>
+      </div>
+
+      <!-- Footer: Besonderheiten -->
+      <div class="lab footlab"><svg class="i"><use href="#i-clock"/></svg>Nach&shy;träglich?</div>
+      <div class="foot" style="--c:var(--msch)"><b>Ja – bei Z 4 und Z 5</b> darf die Zustimmung nachgeholt werden. Bei Z 1 und Z 4 ist der Gemütszustand (Schwangerschaft/Entbindung) zu berücksichtigen.</div>
+      <div class="foot" style="--c:var(--apsg)"><b>Nein – nie!</b> Keine nachträgliche Zustimmung möglich → Präsenz-/Zivildiener sind am <b>stärksten</b> geschützt.</div>
+      <div class="foot" style="--c:var(--arb)"><b>Ja – bei Z 2 und Z 5</b> (§ 122 Abs. 3 ArbVG). Lehnt das Gericht ab, ist die Entlassung rechtsunwirksam.</div>
+    </div>
+  </section>
+
+  <footer class="ft">
+    <span><svg class="i"><use href="#i-bulb"/></svg><b>Merke:</b> Nur das AngG zählt demonstrativ auf – alle anderen Gesetze taxativ.</span>
+    <span>Basis: WIFI Wien · Arbeitsrecht Teil 1 + 2 (Skript &amp; Folien 2026/27) · Lernmaterial ohne Gewähr</span>
+  </footer>
+</div>
+</body>
+</html>
