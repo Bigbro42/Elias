@@ -16,6 +16,7 @@ Datei: `Energy_Cluster_Norway_v5.pptx` · **20 Folien** · Notizen: ca. 3.400 W�
 | E | 16–18 | Value Proposition, Pipeline mit Mechanismus, Empfehlungen | 4,5 |
 | F | 19–20 | Roadmap mit Shared Value, Schluss mit Grenzen der Analyse | 2,5 |
 
+- **Roter Faden über die Zitate:** Die Person, die mit Porter eröffnet (Folie 1), spricht auch die letzten 30 Sekunden auf Folie 20: CEO-Zitat und Rückbezug „created, not inherited — one order at a time“. So schließt sich der Kreis hörbar. Das Zitat langsam sprechen, kurze Pause, dann der Rückbezug.
 - Daniel hat das Interview geführt und passt deshalb gut zu Folie 11 (ECN mit CEO-Zitat). In der Q&A kann er die Fragen zum CEO übernehmen.
 - Person F hat weniger Redezeit und kann dafür die Q&A moderieren.
 - Die Notizen sind ausformuliert, damit die Zeit stimmt. **Nicht ablesen**, sondern in eigenen Worten sprechen. Laut Syllabus ist KI während Präsentation und Diskussion nicht erlaubt.

@@ -4,8 +4,32 @@ Please redesign the deck "Energy_Cluster_Norway_2.pptx" (20 slides) to be **simp
 
 - **Feel:** smooth and simple, lots of white space, one message per slide. The slide shows the picture, the speaker tells the story.
 - **Keep:** colour palette (Navy #0E2433, Teal #1D7874, Orange #B85C1E for watch points/weak spots, sand background #F5F3EE), fonts (Source Serif 4 headlines, Public Sans text), section footer ("1 DIAGNOSIS · 03/20"), 20 slides in the same order.
-- **Text budget:** at most **35 words** of body text per slide. The headline, the source line and chart labels do not count. No paragraphs; short phrases only.
-- **Graphics:** use one consistent line-icon style (thin strokes, Navy/Teal), simple stylised maps (no detailed geography), native charts, big numbers. Be creative within the palette.
+- **Text budget:** at most **35 words** of body text per slide. The headline, the source line, chart labels and the quote slides do not count. No paragraphs; short phrases only.
+- **Exception for data slides 4 and 10:** these are dashboards. Every figure listed there must stay (the syllabus requires them). Keep their labels at no more than 6 words.
+- **Graphics:** use one consistent line-icon style (thin strokes, Navy/Teal, no clip-art), native charts, big numbers. Be creative within the palette.
+- **Maps:** simple, abstract outline maps. Pins must sit in the right places:
+  - Bergen and Øygarden on the west coast
+  - Stavanger in the south-west
+  - Oslo in the south-east
+  - Aberdeen on Scotland's east coast
+  - Esbjerg on Denmark's west coast
+  - Rotterdam on the Dutch coast
+
+  No borders or regions that could be read as exact.
+- **Not colour alone:** status is shown by colour **and** shape:
+  - Teal = filled dot (strength)
+  - Orange = ring (watch point)
+  - Grey = dash (neutral)
+
+  The slides must still work in black and white and for colour-blind viewers.
+- **Animation (optional, subtle):** fade-in only, on click.
+  - Slide 2: "Inherited" → arrow → "Created"
+  - Slide 12: the Demand corner highlighted last
+  - Slide 17: gates 1 → 6, gate 5 last
+  - Slide 20: the quote first, then the callback
+
+  No other effects.
+- **Figures:** the slides may only contain figures from the list "Number lock" at the end of this prompt, exactly as written there.
 - **Font sizes:** big numbers at least 36 pt; body at least 16 pt; labels at least 12 pt; the source line stays 10–11 pt Muted at the bottom (academic requirement, keep it on every slide that has data).
 - **Red thread:** the deck opens with a quote by Michael Porter and closes with a quote by ECN's CEO, followed by a callback to the opening quote (slides 1 and 20).
 - **Speaker notes:** keep all notes as they are, except the changes listed under "Speaker notes" at the end.
@@ -17,7 +41,7 @@ Please redesign the deck "Energy_Cluster_Norway_2.pptx" (20 slides) to be **simp
 **1 · Title – opening quote** (full-bleed Navy)
 - Large serif italic quote, centred: **“National prosperity is created, not inherited.”**
 - Below it, small: "— Michael E. Porter, 1990"
-- Thin divider, then the title block: "Energy Cluster Norway" / "From inherited to created prosperity"
+- Thin divider, then the title block: "Energy Cluster Norway" (at least 40 pt, clearly readable as the title) / "From inherited to created prosperity"
 - Names (two lines, no name split) and the course line, small.
 - Source (tiny): "Porter (1990), Harvard Business Review."
 
@@ -37,9 +61,9 @@ Please redesign the deck "Energy_Cluster_Norway_2.pptx" (20 slides) to be **simp
 **4 · Strong buffers, weak commercial output** – dashboard
 - Two rows of 6 tiles each: big number, label of at most 6 words, status dot (Teal = strength, Orange = watch point). Row headings: "MACRO" and "MICRO".
 - MACRO:
-  - +1.7% · mainland GDP 2025 (teal)
+  - +1.7% · mainland GDP 2025 (grey, neutral)
   - 3.3% · CPI Aug 2026, target 2% (orange)
-  - 4.5% · policy rate, raised Sept 2026 (orange)
+  - 4.5% · policy rate, raised Sept 2026 (grey, neutral)
   - 4.7% · unemployment, June 2026 (teal)
   - 2.7% · fund spending 2026–27, rule 3% (teal)
   - 12.6% · non-oil deficit, % mainland GDP (orange)
@@ -49,7 +73,7 @@ Please redesign the deck "Energy_Cluster_Norway_2.pptx" (20 slides) to be **simp
   - 165 · tertiary education, EU = 100 (teal)
   - #30 · intellectual assets, of 40 (orange)
   - #18 · IMD ranking 2026, −6 places (orange)
-  - USD 8bn · FDI net inflows 2023 (teal)
+  - USD 8bn · FDI net inflows 2023 (grey, neutral)
 - Source line (keep): "Data as of November 2026. Sources: Statistics Norway (2026); Norges Bank (2026); Ministry of Finance (2026a, 2026c); IMD (2026); Norwegian Petroleum (2026); Norwep (2025); World Bank; EC (2026b)."
 
 **5 · Strong in collaboration, weak in commercial results**
@@ -172,12 +196,13 @@ Please redesign the deck "Energy_Cluster_Norway_2.pptx" (20 slides) to be **simp
 - Small line: "Shared value: Northern Lights and Hywind Tampen create exports and cut emissions."
 
 **20 · Closing quote** (full-bleed Navy, mirrors slide 1)
-- Large serif italic quote: **“These are the most important tasks and milestones, and they will be decisive in determining whether ECN can be considered a success.”**
+- Large serif italic quote: **“[These milestones] will be decisive in determining whether ECN can be considered a success.”**
 - Below it, small: "— Owe Hagesæther, CEO of Energy Cluster Norway, 2026"
 - Callback in Teal, large: **"Our answer: success means first orders. Prosperity is created, not inherited — one order at a time."**
-- Three small words in a row: "Diagnosis: high but declining · Bottleneck: demand at scale · Role of ECN: one pipeline"
-- Very small line: "Limits: EIS output partly reflects petroleum exports · two state-backed cases · one interview."
-- "Thank you. We look forward to your questions."
+- Very small line at the bottom: "Limits: EIS output partly reflects petroleum exports · two state-backed cases · one interview."
+- "Thank you." in the bottom right corner.
+- Leave out the earlier three-part summary (Diagnosis / Bottleneck / Role of ECN). It is spoken in the notes.
+- Quote rule: the square brackets mark our insertion, which replaces "These are the most important tasks and milestones, and they". Keep the brackets.
 
 ---
 
@@ -200,6 +225,30 @@ Keep all notes, with these changes.
 
 ---
 
+## Number lock (the only figures allowed on the slides)
+
+| Slide | Allowed figures |
+|---|---|
+| 1 | 1990 |
+| 3 | Norway 91k; avg approx. 51k; Norway 180k; avg approx. 100k; 0.9% vs avg 1.8%; 0.8% vs avg 1.1%; 2014–2024; 2024; 2021 (price base in the axis label) |
+| 4 | +1.7% (2025); 3.3% (Aug 2026), target 2%; 4.5% (Sept 2026); 4.7% (June 2026); 2.7% (2026–27), rule 3%; 12.6%; 57%; NOK 200bn (2025, forecast); 165; #30 of 40; #18 (2026), −6; USD 8bn (2023) |
+| 5 | 236.7; 165.2; 64.8; 49.1; 47.8; 2.6; ranks 2, 18, 30, 29, 38 of 40; EU = 100; 115.7, rank 10 (source line) |
+| 6 | 5.6m; 1994; 3%; 2% |
+| 7 | 78%; 67% |
+| 8 | 1960s–70s, 1980s–90s, 2000s, 2014–20, 2021–26; 1969; 1972; 1996; 2001; 2009; 2014; 2019; 2020; 2025; 2026 |
+| 10 | NOK 200bn (2025, forecast); 350+ (2026); 67%; 1.5 → 5+ Mt; 67k → 69k (2014 → 2025); ≈ 17% (2023) |
+| 11 | 100+; 2027; 3 regions; ⅓ |
+| 13 | – (no figures needed) |
+| 14 | 2009; 2022/23; 2020; 2025; 1996; NOK 35bn (optional) |
+| 15 | 2022; 24.8 GW; 14.6 GW; 2025; 2.5 Mt; Northern Lights 2025; Hywind Tampen 2022 |
+| 17 | Gates 1–6; 1990 (Cooper); 2026 (interview) |
+| 19 | 0–12, 12–36, 36–60 months |
+| 20 | 2026 |
+
+Not covered by this list: years in source lines and in citations, e.g. "OECD (2026)" and "Cooper (1990)", and section footers ("03/20"). Any other figure, or a change to one of these, is an error.
+
+---
+
 ## Final check
 
 - [ ] 20 slides, same order.
@@ -210,3 +259,6 @@ Keep all notes, with these changes.
 - [ ] Nowhere does it say "cross-border storage in operation"; it says "contracts".
 - [ ] No overflow, consistent icon style.
 - [ ] Notes changed only on slides 1, 5, 6, 13, 14, 15 and 20.
+- [ ] All figures match the "Number lock" list.
+- [ ] Status markers distinguishable by shape (dot / ring / dash), not only by colour.
+- [ ] Pins on the maps in the right places.
