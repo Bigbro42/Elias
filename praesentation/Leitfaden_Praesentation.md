@@ -22,24 +22,14 @@ Datei: `Energy_Cluster_Norway_v5.pptx` · **20 Folien** · Notizen: ca. 3.400 W�
 
 ---
 
-## 2. Vor der Abgabe am 17.11.: Belege prüfen
+## 2. Vorgehen bis zur Abgabe am 17.11.: Inhalt einfrieren
 
-Diese Werte stehen neu auf den Folien. Ich habe sie nur aus Suchergebnissen übernommen, denn die Originalseiten waren aus meiner Sitzung nicht erreichbar. **Bitte jede Zahl an der Originalquelle prüfen.**
+1. **Werte am Original prüfen** (≈ 30 Min, eine Person): `Belegmatrix_v6.md`, Abschnitt 0. Jeder Wert wird in der Primärquelle bestätigt. Was nicht bestätigt werden kann, ersetzt die dort genannte Ausweichlösung.
+2. **Prompt anpassen und absenden:** `Prompt_Design_v6.md` an den Designer, zusammen mit der aktuellen Präsentation.
+3. **Inhalt einfrieren.** Datenstand ist „November 2026“. Danach werden keine Zahlen oder Formulierungen mehr geändert, nur noch Fehler korrigiert. Den gleichen Datenstand nennt auch der Bericht.
+4. **Endkontrolle der Designer-Fassung:** Checkliste am Ende des Prompts abhaken.
 
-| Folie | Wert | Quelle prüfen |
-|---|---|---|
-| 10 | 67k (2014) → 69k (2025, Schätzung) direkt Beschäftigte; erstmaliger Rückgang 2014–18; etwa 95.000 in der Zulieferindustrie | Norsk Petroleum: norskpetroleum.no/en/economy/employment/ |
-| 10 | Zulieferumsatz 2024 gut 600 Mrd. NOK, davon 497 Mrd. NOK im Bereich Erdöl, also ≈ 17 % außerhalb | Bisher nur über EnergyWatch belegt. **Den Originalbericht finden und zitieren**, vermutlich die jährliche Analyse der Zulieferindustrie |
-| 10 (Notiz) | Zulieferer für Offshore-Wind: 60,3 Mrd. NOK (2024), 64 Mrd. NOK (2025) | Norwegian Offshore Wind / Bericht „LeverandørKRAFT“ |
-| 15 | Aberdeen (ScotWind, CCS-Pläne), Esbjerg (Hafen für Offshore-Wind, dänische CO₂-Speicher), Rotterdam (größter Hafen Europas, CCS) | Für jeden Standort eine Quelle suchen |
-| 7, 13 | Enova hat Hywind Tampen gefördert | Quelle ergänzen (Enova oder Equinor) |
-| 17 | Cooper (1990), Stage-Gate | Ins Literaturverzeichnis des Berichts aufnehmen |
-
-Falls ein Wert nicht stimmt: Zahl auf der Folie, in der Notiz und im Bericht gleichzeitig ändern.
-
-**Statistics Norway zählt anders** (2014: 83.779 Beschäftigte in Erdöl und verwandten Branchen). Zahlen aus beiden Quellen nicht mischen.
-
----
+Merksatz für die Q&A: Jede Zahl auf den Folien hat ein Jahr und eine Primärquelle, und wer die Folie vorträgt, kennt beide.
 
 ## 3. Technische Prüfung
 
@@ -61,8 +51,8 @@ Falls ein Wert nicht stimmt: Zahl auf der Folie, in der Notiz und im Bericht gle
    Der Kalender ist technologieneutral. Die Technologien konkurrieren über Kosten pro Tonne bzw. pro MWh.
 5. **„Warum sollte Equinor sich früh als Lead Customer verpflichten?“**
    Geteiltes Risiko und eine kofinanzierte erste Einheit. Equinor hat das bei Hywind Tampen bereits getan.
-6. **„Warum dauerte Hywind 13 Jahre und Northern Lights nur 5?“**
-   Bei Northern Lights gab es von Anfang an Ankerkunden und Nachfrage aus dem Ausland. Bei Hywind fehlte lange ein Käufer, bis Equinor den Strom für die eigenen Plattformen nutzte (Folie 14).
+6. **„Die CO₂-Speicherung gibt es in Norwegen doch seit Sleipner 1996. Warum hat das so lange gedauert?“**
+   Genau das stützt unsere These: Die Technik war seit 1996 erprobt, ausgelöst durch die CO₂-Steuer. Einen Markt gab es aber erst, als mit Longship 2020 ein Käufer eingebaut wurde. Bei Hywind dasselbe Muster: Demonstrator 2009, Investitionsentscheidung erst 2019, als Equinor den Strom für die eigenen Felder abnahm.
 7. **„Was unterscheidet ECN von Offshore Norge oder Norwep?“**
    Offshore Norge ist ein Branchenverband, Norwep fördert Exporte. ECN soll als Einziger die Pipeline vom Bedarf bis zum ersten Auftrag koordinieren.
 8. **„Was bedeutet das EWR-Beihilferecht für eure Empfehlungen?“**
@@ -72,11 +62,18 @@ Falls ein Wert nicht stimmt: Zahl auf der Folie, in der Notiz und im Bericht gle
 10. **„Was passiert, wenn das Finanzierungsmodell 2027 scheitert?“**
     Laut CEO ist es einer der beiden entscheidenden Meilensteine. Die Gate-Reviews wären ein Mitgliederservice, der zur Finanzierung beiträgt.
 
+11. **„Warum IMD und nicht der WEF-Index?“**
+    Den Global Competitiveness Index des WEF gibt es seit 2019 nicht mehr. IMD 2026 ist der aktuellste Wettbewerbsvergleich auf Basis von Umfragen. Die WEF-Werte von 2019 zu Institutionen (Rang 8) und Sozialkapital (Rang 3) stehen weiterhin im Bericht.
+12. **„Eure Zahlen stammen aus verschiedenen Jahren (2023, 2025, 2026). Ist das vergleichbar?“**
+    Jede Zahl trägt ihr Jahr. Wir nehmen jeweils den neuesten verfügbaren Primärwert, Stand November 2026. Für die Aussage zählt die Größenordnung: Nur etwa ein Sechstel des Zulieferumsatzes entfällt auf neue Segmente.
+13. **„Ist der Committed Buyer am Ende nicht einfach der Staat?“**
+    Bei den ersten Projekten ja: Enova bei Hywind Tampen, Longship bei Northern Lights. Deshalb soll staatliche Unterstützung an einen benannten Käufer und einen sinkenden Förderpfad geknüpft sein (Folie 18), statt dauerhaft zu subventionieren. Das Beispiel Yara zeigt, dass danach private Nachfrage folgt.
+
 ---
 
 ## 5. Bericht nachziehen (bis 12.12.)
 
-Die neuen Zahlen und Quellen der Folien müssen auch im Bericht stehen, sonst widersprechen sich Bericht und Präsentation wieder:
+Die neuen Zahlen und Quellen der Folien müssen auch im Bericht stehen, mit **demselben Datenstand (November 2026)**, sonst widersprechen sich Bericht und Präsentation wieder:
 - Clusterzahlen in Kap. 5.2 (Plan C1)
 - Konkurrenzstandorte in 8.1 (C5)
 - Mechanismus in 8.3 (C4)

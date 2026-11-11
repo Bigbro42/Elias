@@ -1,4 +1,17 @@
-Please revise the current version of the deck "Energy Cluster Norway" (20 slides, the latest version including all previous corrections). Keep the design system exactly as it is: colours, fonts, components, section footers, layout grid, slide order, 20 slides. Change only what is listed below. Replace texts verbatim (old → new). Each changed speaker note is to be **replaced completely** by the text given here. Purpose of this round: bring the macro data up to date (as of Oct/Nov 2026), remove claims that cannot be sourced, make the time comparison on slide 14 methodologically correct, and update the source lines.
+<!--
+GROUP NOTE (not part of the prompt): Do not send this prompt to the designer until the
+"approval check" in Belegmatrix_v6.md, section 0, is done (≈ 30 minutes, one person, primary sources).
+If a value cannot be confirmed there, use the fallback stated in the matrix and adjust the text below.
+After the designer round the content is FROZEN: no more figures or wording changes, only spotting errors.
+-->
+
+Please revise the current version of the deck "Energy Cluster Norway" (20 slides, the latest version including all previous corrections). Keep the design system exactly as it is: colours, fonts, components, section footers, layout grid, slide order, 20 slides. Change only what is listed below. Replace texts verbatim (old → new). Each changed speaker note is to be **replaced completely** by the text given here, unless it says "insert".
+
+Purpose of this final content round:
+- Fixed data status "November 2026".
+- Every figure with a year and a primary source.
+- Remove claims that cannot be sourced.
+- Remove the methodologically weak bar chart on slide 14.
 
 ---
 
@@ -16,9 +29,9 @@ Value changes (keep the existing colour logic: orange = watch point):
 | Non-oil deficit | 12.6% of mainland trend GDP: leans on the fund | 12.6% of mainland trend GDP (2027 budget): leans on the fund | orange |
 | Survey data | WEF GCI 2019: rank 17; institutions 8th, social capital 3rd | IMD 2026: rank 18 of 70, down six places | orange |
 
-- Source line new: "Sources: Statistics Norway (2026); Norges Bank (2026); Ministry of Finance (2026a, 2026c); IMD (2026); Norwegian Petroleum (2026); Norwep (2026); World Bank; EC (2026b)."
+- Source line new: "Data as of November 2026. Sources: Statistics Norway (2026); Norges Bank (2026); Ministry of Finance (2026a, 2026c); IMD (2026); Norwegian Petroleum (2026); Norwep (2025); World Bank; EC (2026b)."
 - Speaker notes slide 4 (replace completely):
-"Two quick views complete the performance picture. On the macro side, mainland GDP grew by 1.7 percent in 2025, and about the same is expected this year. Inflation is the main macro concern: consumer prices rose 3.3 percent in August, well above the 2 percent target, so Norges Bank raised its policy rate to 4.5 percent in September. Unemployment in the labour force survey was 4.7 percent in June. The fiscal position is exceptional: the government spends 2.7 percent of the oil fund in 2026 and plans the same for 2027, below the 3 percent rule. But the structural non-oil deficit equals 12.6 percent of mainland trend GDP, so the budget leans heavily on the fund. On the micro side, petroleum still dominates goods exports, while energy suppliers export around 200 billion kroner. Education is a clear strength, but intellectual assets rank only 30th and business R&D is at 65 percent of the EU average. In the IMD ranking, Norway fell six places to 18th in 2026. The orange items are the watch points: the macro buffers are strong, the commercial output is weak."
+"Two quick views complete the performance picture, with data as of November 2026. On the macro side, mainland GDP grew by 1.7 percent in 2025, and about the same is expected this year. Inflation is the main macro concern: consumer prices rose 3.3 percent in August, well above the 2 percent target, so Norges Bank raised its policy rate to 4.5 percent in September. Unemployment in the labour force survey was 4.7 percent in June. The fiscal position is exceptional: the government spends 2.7 percent of the oil fund in 2026 and plans the same for 2027, below the 3 percent rule. But the structural non-oil deficit equals 12.6 percent of mainland trend GDP, so the budget leans heavily on the fund. On the micro side, petroleum still dominates goods exports. Education is a clear strength, but intellectual assets rank only 30th and business R&D is at 65 percent of the EU average. In the IMD ranking, Norway fell six places to 18th in 2026. The orange items are the watch points: the macro buffers are strong, the commercial output is weak."
 
 ---
 
@@ -28,9 +41,8 @@ SLIDE 6 – "Legacy, geography and macro policy"
   New: "Inflation targeting and floating krone since 2001 (target 2% since 2018); rate raised to 4.5% in 2026 as inflation stayed above target."
 - Fiscal rule, old: "(3% since 2017; 2.7% in 2026)". New: "(3% since 2017; 2.7% in 2026 and 2027)".
 - Source line new: "Sources: Own assessment; Statistics Norway; Norges Bank (2026); Ministry of Finance (2026a, 2026c); Equinor (2026). EEA = European Economic Area."
-- Speaker notes slide 6: in the existing text, replace the sentence "Macro policy is a strength: an inflation target and a floating krone since 2001, and a fiscal rule that spends only the fund’s expected real return." with:
+- Speaker notes slide 6: replace only the sentence "Macro policy is a strength: an inflation target and a floating krone since 2001, and a fiscal rule that spends only the fund’s expected real return." with:
 "Macro policy is a strength: inflation targeting with a floating krone since 2001, with a 2 percent target since 2018, and a fiscal rule that spends only the fund’s expected real return. Inflation is currently above target, which is why Norges Bank raised rates this autumn."
-  Everything else in the note stays as it is.
 
 ---
 
@@ -38,7 +50,7 @@ SLIDE 7 – "Micro policy and the national Diamond"
 
 - Structural, liberalisation, old: "EEA market access; open trade; 78% petroleum tax rate."
   New: "EEA market access; open trade; 78% marginal petroleum tax."
-- Source line: add "Norwegian Petroleum (n.d.)" after "Equinor (2026);".
+- Source line: add "Norwegian Petroleum (n.d.);" after "Equinor (2026);".
 
 ---
 
@@ -47,41 +59,48 @@ SLIDE 8 – "Five phases: from discovery to energy transition"
 | Phase | Old | New |
 |---|---|---|
 | 1960s–70s | Ekofisk (1969) starts production in 1971; the state creates Statoil and the Petroleum Directorate (1972) and uses local-content rules to open the shelf to Norwegian firms. | Ekofisk (1969) starts production in 1971; the state creates Statoil and the Petroleum Directorate (1972) to build national control and competence. |
-| 1980s–90s | Yards and engineers such as Aker and Kværner learn offshore work; the NORSOK programme (1993) cuts project costs; harsh-environment skills mature. | Norwegian yards and engineering firms learn offshore work; harsh-environment operations and safety skills mature. |
+| 1980s–90s | Yards and engineers such as Aker and Kværner learn offshore work; the NORSOK programme (1993) cuts project costs; harsh-environment skills mature. | Norwegian yards and engineering firms learn offshore work; CO₂ storage starts at Sleipner (1996); harsh-environment skills mature. |
 | 2000s | Subsea suppliers such as Aker Solutions, Subsea 7 and Kongsberg win international markets; Statoil is listed in 2001; regional cluster bodies emerge. | Subsea suppliers such as Aker Solutions, Subsea 7 and Kongsberg win international markets; Statoil is listed in 2001; first Hywind demonstrator (2009). |
 | 2014–20 | The 2014 oil-price fall forces cost cuts and layoffs; suppliers look to offshore wind and CCS; the Hywind pilot and Longship show new paths. | The 2014 oil-price fall forces cost cuts and layoffs; suppliers look to offshore wind and CCS; decisions on Hywind Tampen (2019) and Longship (2020) show new paths. |
 | 2021–26 | unchanged | unchanged |
 
-- Source line new: "Sources: Norwegian Petroleum (n.d.), Norway’s petroleum history and employment; Equinor (2019, n.d.-a, n.d.-b); Gassnova (2022); Northern Lights JV (2026). Phases are our own grouping."
+- Source line new: "Sources: Norwegian Petroleum (n.d.); Equinor (2019, n.d.-a, n.d.-b, n.d.-c); Gassnova (2022); Northern Lights JV (2026). Phases are our own grouping."
 - Speaker notes slide 8 (replace completely):
-"Before we look at the cluster today, a quick look at how it developed in five phases. First, the 1960s and 70s: Ekofisk, then Statoil and the Petroleum Directorate in 1972, which gave the state control and built national competence. Second, the 1980s and 90s: Norwegian yards and engineering firms learned offshore work, and harsh-environment and safety skills matured. Third, the 2000s: subsea suppliers went international, Statoil was listed in 2001, and the first Hywind demonstrator went to sea in 2009. Fourth, the oil-price fall of 2014 forced a reset. Suppliers cut costs and began to look at offshore wind and CCS, and the decisions on Hywind Tampen in 2019 and Longship in 2020 showed new paths. Fifth, since 2021: Hywind Tampen in operation, the first CO₂ stored by Northern Lights in 2025, and now ECN. The pattern is that each phase added a capability, and collaboration institutions came last, as in the Australian wine cluster we discussed in class."
+"Before we look at the cluster today, a quick look at how it developed in five phases. First, the 1960s and 70s: Ekofisk, then Statoil and the Petroleum Directorate in 1972, which gave the state control and built national competence. Second, the 1980s and 90s: Norwegian yards and engineering firms learned offshore work, harsh-environment skills matured, and in 1996 Sleipner began storing CO₂ under the seabed. Third, the 2000s: subsea suppliers went international, Statoil was listed in 2001, and the first Hywind demonstrator went to sea in 2009. Fourth, the oil-price fall of 2014 forced a reset. Suppliers cut costs and began to look at offshore wind and CCS, and the decisions on Hywind Tampen in 2019 and Longship in 2020 showed new paths. Fifth, since 2021: Hywind Tampen in operation, the first CO₂ stored by Northern Lights in 2025, and now ECN. The pattern is that each phase added a capability, and collaboration institutions came last, as in the Australian wine cluster we discussed in class."
 
 ---
 
 SLIDE 10 – "A large, export-oriented cluster in transition"
 
-- Tile "≈ 17%", description old: "of supplier turnover outside petroleum (2024; total ≈ NOK 600bn)".
-  New: "of supplier revenue outside petroleum (2023; total NOK 532bn)".
+Every tile gets its year. Big numbers stay unchanged; only the descriptions change:
+
+| Tile | Old description | New description |
+|---|---|---|
+| NOK 200bn | energy-supplier exports per year (approx.) | energy-supplier exports, 2025 (forecast; ~20% offshore wind) |
+| 350+ | member companies in ECN | member companies in ECN (2026) |
+| 67% | state share in Equinor, the largest buyer | state share in Equinor, the largest buyer (2026) |
+| 1.5 → 5+ Mt | Northern Lights CO₂ capacity, phase 1 → phase 2 | Northern Lights CO₂ capacity a year, phase 1 (2025) → phase 2 |
+| 67k → 69k | direct petroleum jobs, 2014 → 2025 (est.), after the first-ever fall in 2014–18 | unchanged |
+| ≈ 17% | of supplier turnover outside petroleum (2024; total ≈ NOK 600bn) | of supplier revenue outside petroleum (2023; total NOK 532bn) |
+
 - Band old: "Strong export base, but only a sixth of turnover is outside petroleum."
   New: "Strong export base, but only a sixth of revenue is outside petroleum."
-- Source line new: "Sources: Norwegian Energy Partners (2026); Energy Cluster Norway (2026); Equinor (2026, n.d.-b); Norwegian Petroleum (n.d.), employment; supplier-industry study 2023 (Multiconsult / Vista Analyse); Norwegian Offshore Wind (2026)."
+- Source line new: "Sources: Norwep (2025), export statistics; Energy Cluster Norway (2026); Equinor (2026, n.d.-b); Norwegian Petroleum (n.d.), employment; supplier-industry study 2023 (Multiconsult / Vista Analyse); Norwegian Offshore Wind (2026)."
 - Speaker notes slide 10 (replace completely):
-"How big is this cluster? Norwegian energy suppliers export around 200 billion kroner a year, and ECN alone has more than 350 member companies. Employment mirrors the history we just described. Direct petroleum employment grew to about 67,000 in 2014, then fell for the first time ever after the oil-price shock, and has since recovered to an estimated 69,000. Around 95,000 more people work in the offshore supplier industry. On the demand side, the picture is concentrated: the largest buyer, Equinor, is 67 percent state-owned. In money terms, the transition is still small. In 2023 the Norwegian supplier industry had revenues of 532 billion kroner, of which about 442 billion came from petroleum. So only around 17 percent came from other segments. These segments are growing fast, though: offshore wind suppliers alone turned over about 60 billion kroner in 2024 and 64 billion in 2025. Northern Lights shows what scale can look like in CCS, with capacity planned to rise from 1.5 to at least 5 million tonnes a year. The reading: the export base is strong, but only about a sixth of revenue comes from the new segments. That is the share ECN has to grow."
+"How big is this cluster? Norwegian energy suppliers were expected to export around 200 billion kroner in 2025, about a fifth of it from offshore wind, and ECN alone has more than 350 member companies. Employment mirrors the history we just described. Direct petroleum employment grew to about 67,000 in 2014, then fell for the first time ever after the oil-price shock, and has since recovered to an estimated 69,000. Around 95,000 more people work in the offshore supplier industry. On the demand side, the picture is concentrated: the largest buyer, Equinor, is 67 percent state-owned. In money terms, the transition is still small. In 2023 the Norwegian supplier industry had revenues of 532 billion kroner, of which about 442 billion came from petroleum. So only around 17 percent came from other segments. These segments are growing fast, though: offshore wind suppliers alone turned over about 60 billion kroner in 2024 and 64 billion in 2025. The reading: the export base is strong, but only about a sixth of revenue comes from the new segments. That is the share ECN has to grow."
 
 ---
 
 SLIDE 14 – "Validation alone does not create scale"
 
-The bar chart at the bottom currently compares different milestones ("13+ years" from demonstrator to operation against "5 years" from investment decision to operation). Replace it with a like-for-like comparison:
-
-- Label old: "TIME TO COMMERCIAL OPERATION". New: "TIME FROM TECHNICAL PROOF TO A COMMITTED BUYER".
-- Row Hywind: bar 10 units, orange. Text: "**10 years** demonstrator 2009 → Hywind Tampen investment decision 2019 (Equinor fields as buyer, Enova support up to NOK 2.3bn)"
-- Row Northern Lights: no bar, only a small teal marker at zero. Text: "**0 years** anchor customer (Norcem Brevik) part of the Longship decision 2020; first foreign customer Yara 2022"
-- Keep the dark band "Both paths moved forward only once a committed buyer and a market route were in place." unchanged.
-- Upper part (timelines Hywind / Northern Lights): unchanged.
-- Source line new: "Sources: Equinor (2019, n.d.-a, n.d.-b); Regjeringen (2019); Gassnova (2022); Ministry of Energy (2026); Northern Lights JV (2026); offshoreWIND.biz (2026)."
+- **Delete the bar chart completely**, including its label "TIME TO COMMERCIAL OPERATION" and both rows (Hywind / Northern Lights with the bars and texts).
+- In the freed area below the dark band "Both paths moved forward only once a committed buyer and a market route were in place.", add one light row (same style as the "Before the demonstration gate" note on slide 17, full width, one to two lines):
+  - Label (12 pt, bold, all caps, Teal): `CONTEXT`
+  - Text (13 pt, body text): `CO₂ storage under the seabed has been proven at Sleipner since 1996. A market only emerged once a buyer was built in (Longship, 2020).`
+- Upper part (both timelines incl. "Committed buyer – turning point" and the "LESSON" rows): unchanged.
+- Source line new: "Sources: Equinor (2019, n.d.-a, n.d.-b, n.d.-c); Regjeringen (2019); Gassnova (2022); Ministry of Energy (2026); Northern Lights JV (2026); offshoreWIND.biz (2026)."
 - Speaker notes slide 14 (replace completely):
-"Two Norwegian flagship projects illustrate this bottleneck. Hywind started as a floating wind demonstrator in 2009. Only in 2019 did Equinor and its partners decide to build Hywind Tampen, using the power for their own oil and gas fields and supported by up to 2.3 billion kroner from Enova. The next step, Utsira Nord, still depends on a state-aid competition, and its terms were revised this year because the supply chain is not yet mature. Northern Lights followed a different path. When parliament approved Longship in 2020, a Norwegian anchor customer, the Brevik cement plant, was already part of the package. The first foreign customer, Yara, followed in 2022, and emitters from the Netherlands, Denmark and Sweden turned it into a commercial storage service. The bars at the bottom compare the same thing for both projects: the time from technical proof to a committed buyer. For Hywind it was ten years. For Northern Lights the buyer was built in from the start. That is our lesson: the difference is not the technology, it is whether a committed buyer exists. We are aware that both cases are state-backed flagships; we come back to that under limitations."
+"Two Norwegian flagship projects illustrate this bottleneck. Hywind started as a floating wind demonstrator in 2009. Only in 2019 did Equinor and its partners decide to build Hywind Tampen, using the power for their own oil and gas fields and supported by up to 2.3 billion kroner from Enova. The next step, Utsira Nord, still depends on a state-aid competition, and its terms were revised this year because the supply chain is not yet mature. Northern Lights tells the same story from the other side. Storing CO₂ under the seabed has been proven at Sleipner since 1996, so the technology was there for more than two decades. A market only emerged when parliament approved Longship in 2020 with a Norwegian anchor customer, the Brevik cement plant, built in. The first foreign customer, Yara, followed in 2022, and emitters from the Netherlands, Denmark and Sweden turned it into a commercial storage service. The lesson: the difference is not the technology, it is whether a committed buyer exists. We are aware that both cases are state-backed flagships; we come back to that under limitations."
 
 ---
 
@@ -106,7 +125,7 @@ SLIDE 17 – "One national pipeline from industrial need to first order"
 
 - Dark box, column "WHO DECIDES?", old: "Public funders link co-funding to the gates; ECN prepares the reviews with its Technical Committee."
   New: "Funders link co-funding to the gates; ECN prepares reviews with its Technical Committee and independent experts. Gates advise, funders decide."
-- Speaker notes slide 17: in the existing text, after the sentence "So ECN steers public money, not firms." insert:
+- Speaker notes slide 17: **insert** after the sentence "So ECN steers public money, not firms.":
 "To avoid a conflict of interest, since ECN’s members are also applicants, the reviews include independent experts and a clear conflict-of-interest rule, and the gates only advise: the funders decide."
 
 ---
@@ -114,6 +133,8 @@ SLIDE 17 – "One national pipeline from industrial need to first order"
 Final check:
 - Still 20 slides, design unchanged.
 - No text overflows, no overlaps, nothing smaller than 12 pt.
-- The bar chart on slide 14 shows exactly 2 rows: Hywind 10, Northern Lights 0 with a marker.
-- All 7 changed source lines and 7 changed speaker notes (slides 4, 6, 8, 10, 14, 15, 17) applied.
-- Speaker notes of all other slides untouched.
+- Slide 14 has no bar chart any more, only the "CONTEXT" row below the dark band.
+- Every tile on slide 10 shows a year.
+- Source lines changed on slides 4, 6, 7, 8, 10, 14 and 15.
+- Speaker notes changed on slides 4, 6, 8, 10, 14, 15 and 17.
+- All other speaker notes untouched.
