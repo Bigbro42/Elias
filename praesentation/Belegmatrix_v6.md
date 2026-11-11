@@ -67,6 +67,7 @@ Stand: 11.11.2026 · Grundlage: die neueste Designer-Fassung (PDF, 20 Folien)
 | Inflationsziel | Inflationssteuerung seit **2001**, Ziel **2 % seit 2018** (vorher 2,5 %) | Norges Bank, Mandat bzw. Geschichte der Geldpolitik | ⚠️ Quelle ergänzen. Die Folie sagte bisher fälschlich „2 % seit 2001“ |
 | Arbeitslosigkeit | **4,7 %** (Arbeitskräfteerhebung, Juni 2026) | Statistics Norway, Labour force survey | 🔎 (Sekundärquellen nennen für Sept. 5,0 %) |
 | Fonds-Entnahme | **2,7 %** in 2026 **und** 2027; Regel 3 % | Ministry of Finance, National Budget 2027 – Key figures | 🔎 |
+| Wert des Ölfonds | **≈ 22.400 Mrd. NOK** zu Beginn 2027 | Ministry of Finance, National Budget 2027 – Key figures | 🔎 |
 | Nicht-Öl-Defizit | **12,6 %** des Festland-Trend-BIP (**2027**) | Ministry of Finance, National Budget 2027 | 🔎 |
 | BIP | gesamt +1,1 %, Festland +1,7 % (2025) | Statistics Norway (2026), national accounts | ✅ |
 | Wettbewerbsfähigkeit | **IMD 2026: Rang 18 von 70**, sechs Plätze schlechter als 2025 (Rang 12) | IMD World Competitiveness Ranking 2026 | 🔎 (Rang nur sekundär bestätigt; im offiziellen IMD-Ranking nachsehen) |

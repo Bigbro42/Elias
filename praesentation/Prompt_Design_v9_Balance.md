@@ -17,6 +17,26 @@ For every slide, the **content area** is the space between the bottom edge of th
 4. **Use the space:** where a lot remains empty, scale the content up moderately (cards, icons, text +1–2 pt) instead of leaving the space blank. Do not add new content.
 5. **Takeaway lines** (e.g. "Each phase added a capability…") sit at a fixed distance below the graphic, not pinned to the bottom edge.
 
+**Measurable grid** (16:9, 33.87 × 19.05 cm):
+
+| Element | Value |
+|---|---|
+| Side margins | 1.6 cm left and right |
+| Kicker | top edge at 1.0 cm |
+| Headline | top edge at 1.5 cm; same size on all content slides |
+| Content area | from 3.6 cm to 17.2 cm (height 13.6 cm); the content block centred vertically in it |
+| Source line | top edge at 17.9 cm |
+| Spacing | only steps of 0.4 / 0.8 / 1.2 / 1.6 cm between elements; the same step within a slide |
+
+**One message per slide, one style:**
+- Every content slide has **exactly one takeaway**, always the same component: serif bold, 20 pt, centred, 0.8 cm below the content block.
+- On slides 10, 14 and 15, turn the dark bands into this takeaway style too. The dark band stays only as the background of the quote slides 1 and 20 and of slide 16.
+- Slide 14: the "CONTEXT" line stays as a small note below the takeaway.
+
+**Calmer background:**
+- Remove the decorative quarter circles at the top right of the content slides (3–15, 17–19). They sit under the section footer and make the slides busy.
+- Keep the decorative shapes only on slides 1, 16 and 20, and never behind text.
+
 The following slides currently break this rule clearly:
 
 | Slide | What to fix |
@@ -37,23 +57,34 @@ The following slides currently break this rule clearly:
 The headline already names two sides. Show exactly that, as a **two-sided panel**:
 
 - **Left half, Navy background, label "STRONG BUFFERS"** (3 figures, light/Teal):
+  - **NOK 22,400bn** · oil fund value, start of 2027
   - **2.7%** · fund spending 2026–27 · rule 3%
   - **+1.7%** · mainland GDP growth 2025
-  - **4.7%** · unemployment, June 2026
 - **Right half, sand/white background, label "WEAK COMMERCIAL OUTPUT"** (3 figures, Orange):
   - **57%** · petroleum share of goods exports
   - **#30 of 40** · intellectual assets (EIS)
   - **#18** · IMD ranking 2026, −6 places
 - **Optional, if it stays calm:** above the two halves a thin balance beam (line with a pivot) tilting slightly towards "Strong buffers". No extra text.
 - Big numbers at least 54 pt, labels at most 6 words, 14 pt.
-- Delete from the slide: CPI 3.3%, policy rate 4.5%, non-oil deficit 12.6%, NOK 200bn, tertiary 165, FDI USD 8bn. They are spoken in the notes; NOK 200bn is on slide 10 and tertiary education on slide 5.
+- Delete from the slide: CPI 3.3%, policy rate 4.5%, unemployment 4.7%, non-oil deficit 12.6%, NOK 200bn, tertiary 165, FDI USD 8bn. They are spoken in the notes; NOK 200bn is on slide 10 and tertiary education on slide 5.
 - Keep the source line unchanged ("Data as of November 2026. Sources: …").
 - Centre the panel vertically in the content area (rule 1).
 - **Speaker notes slide 4, replace completely:**
-"The headline has two sides, and so does Norway. On the left, the buffers. The government spends 2.7 percent of the oil fund in 2026 and plans the same for 2027, below the 3 percent rule. Mainland GDP grew by 1.7 percent in 2025, and unemployment in the labour force survey was 4.7 percent in June. There are pressures: consumer prices rose 3.3 percent in August, Norges Bank raised its rate to 4.5 percent in September, and the structural non-oil deficit equals 12.6 percent of mainland trend GDP. Data are as of November 2026. On the right, the commercial output. Petroleum still makes up 57 percent of goods exports. Intellectual assets rank only 30th of 40 in Europe, and in the IMD ranking Norway fell six places to 18th in 2026. Foreign direct investment is two-way and volatile, around 8 billion dollars of net inflows in 2023. So the macro buffers are strong; what is weak is turning knowledge into commercial output."
-- Number lock for slide 4, new: **2.7% (2026–27), rule 3%; +1.7% (2025); 4.7% (June 2026); 57%; #30 of 40; #18 (2026), −6**.
+"The headline has two sides, and so does Norway. On the left, the buffers. The oil fund is expected to be worth around 22,400 billion kroner at the start of 2027. The government spends 2.7 percent of it in 2026 and plans the same for 2027, below the 3 percent rule. Mainland GDP grew by 1.7 percent in 2025, and unemployment in the labour force survey was 4.7 percent in June. There are pressures: consumer prices rose 3.3 percent in August, Norges Bank raised its rate to 4.5 percent in September, and the structural non-oil deficit equals 12.6 percent of mainland trend GDP. Data are as of November 2026. On the right, the commercial output. Petroleum still makes up 57 percent of goods exports. Intellectual assets rank only 30th of 40 in Europe, and in the IMD ranking Norway fell six places to 18th in 2026. Foreign direct investment is two-way and volatile, around 8 billion dollars of net inflows in 2023. So the macro buffers are strong; what is weak is turning knowledge into commercial output."
+- Number lock for slide 4, new: **NOK 22,400bn (start of 2027); 2.7% (2026–27), rule 3%; +1.7% (2025); 57%; #30 of 40; #18 (2026), −6**.
+- Source line slide 4: unchanged; the fund value is covered by "Ministry of Finance (2026c)" (National Budget 2027).
 
 ---
+
+## 2b. Map slides 11 and 15
+
+- **Slide 11:** show the southern half of Norway completely (not cut off at the left edge).
+  - Set the three label cards beside the coastline over the sea, with a thin leader line to the pin.
+  - No card covers the coast.
+- **Slide 15:**
+  - Pins and labels must not overlap; place the labels beside the map over the sea, with leader lines.
+  - Move the orange note "Weak spot: higher costs, small manufacturing base" from the map to below the map, above the takeaway.
+  - Keep the style of the map graphic on slide 6. It is the model.
 
 ## 3. Slide 12 – headline size
 
@@ -77,7 +108,11 @@ On slide 12 the headline "Strong inputs, weak demand for new technology at scale
 Fonts sometimes break big numbers into two lines (e.g. "+1.7 / %", "NOK / 200bn"). Make sure **no big number breaks** anywhere, including slides 4 and 10.
 
 ## Final check
-- [ ] Slide 4: exactly 6 figures, two-sided panel, centred.
+- [ ] Slide 4: exactly 6 figures (NOK 22,400bn · 2.7% · +1.7% | 57% · #30 · #18), two-sided panel, centred.
+- [ ] Grid values met (margins, headline position, content area, source line).
+- [ ] One takeaway style on all content slides; no dark bands on 10, 14, 15.
+- [ ] Decorative circles only on slides 1, 16, 20.
+- [ ] Maps 11 and 15: no label covers the coast or another label.
 - [ ] All slides: content block centred vertically, even spacing.
 - [ ] Slide 7: the list is centred vertically on the diamond.
 - [ ] Slide 8: equal gaps above and below the timeline block.
