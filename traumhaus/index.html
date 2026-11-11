@@ -1,0 +1,694 @@
+<title>Das Moderne Schloss</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: Planmappe eines Architekten. Titelblock oben, darunter ein großes Planblatt mit Registerreitern und einer Legende/Raumkarte daneben. */
+:root{
+  --paper:#eef0ec; --sheet:#f8f9f6; --ink:#1d2a2f; --muted:#5b6a6c; --line:#c9d0cb;
+  --room:#f8f9f6; --sel:#e3ece4; --wall:#1d2a2f;
+  --verd:#2f7366; --brass:#a9802c; --brass-l:#f3e7c8;
+  --water:#9ccbd4; --water-d:#5a9eac; --lawn:#cfe0c6; --hedge:#5f8a5c; --hedge-d:#456b44;
+  --gravel:#e2dccd; --flower:#d9a7a0; --stone:#dcd7cc; --glass:#bcd9de; --steel:#3a4347; --furn:#e9ece7;
+  --f-display:"Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --f-body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#11191c; --sheet:#162125; --ink:#e3ebe8; --muted:#93a2a3; --line:#2b383c;
+  --room:#18252a; --sel:#21363a; --wall:#d6e0dc;
+  --verd:#6cb8a8; --brass:#d8ab4e; --brass-l:#3a3020;
+  --water:#2d6874; --water-d:#5fa9b8; --lawn:#22362a; --hedge:#4f7d4f; --hedge-d:#6a9a66;
+  --gravel:#37342d; --flower:#8a5752; --stone:#3a3f3f; --glass:#284a51; --steel:#98a5a9; --furn:#22313556;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#11191c; --sheet:#162125; --ink:#e3ebe8; --muted:#93a2a3; --line:#2b383c;
+  --room:#18252a; --sel:#21363a; --wall:#d6e0dc;
+  --verd:#6cb8a8; --brass:#d8ab4e; --brass-l:#3a3020;
+  --water:#2d6874; --water-d:#5fa9b8; --lawn:#22362a; --hedge:#4f7d4f; --hedge-d:#6a9a66;
+  --gravel:#37342d; --flower:#8a5752; --stone:#3a3f3f; --glass:#284a51; --steel:#98a5a9; --furn:#22313556;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:28px 64px}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;text-wrap:balance;margin:0;line-height:1.05}
+.mono{font-family:var(--f-mono)}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* Titelblock */
+.titleblock{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;align-items:end;border-bottom:1.5px solid var(--ink);padding-bottom:22px}
+.titleblock h1{font-size:clamp(44px,7vw,88px);letter-spacing:-.01em}
+.titleblock h1 em{color:var(--verd)}
+.titleblock p{max-width:60ch;margin:12px 0 0;color:var(--muted)}
+.stamp{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--ink);font-family:var(--f-mono);font-size:12px}
+.stamp div{padding:8px 10px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
+.stamp div:nth-child(2n){border-right:0}
+.stamp div:nth-last-child(-n+2){border-bottom:0}
+.stamp b{font-family:var(--f-body);font-weight:600;font-size:17px;font-variant-numeric:tabular-nums}
+.stamp span{color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+
+/* Planblatt */
+.board{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+.sheet{background:var(--sheet);border:1.5px solid var(--ink);min-width:0}
+.toggles[hidden],.legend[hidden]{display:none}
+.tabs{display:flex;flex-wrap:wrap;border-bottom:1.5px solid var(--ink)}
+.tabs button{font:500 13px var(--f-mono);letter-spacing:.05em;background:transparent;color:var(--muted);border:0;border-right:1px solid var(--line);padding:12px 16px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--sheet)}
+.tabs button:focus-visible,.toggles label:focus-within,.hit:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+.toggles{display:flex;flex-wrap:wrap;gap:6px 18px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.toggles label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.toggles input{accent-color:var(--brass)}
+.stage{overflow-x:auto;padding:10px}
+.stage svg{display:block;width:100%;height:auto;min-width:560px}
+.stage svg.site{max-height:none;min-width:0;max-width:560px;margin:0 auto}
+.stage svg.elev{min-width:640px}
+.caption{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 14px;border-top:1px solid var(--line);font:12px var(--f-mono);color:var(--muted)}
+
+/* Raumkarte */
+.card{border:1.5px solid var(--ink);background:var(--sheet);position:sticky;top:calc(env(safe-area-inset-top, 0px) + 12px)}
+.card header{padding:16px 18px 12px;border-bottom:1px solid var(--line)}
+.card h2{font-size:32px}
+.card .meta{font:12px var(--f-mono);color:var(--muted);margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 12px}
+.card .tag{font:11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--brass)}
+.card section{padding:12px 18px;border-bottom:1px solid var(--line)}
+.card section:last-child{border-bottom:0}
+.card h3{font:600 11px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;color:var(--muted)}
+.card ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.card .wish li::marker{color:var(--verd)}
+.card .idea li::marker{color:var(--brass)}
+.hint{font-size:13px;color:var(--muted);padding:12px 18px}
+
+/* SVG */
+.hit{cursor:pointer}
+.hit:hover .rm{fill:var(--sel)}
+.hit.on .rm{fill:var(--sel);stroke:var(--verd)}
+.rm{fill:var(--room);stroke:var(--wall);stroke-width:2.6}
+.rm.k-garden{fill:var(--lawn)}
+.rm.k-void{fill:url(#hatch)}
+.rm.k-circ{fill:var(--paper)}
+.rm.k-bridge{fill:var(--stone)}
+.rm.k-hidden{fill:var(--brass-l);stroke:var(--brass);stroke-dasharray:6 4}
+.secret-off .rm.k-hidden{fill:url(#wallhatch);stroke:var(--wall);stroke-dasharray:none}
+.secret-off .hidden-lbl,.secret-off .secret-only{display:none}
+.hit.on .rm.k-hidden{fill:var(--brass-l)}
+.outer{fill:none;stroke:var(--wall);stroke-width:5}
+.glassl{stroke:var(--water-d);stroke-width:3.4;fill:none}
+.f{fill:var(--furn);stroke:var(--ink);stroke-width:.9}
+.f.wood{fill:var(--stone)}
+.f.water{fill:var(--water);stroke:var(--water-d)}
+.f.plant{fill:var(--hedge);stroke:var(--hedge-d)}
+.f.screen{fill:var(--ink);stroke:none}
+.f.bed{fill:var(--brass-l);stroke:var(--brass);stroke-width:1.4}
+.flbl{font:7px var(--f-mono);fill:var(--muted)}
+.rlbl{font:500 12px var(--f-body);fill:var(--ink);pointer-events:none}
+.ralb{font:10px var(--f-mono);fill:var(--muted);pointer-events:none}
+.hidden-lbl{fill:var(--brass)}
+.door{fill:var(--sheet);stroke:none}
+.doorl{font:600 9px var(--f-mono);fill:var(--brass)}
+.sc circle{fill:var(--brass);stroke:var(--sheet);stroke-width:1.5}
+.sc text{font:700 9px var(--f-mono);fill:var(--sheet);text-anchor:middle;dominant-baseline:central}
+.scpath{stroke:var(--brass);stroke-width:2;fill:none;stroke-dasharray:5 4}
+.shortcuts-off .sc,.shortcuts-off .scpath{display:none}
+.furn-off .f,.furn-off .flbl{display:none}
+.grid{stroke:var(--line);stroke-width:.5}
+.dim{font:9px var(--f-mono);fill:var(--muted)}
+.dimline{stroke:var(--muted);stroke-width:.8}
+
+/* Lageplan */
+.s-bound{fill:var(--lawn);stroke:var(--ink);stroke-width:1.2;stroke-dasharray:6 3}
+.s-gravel{fill:var(--gravel)}
+.s-gravel-s{stroke:var(--gravel);fill:none}
+.s-tree{fill:var(--hedge);stroke:var(--hedge-d);stroke-width:.6}
+.s-vine{stroke:var(--hedge-d);stroke-width:1.1}
+.s-maze{stroke:var(--hedge-d);stroke-width:2.6;stroke-linecap:square}
+.s-hedgefill{fill:var(--hedge)}
+.s-water{fill:var(--water);stroke:var(--water-d);stroke-width:.6}
+.s-flower{fill:var(--flower)}
+.s-house{fill:var(--sheet);stroke:var(--ink);stroke-width:1.6}
+.s-lbl{font:8px var(--f-mono);fill:var(--ink);letter-spacing:.06em}
+.s-lbl-b{font:italic 14px var(--f-display);fill:var(--ink)}
+.s-zone{fill:transparent;cursor:pointer}
+.s-zone:hover,.s-zone.on{fill:var(--brass);fill-opacity:.16}
+.s-zone:focus-visible{outline:none;stroke:var(--brass);stroke-width:2}
+
+/* Ansicht */
+.e-stone{fill:var(--stone);stroke:var(--ink);stroke-width:.12}
+.e-glass{fill:var(--glass);stroke:var(--ink);stroke-width:.08}
+.e-steel{fill:var(--steel)}
+.e-dark{fill:var(--ink)}
+.e-ground{stroke:var(--ink);stroke-width:.2}
+.e-lbl{font:1.1px var(--f-mono);fill:var(--muted)}
+.e-zone{fill:transparent;cursor:pointer}
+.e-zone:hover,.e-zone.on{fill:var(--brass);fill-opacity:.16}
+
+/* Unterer Teil */
+.lower{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:28px}
+.lower h2{font-size:34px;margin-bottom:12px}
+.tbl-wrap{overflow-x:auto;border:1.5px solid var(--ink);background:var(--sheet)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:7px 12px;border-bottom:1px solid var(--line)}
+th{font:600 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+td.n{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+tr.grp td{font:600 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;background:var(--paper);color:var(--verd)}
+tr.sum td{font-weight:600;border-bottom:0;border-top:1.5px solid var(--ink)}
+tr[data-id]{cursor:pointer}
+tr[data-id]:hover td{background:var(--sel)}
+.secret-chip{font:10px var(--f-mono);color:var(--brass);border:1px solid var(--brass);padding:0 5px;margin-left:6px;border-radius:2px}
+ol.q{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px}
+ol.q li::marker{font-family:var(--f-mono);color:var(--brass)}
+ol.q b{font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font:12px var(--f-mono);color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:10px;border:1px solid var(--ink);vertical-align:-1px;margin-right:6px}
+
+@media (max-width:900px){
+  .titleblock,.board,.lower{grid-template-columns:minmax(0,1fr)}
+  .card{position:static}
+}
+@media (prefers-reduced-motion:no-preference){.hit .rm{transition:fill .15s}}
+</style>
+
+<div class="wrap">
+  <header class="titleblock">
+    <div>
+      <div class="eyebrow">Rohentwurf · Gedankenexperiment · Blatt 1–4</div>
+      <h1>Das <em>Moderne</em> Schloss</h1>
+      <p>Eine lange Allee, ein Labyrinth, ein Barockgarten wie in Schönbrunn und dazwischen ein Haus aus Naturstein, Stahl und Glas. Klick auf einen Raum, um zu sehen, was du dir gewünscht hast und was ich dazu vorschlage.</p>
+    </div>
+    <div class="stamp" id="stamp">
+      <div><span>Grundstück</span><b>ca. 34 ha</b></div>
+      <div><span>Haus (Fußabdruck)</span><b>96 × 48 m</b></div>
+      <div><span>Nutzfläche EG + OG</span><b id="st-area">–</b></div>
+      <div><span>Räume</span><b id="st-rooms">–</b></div>
+      <div><span>Geheimräume</span><b id="st-secret">–</b></div>
+      <div><span>Maßstab</span><b>1 Kästchen = 4 m</b></div>
+    </div>
+  </header>
+
+  <div class="board">
+    <div class="sheet">
+      <div class="tabs" role="tablist" aria-label="Planblätter">
+        <button role="tab" id="tab-lageplan" data-view="lageplan">01 Lageplan</button>
+        <button role="tab" id="tab-eg" data-view="eg">02 Erdgeschoss</button>
+        <button role="tab" id="tab-og" data-view="og">03 Obergeschoss</button>
+        <button role="tab" id="tab-ansicht" data-view="ansicht">04 Ansicht Süd</button>
+      </div>
+      <div class="toggles" id="toggles">
+        <label><input type="checkbox" id="tg-secret"> Geheimräume aufdecken</label>
+        <label><input type="checkbox" id="tg-short" checked> Shortcuts zeigen</label>
+        <label><input type="checkbox" id="tg-furn" checked> Möblierung</label>
+      </div>
+      <div class="stage" id="stage"></div>
+      <div class="caption"><span id="cap-l"></span><span id="cap-r"></span></div>
+    </div>
+    <aside class="card" id="card" aria-live="polite"></aside>
+  </div>
+
+  <div class="legend" id="legend">
+    <span><i style="background:var(--room)"></i>Raum</span>
+    <span><i style="background:var(--lawn)"></i>Garten / Innengarten</span>
+    <span><i style="background:var(--water)"></i>Wasser</span>
+    <span><i style="background:var(--brass-l);border-color:var(--brass);border-style:dashed"></i>Geheimraum</span>
+    <span><i style="background:repeating-linear-gradient(45deg,var(--line) 0 2px,transparent 2px 6px)"></i>Luftraum (doppelte Höhe)</span>
+    <span><i style="background:none;border:0;border-top:3px solid var(--water-d);height:3px"></i>Glaswand</span>
+  </div>
+
+  <div class="lower">
+    <div>
+      <h2>Raumprogramm</h2>
+      <div class="tbl-wrap"><table id="tbl"><thead><tr><th>Raum</th><th>Maße</th><th style="text-align:right">Fläche</th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div>
+      <h2>Was wir noch klären sollten</h2>
+      <ol class="q">
+        <li><b>Wo stehen die Autos?</b> Eine Garage fehlt noch. Vorschlag: unterirdisch unter dem Vorplatz, mit Autolift und Tunnel ins Haus, damit der Schotterplatz frei bleibt.</li>
+        <li><b>Gibt es ein Untergeschoss?</b> Passt gut zum Weingarten: Weinkeller, Heimkino, Technik und Lager. Der Privatlift fährt dann schon bis unten.</li>
+        <li><b>Was kommt in die Geheimräume?</b> Bisher sind vier eingeplant. Ideen: Zigarrenzimmer, Escape-Room für Freunde, Tresor, Sternwarte im Bibliotheksturm.</li>
+        <li><b>Wie viele Kinder- und Gästezimmer?</b> Im Entwurf sind es zwei Kinderzimmer und eine Gästesuite. Der Ostflügel kann um ein Geschoss wachsen.</li>
+        <li><b>Arbeitszimmer?</b> Eigener Raum oder ein Schreibtisch auf der Bibliotheksgalerie?</li>
+        <li><b>Wo liegt das Grundstück?</b> Das Klima entscheidet über Außenpool, Rebsorten und wie viel Glas sinnvoll ist.</li>
+        <li><b>Personal?</b> Bei 34 ha Garten braucht es Gärtner. Ein kleines Gärtnerhaus am Tor wäre eine Option.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+const S = 10; // 1 m = 10 Einheiten in den Grundrissen
+
+/* ---------- Räume: [id, Geschoss, Name, x, y, w, h, Art] in Metern ---------- */
+const R = [
+ // Erdgeschoss
+ ['bib','eg','Bibliothek',0,16,18,32,'room'],
+ ['geheim1','eg','Geheimzimmer',0,0,8,16,'hidden'],
+ ['lounge','eg','Chill-out Lounge',8,0,36,16,'room'],
+ ['halle','eg','Galerie-Halle',18,16,8,20,'circ'],
+ ['core','eg','Treppe & Lift',18,36,8,12,'circ'],
+ ['atrium','eg','Innengarten',26,16,18,16,'garden'],
+ ['foyer','eg','Eingangshalle',26,32,14,16,'room'],
+ ['flur','eg','Flur',40,32,24,4,'circ'],
+ ['garderobe','eg','Garderobe',40,36,8,12,'room'],
+ ['gastbad','eg','Gäste-Bad',48,38,6,10,'hidden'],
+ ['hwr','eg','HWR',54,36,10,12,'room'],
+ ['essen','eg','Essbereich',44,0,20,16,'room'],
+ ['kueche','eg','Küche',44,16,20,16,'room'],
+ ['mancave','eg','Man Cave',64,16,16,18,'room'],
+ ['gaming','eg','Gaming Room',64,34,16,14,'room'],
+ ['pool','eg','Poolhalle',64,0,32,16,'room'],
+ ['gym','eg','Fitnesshalle',80,16,16,26,'room'],
+ ['gymbad','eg','WC & Duschen',80,42,16,6,'room'],
+ // Obergeschoss
+ ['rutsche','og','Rutschenturm',0,0,8,16,'hidden'],
+ ['galerie','og','Bibliothek · Galerie',0,16,18,32,'void'],
+ ['master','og','Masterbedroom',8,0,32,16,'room'],
+ ['ogflur','og','Galerie-Flur',18,16,8,20,'circ'],
+ ['ogcore','og','Treppe & Lift',18,36,8,12,'circ'],
+ ['luft','og','Luftraum',26,16,18,16,'void'],
+ ['bruecke','og','Atriumbrücke',34,16,2,16,'bridge'],
+ ['glasgal','og','Glasgalerie',26,32,18,2,'circ'],
+ ['gast','og','Gästesuite',26,34,18,14,'room'],
+ ['masterbad','og','Masterbad',40,0,18,16,'room'],
+ ['ankleide','og','Ankleide',44,16,14,12,'room'],
+ ['waesche','og','Wäsche',44,28,8,4,'room'],
+ ['tresor','og','Tresorraum',52,28,6,4,'hidden'],
+ ['kind1','og','Kinderzimmer 1',58,0,22,16,'room'],
+ ['kind2','og','Kinderzimmer 2',58,16,22,16,'room'],
+ ['ogost','og','Flur',44,32,36,4,'circ'],
+ ['famibad','og','Familienbad',44,36,10,12,'room'],
+ ['spiel','og','Kinder-Spielzimmer',54,36,26,12,'room'],
+ ['luftgym','og','Luftraum Fitness & Pool',80,0,16,48,'void'],
+];
+
+/* ---------- Möblierung: [x,y,w,h,Klasse,Label,Form] ---------- */
+const F = {
+ bib:[[0.4,16.6,0.6,30.8,'wood'],[17,17,0.6,12,'wood'],[17,33,0.6,14,'wood'],[1,47,16,0.6,'wood'],[6,20,6,1.2,'wood','Kamin'],[5,23,1.4,1.4,'','', 'c'],[10.6,23,1.4,1.4,'','', 'c'],[4,34,10,3,'wood','Lesetisch'],[3.5,42,1.4,1.4,'','', 'c'],[7,42,1.4,1.4,'','', 'c'],[1.2,44.6,2,2,'','Glaslift']],
+ geheim1:[[2,8,4,4,'','Rutsche','c'],[1,2,6,1.6,'wood','Kamin']],
+ lounge:[[8.2,4,0.4,8,'screen'],[9.6,4.8,0.6,6.4,'','Frame-TV'],[14,2,1.6,12,''],[14,12.4,18,1.6,''],[14,2,18,1.6,''],[20,6,6,4,'wood','Couchtisch']],
+ atrium:[[31,20,7,7,'plant','Ahorn','c'],[28,28,6,2.4,'water'],[40,18,2,2,'plant','','c']],
+ foyer:[[30.5,38,5,5,'water','Brunnen','c']],
+ garderobe:[[40.4,36.4,0.8,11.2,'wood'],[46.8,36.4,0.8,11.2,'wood'],[42.5,41,3,1,'','Bank']],
+ gastbad:[[48.6,46,1.6,1.4,''],[51.8,38.6,1.6,2.4,'water']],
+ essen:[[47,5,14,3,'wood','Tafel 16 P.']],
+ kueche:[[49,21,10,4,'','Kochinsel'],[62.6,17,1.2,9,'wood','3× Kühlschr.'],[44.3,28,0.9,3.6,'wood']],
+ mancave:[[64.4,18,1.4,11,'wood','Bar'],[70,20,2.7,1.5,'plant','Billard'],[78.8,27.6,0.8,0.8,'','Dart','c'],[69,28,7,2.2,'','Clubsofa']],
+ gaming:[[64.3,36,0.3,10,'screen'],[64.8,37.2,0.2,7.6,'screen'],[66,36.6,1.8,3.6,'','Tisch 1'],[66,41,1.8,3.6,'','Tisch 2'],[72,36.6,1.8,8.4,'','Couch'],[77,36,2.6,3,'','Kinder']],
+ pool:[[70,3,12,13,'water','Innenbecken'],[88,2,6,5,'wood','Sauna'],[86,10,7,1.2,''],[66,10,2.4,1,''],[66,12.5,2.4,1,'']],
+ gym:[[81,17,0.8,12,'wood','Hanteln 2–50 kg'],[84,18,3,2,'','Rack'],[84,22,3,2,'','Rack'],[89,18,2,4,'','Beinpresse'],[93,17,2,5,'','Kabelzug'],[89,25,6,2,'','Maschinen'],[82,33,1,2.4,''],[84,33,1,2.4,''],[86,33,1,2.4,'','Laufbänder'],[90,30,5,6,'','Plattform']],
+ gymbad:[[81,43,3,4,'water'],[84.5,43,3,4,'water'],[92,44,2,2,'']],
+ rutsche:[[2,8,4,4,'','Rutsche','c']],
+ galerie:[[0,16,18,2,'wood'],[0,46,18,2,'wood'],[0,18,2,28,'wood'],[1.2,44.6,2,2,'','Glaslift']],
+ master:[[19,12.6,5,3,'bed','Bett 5 × 3 m'],[17.8,13.6,0.8,1.6,''],[24.4,13.6,0.8,1.6,''],[28,3,5,3,'','Sitzecke']],
+ masterbad:[[45,3,2.4,1.3,'water','Wanne'],[52,10,4,2.5,'water','Doppeldusche'],[40.4,8,0.8,5,'wood']],
+ ankleide:[[44.4,16.4,0.8,11,'wood'],[48,20,5,2,'wood','Insel'],[55.5,17,2,2,'','Lift']],
+ gast:[[30,40,2.2,2,'bed'],[38,35,5,4,'water','Bad']],
+ kind1:[[62,8,2,2.2,'bed'],[74,4,4,4,'water','Bad']],
+ kind2:[[62,24,2,2.2,'bed'],[74,22,4,4,'water','Bad']],
+ famibad:[[45,40,2.2,1.2,'water','Wanne']],
+ spiel:[[56,41,6,2,'','Kinder-Gaming'],[66,40,6,4,'','Spielteppich'],[75.6,43.6,1,1,'','','c']],
+};
+
+/* Shortcuts: [Geschoss, x, y, Buchstabe, Titel] */
+const SC = [
+ ['eg',4,10,'R','Rutsche kommt an'],['og',4,10,'R','Rutsche (Start)'],
+ ['eg',56.5,18,'L','Privatlift'],['og',56.5,18,'L','Privatlift'],
+ ['eg',63.3,29.5,'K','Kühlschranktür → Man Cave'],
+ ['eg',76,44,'S','Feuerwehrstange kommt an'],['og',76,44,'S','Feuerwehrstange'],
+ ['og',35,24,'B','Atriumbrücke'],
+];
+const SCPATH = {og:[[10,10,6,10],[30,12,35,16],[40,12,54,18]], eg:[[8,10,10,10],[60,24,63,29]]};
+
+/* Glaswände: [Geschoss, x1,y1,x2,y2] */
+const GL = [
+ ['eg',8,0,64,0],['eg',64,0,96,0],['eg',26,16,44,16],['eg',26,16,26,32],['eg',44,16,44,32],['eg',26,32,44,32],['eg',64,16,80,16],['eg',80,16,80,34],
+ ['og',8,0,58,0],['og',58,0,80,0],['og',26,16,26,32],['og',44,16,44,32],['og',80,0,80,48],
+];
+
+/* ---------- Texte zu jedem Raum ---------- */
+const T = {
+ allee:{n:'Allee & Zufahrt',m:'ca. 500 m Schotterweg · 10 m breit',w:['Große, flache, grüne Fläche','Eine Allee führt zum Haus, Schotterweg','Hohe Bäume links und rechts'],i:['Linden oder Platanen alle 14 m. Nach 15 bis 20 Jahren schließen sich die Kronen zu einem Blätterdach.','Am Tor eine niedrige Natursteinmauer statt Zaun, damit das Haus am Ende der Achse sichtbar bleibt.','Unter dem Schotter ein fester Unterbau, damit auch ein Lieferwagen nicht einsinkt.']},
+ wein:{n:'Weingarten',m:'ca. 6,5 ha · Rebzeilen Nord–Süd',w:['Auf einer Seite der Allee ein Feld oder Weingarten'],i:['Rebzeilen in Nord-Süd-Richtung, damit beide Seiten gleich viel Sonne bekommen.','Dazu passt ein Weinkeller im Untergeschoss mit eigenem Etikett.']},
+ laby:{n:'Heckenlabyrinth',m:'150 × 450 m · Hecken 3 m hoch',w:['Auf der anderen Seite ein Labyrinth wie im großen Finale eines Zauberer-Turniers'],i:['Eibe oder Hainbuche, auf 3 m Höhe geschnitten, damit niemand darüber schauen kann.','In der Mitte ein Pavillon als Ziel.','Abends nur Bodenleuchten in den Gängen. Dann wird es richtig unheimlich.']},
+ vorplatz:{n:'Vorplatz & Formschnittgarten',m:'Oval ca. 140 × 68 m · Schotter',w:['Beim Haus angekommen: Schotterweg und top gepflegter Garten','Hecken in Tierform, Blumen'],i:['Ovale Vorfahrt um einen flachen Brunnen, so dass Autos ohne Wenden vorfahren.','Formschnitt-Tiere aus Eibe entlang des Ovals: Hirsch, Pferd, Löwe, Eule.','Halbmondförmige Blumenbeete links und rechts des Ovals.']},
+ parterre:{n:'Barockes Gartenparterre',m:'180 × 88 m hinter dem Haus',w:['Wie die Gartenseite von Schloss Schönbrunn'],i:['Vier Broderie-Beete aus niedrigem Buchs mit Blumenrändern.','Ein Brunnen auf der Hauptachse. Diese Achse läuft durch das ganze Grundstück: Allee, Portal, Innengarten, Lounge, Parterre, Pavillon.','Eine Steinterrasse über die ganze Hausbreite als Übergang vom Haus zum Garten.']},
+ bosquet:{n:'Bosketts',m:'200 × 120 m · Sternalleen',w:['Dahinter Wege, auf denen man sich verlaufen kann, die aber unendlich schön sind'],i:['Dichte Baumblöcke, durchschnitten von sternförmigen Wegen. Am Ende jedes Wegs eine kleine Lichtung mit Bank, Skulptur oder Wasserspiel.','Ganz oben ein Aussichtspavillon mit Blick zurück auf das Haus.']},
+ poolaussen:{n:'Außenbecken',m:'12 × 14 m · Fortsetzung des Innenpools',w:['Der Indoor-Pool geht nach draußen'],i:['Eine Glasschürze reicht bis ins Wasser. Man taucht darunter durch und ist draußen.','Beheizt, damit es auch im Winter geht: dampfendes Wasser im Schnee.']},
+
+ bib:{w:['Groß: zum Lernen, Denken und Entspannen','Alt eingerichtet, gerne zweistöckig','Regale an den Seiten mit Leiter oder Lift','Alte Ledersessel','Leicht rauchiger, whiskyartiger Geruch in der Luft'],i:['Raumhöhe etwa 8 m mit umlaufender Galerie im Obergeschoss.','Rollleitern an Messingschienen und ein kleiner Glaslift in der Ecke.','Ein echter Holzkamin liefert den Rauchduft von selbst. Daneben ein Whisky-Schrank.','Eine Regalwand ist die Tür zum geheimen Kaminzimmer.','Platz für ungefähr 20 000 Bücher.']},
+ geheim1:{w:['Versteckte Räume überall im Haus'],i:['Nur über die Regaltür der Bibliothek oder den Frame-Fernseher in der Lounge zu erreichen.','Hier kommt die Rutsche aus dem Masterbedroom an.','Nutzung noch offen: Zigarrenzimmer, Escape-Room, Weinprobe.']},
+ lounge:{w:['Riesiges Sofa für 15–20 Personen','Ausziehbar, verstellbar, modulierbar','Großer Fernseher bzw. ein Frame'],i:['Modulsofa als großes U mit rund 22 m Sitzfläche. Einzelne Module lassen sich zu Liegen ausziehen.','Frame-TV mit etwa 110 Zoll an der Westwand. Er ist zugleich die Geheimtür zum Kaminzimmer.','Die Glasfront zum Parterre lässt sich komplett aufschieben. Im Sommer werden Lounge und Terrasse ein Raum.']},
+ halle:{i:['Verbindet Bibliothek, Lounge, Innengarten und Treppe.','Glaswand zum Innengarten über die ganze Länge.']},
+ core:{i:['Haupttreppe als frei tragende Steinspirale.','Lift für alle Geschosse, später auch in den Keller.']},
+ atrium:{w:['Innen ein kleiner Garten','Viele Glaswände, aber niemand soll von außen hineinsehen'],i:['Ein nach oben offenes Atrium mitten im Haus. Die Glaswände schauen nach innen, nicht nach außen. Von der Straße sieht man nur Stein.','Ein alter Japanischer Ahorn, Moos, ein flaches Wasserbecken.','Wo Glas nach außen geht: verspiegeltes oder schaltbares Glas, das auf Knopfdruck milchig wird.']},
+ foyer:{w:['4 m hohe Stahltür','Schöner Eingangsbereich'],i:['Die Tür ist eine Stahlplatte mit Drehachse in der Mitte. So lässt sie sich trotz 4 m Höhe mit einer Hand öffnen.','Vom Eingang geht der Blick direkt in den Innengarten.','Boden aus großen Natursteinplatten, ein flacher Brunnen in der Mitte.']},
+ flur:{i:['Verbindet Foyer, Küche, Hauswirtschaft und den Freizeitflügel.']},
+ garderobe:{w:['Etwas zum Aufhängen der Kleidung','Begehbarer Kleiderschrank mit Platz für eine kleine Fußballmannschaft'],i:['Platz für etwa 25 Mäntel und 60 Paar Schuhe, eine Sitzbank und ein Schuhtrockner.','Eine der Schrankfronten ist die Tür zum versteckten Gäste-Bad.']},
+ gastbad:{w:['Direkt rechts daneben die erste versteckte Tür, dahinter ein Badezimmer'],i:['Die Tür sieht aus wie ein Teil der Schrankwand und öffnet auf Druck.','WC, Waschtisch und eine kleine Dusche.']},
+ hwr:{i:['Waschen, Bügeln, Vorräte, Haustechnik.','Wäscheabwurf aus dem Obergeschoss endet hier.']},
+ essen:{i:['Tafel für 16 Personen.','Glasfront zur Gartenterrasse, davor eine Außenküche mit Grill.']},
+ kueche:{w:['Groß, Kochinsel mit Induktion, das Modernste','Alles schön verbaut','Dreifacher Kühlschrank','Direkte Verbindung zum Man Cave'],i:['Kochinsel 10 × 4 m mit Induktion, Teppanyaki-Platte und versenkbarem Abzug.','Grifflose Schrankwände bis zur Decke.','Eine Kühlschrankwand mit drei Geräten. Die dritte Tür führt in Wahrheit in den Man Cave.','Hier kommt der Privatlift aus der Master-Ankleide an.']},
+ mancave:{w:['Dartscheibe, Billard, Pool, Bar, Kühlschrank','Direkte Verbindung zur Küche','Verbunden mit Gaming Room, Pool und Fitness'],i:['Bar mit Zapfanlage und Getränkekühlung.','Billardtisch (9 ft) und ein Dartbereich mit Abwurflinie und Schutzwand.','Glaswände zu Pool und Fitnesshalle, damit man sieht, was nebenan los ist.','Lederne Clubsofas und gedämpftes Licht.']},
+ gaming:{w:['Riesige Bildschirme, darüber ein Streaming-Screen für die Couch dahinter','Höhenverstellbarer Tisch, das Ganze mal 2','Platz, falls die Kinder auch so etwas wollen','LEDs und Akustikpaneele','Alle Konsolen, mindestens 6 Controller'],i:['Zwei Gaming-Stationen nebeneinander, jede mit zwei großen Monitoren und höhenverstellbarem Tisch.','Darüber ein 120-Zoll-Screen, auf den beide Spiele gespiegelt werden.','Die Couch steht leicht erhöht, damit alle gut sehen.','Konsolenwand unter dem Screen mit Ladestation für 8 Controller.','Akustikpaneele an Wand und Decke, indirekte LED-Bänder.','Die Feuerwehrstange aus dem Kinderspielzimmer endet hier.']},
+ pool:{w:['Indoor-Pool, der nach draußen geht'],i:['Becken 12 m breit, etwa 30 m lang, rund die Hälfte draußen.','Eine Glasschürze ins Wasser trennt innen und außen. Man schwimmt einfach durch.','Sauna und Liegen in der Halle.']},
+ gym:{w:['Hanteln bis 50 kg in 2-kg-Schritten','Kabelzug, Beinpresse, alle Oberkörper- und Unterkörpermaschinen, Laufbänder','Gerne als eigene Halle','Sehr gutes Soundsystem'],i:['Halle mit doppelter Höhe (etwa 7 m) und Oberlichtern.','Kurzhantelreihe von 2 bis 50 kg: das sind 25 Paar.','Zwei Racks und eine Hebeplattform für Freihantel.','Schwingungsgedämpfter Boden, damit es im restlichen Haus nicht dröhnt.']},
+ gymbad:{w:['Eigenes WC und Dusche'],i:['Zwei Duschen, WC und Umkleide.','Auch vom Pool aus direkt erreichbar.']},
+
+ rutsche:{w:['Shortcuts vom Masterbedroom: Rutsche, Aufzug oder einfach clever gebaut'],i:['Eine Spiralrutsche in einem verborgenen Schacht: vom Masterbedroom ins geheime Kaminzimmer im Erdgeschoss.','Der Einstieg liegt hinter einer Wandverkleidung neben dem Bett.']},
+ galerie:{i:['Umlaufende Galerie, 2 m tief, mit Regalen bis unter die Decke.','Glaslift und Rollleitern verbinden beide Ebenen.']},
+ master:{w:['Bett 5 m breit und 3 m lang: zusammenliegen und sich trotzdem ganz ausstrecken','Shortcuts zu allen Zimmern'],i:['Das Bett ist eine Sonderanfertigung mit zwei getrennten Matratzenzonen, so stört keiner den anderen.','Glasfront zum Parterre mit schaltbarem Glas.','Drei Shortcuts: die Rutsche nach unten, der Privatlift aus der Ankleide in die Küche und die Atriumbrücke zum Ostflügel.']},
+ masterbad:{w:['Eigenes Bad','Dusche für 2 Personen','Riesige Badewanne'],i:['Walk-in-Doppeldusche 4 × 2,5 m mit zwei Regenbrausen.','Freistehende Wanne vor dem Fenster zum Garten.','Doppelwaschtisch und separates WC.']},
+ ankleide:{w:['Begehbarer Kleiderschrank'],i:['Mittelinsel mit Schubladen und Uhrenfach.','Privatlift nach unten in die Küche.','Ein Spiegel ist die Tür zum Tresorraum.']},
+ tresor:{i:['Hinter dem Spiegel in der Ankleide.','Tresor für Wertsachen, kann auch als Schutzraum dienen.']},
+ waesche:{i:['Wäscheabwurf nach unten in die Hauswirtschaft.']},
+ luft:{i:['Über dem Innengarten bleibt alles offen bis zum Himmel.','Die Atriumbrücke führt quer darüber.']},
+ bruecke:{i:['Gläserne Brücke vom Masterbedroom über den Innengarten zur Glasgalerie.','Der kürzeste Weg zu Gästen, Kindern und Ostflügel.']},
+ ogflur:{i:['Verbindet Masterbedroom, Bibliotheksgalerie und Treppe.']},
+ ogcore:{i:['Gleiche Treppe und Lift wie im Erdgeschoss.']},
+ glasgal:{i:['Schmaler Gang mit Glasgeländer am Innengarten.']},
+ ogost:{i:['Verbindet Ostflügel, Kinderzimmer und Spielzimmer.']},
+ gast:{i:['Schlafzimmer mit eigenem Bad über dem Foyer.']},
+ kind1:{i:['Eigenes Bad.','Blick in den Barockgarten.']},
+ kind2:{i:['Eigenes Bad.','Fenster mit Blick in die Poolhalle.']},
+ famibad:{i:['Bad für Spielzimmer und Gäste.']},
+ spiel:{w:['Platz, falls die Kinder auch einmal so etwas haben wollen'],i:['Spielzimmer jetzt, eigener Gaming-Bereich später.','Eine Feuerwehrstange führt direkt nach unten in den Gaming Room.']},
+ luftgym:{i:['Pool- und Fitnesshalle sind hier doppelt hoch, mit Oberlichtern.']},
+
+ turm:{n:'Bibliotheksturm',m:'16 m hoch · Naturstein und Glas',i:['Der Turm über der Bibliothek ist das Schloss-Zitat. Oben sitzt eine gläserne Krone als Lesesaal mit Rundumblick.','Darin könnte auch ein geheimes Observatorium sein.']},
+ portal:{n:'Portal & Stahltür',m:'Rahmen 8 × 9 m · Tür 4 m hoch',w:['4 m hohe Stahltür','Mischung aus Moderne und klassischem Schloss'],i:['Ein tiefer Steinrahmen wie bei einem Burgtor. Darin die dunkle Stahltür und darüber Glas bis unter das Dach.','Die Tür dreht um eine Achse in der Mitte und lässt sich mit einer Hand öffnen.']},
+ mittelbau:{n:'Mittelbau',m:'2 Geschosse · ca. 10 m hoch',i:['Moderne Zinnen: schmale Steinlamellen auf der Dachkante. Sie geben das Schlossprofil, ohne historisch zu tun.','Hohe, schmale Fensterschlitze wie Schießscharten. Innen weiten sie sich auf, so kommt viel Licht herein, aber von außen sieht man kaum hinein.']},
+ ost:{n:'Freizeitflügel',m:'Man Cave, Gaming, Pool, Fitness',i:['Niedriger Riegel aus Stein, dahinter die gläserne Halle für Pool und Fitness.','Zur Allee hin fast geschlossen, zum Garten hin komplett verglast.']},
+};
+
+const VIEW_META = {
+ lageplan:{l:'Blatt 01 · Lageplan · Norden oben',r:'Hauptachse: Tor → Allee → Portal → Garten → Pavillon'},
+ eg:{l:'Blatt 02 · Erdgeschoss · Maße in Metern',r:'Eingang Süd (unten), Garten Nord (oben)'},
+ og:{l:'Blatt 03 · Obergeschoss · Maße in Metern',r:'Schraffiert: Lufträume mit doppelter Höhe'},
+ ansicht:{l:'Blatt 04 · Ansicht von der Allee (Süd)',r:'Person 1,80 m zum Größenvergleich'},
+};
+
+const byId = Object.fromEntries(R.map(r=>[r[0],r]));
+const floorName = {eg:'Erdgeschoss',og:'Obergeschoss'};
+const kindName = {room:'Raum',hidden:'Geheimraum',circ:'Verkehrsfläche',garden:'Innengarten',void:'Luftraum',bridge:'Brücke'};
+const fmt = n => n.toLocaleString('de-DE');
+const NS='http://www.w3.org/2000/svg';
+
+let state = {view:'eg', sel:'bib', secret:false, short:true, furn:true};
+
+/* ---------- Grundriss ---------- */
+function plan(floor){
+  const vb = [-40,-190,1040,740];
+  let s = `<svg viewBox="${vb.join(' ')}" role="img" aria-label="${floorName[floor]}" class="plan ${state.secret?'':'secret-off'} ${state.short?'':'shortcuts-off'} ${state.furn?'':'furn-off'}">
+  <defs>
+   <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="var(--sheet)"/><line x1="0" y1="0" x2="0" y2="8" stroke="var(--line)" stroke-width="2"/></pattern>
+   <pattern id="wallhatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="var(--paper)"/><line x1="0" y1="0" x2="0" y2="5" stroke="var(--wall)" stroke-width="1.4"/></pattern>
+  </defs>`;
+  // Raster alle 4 m
+  for(let x=-4;x<=100;x+=4) s+=`<line class="grid" x1="${x*S}" y1="-190" x2="${x*S}" y2="550"/>`;
+  for(let y=-18;y<=54;y+=4) s+=`<line class="grid" x1="-40" y1="${y*S}" x2="1000" y2="${y*S}"/>`;
+  // Außenbecken und Terrasse im EG
+  if(floor==='eg'){
+    s+=`<rect x="${8*S}" y="${-6*S}" width="${56*S}" height="${6*S}" fill="var(--stone)" opacity=".55"/>`;
+    s+=`<text class="ralb" x="${10*S}" y="${-2.4*S}">Gartenterrasse</text>`;
+    s+=`<g class="hit" tabindex="0" data-id="poolaussen"><rect class="rm f water" x="${70*S}" y="${-14*S}" width="${12*S}" height="${14*S}" style="fill:var(--water);stroke:var(--water-d);stroke-width:1.5"/><text class="rlbl" x="${70.8*S}" y="${-12*S}">Außenbecken</text></g>`;
+  } else {
+    s+=`<text class="ralb" x="${10*S}" y="${-2.4*S}">Darunter: Gartenterrasse</text>`;
+  }
+  // Räume
+  R.filter(r=>r[1]===floor).forEach(r=>{
+    const [id,,name,x,y,w,h,k]=r;
+    const small = w<9 || h<5;
+    const area = w*h;
+    s+=`<g class="hit${state.sel===id?' on':''}" tabindex="0" data-id="${id}" aria-label="${name}">`;
+    s+=`<rect class="rm k-${k}" x="${x*S}" y="${y*S}" width="${w*S}" height="${h*S}"/>`;
+    (F[id]||[]).forEach(f=>{
+      const [fx,fy,fw,fh,cls,lbl,shape]=f;
+      if(shape==='c') s+=`<circle class="f ${cls}" cx="${(fx+fw/2)*S}" cy="${(fy+fh/2)*S}" r="${fw/2*S}"/>`;
+      else s+=`<rect class="f ${cls}" x="${fx*S}" y="${fy*S}" width="${fw*S}" height="${fh*S}"/>`;
+      if(lbl) s+=`<text class="flbl${k==='hidden'?' secret-only':''}" x="${(fx+fw/2)*S}" y="${(fy+fh+1)*S}" text-anchor="middle">${lbl}</text>`;
+    });
+    if(k!=='bridge' && !(k==='circ' && (w<3||h<3))){
+      const tx=(x+0.7)*S, ty=(y+(small?1.6:2))*S;
+      const vertical = w<3.5 && h>8;
+      if(vertical){
+        s+=`<text class="rlbl" transform="translate(${(x+w/2)*S+4},${(y+h/2)*S}) rotate(-90)" text-anchor="middle" style="font-size:10px">${name}</text>`;
+      } else {
+        s+=`<text class="rlbl${k==='hidden'?' hidden-lbl':''}" x="${tx}" y="${ty}" style="font-size:${small?10:13}px">${name}</text>`;
+        if(k!=='circ' && k!=='void') s+=`<text class="ralb${k==='hidden'?' hidden-lbl':''}" x="${tx}" y="${ty+12}">${fmt(area)} m²</text>`;
+      }
+    }
+    s+=`</g>`;
+  });
+  // Glaswände
+  GL.filter(g=>g[0]===floor).forEach(g=>{ s+=`<line class="glassl" x1="${g[1]*S}" y1="${g[2]*S}" x2="${g[3]*S}" y2="${g[4]*S}"/>`; });
+  // Außenwand
+  s+=`<rect class="outer" x="0" y="0" width="${96*S}" height="${48*S}"/>`;
+  // Eingangstür
+  if(floor==='eg'){
+    s+=`<rect class="door" x="${31.6*S}" y="${47.4*S}" width="${2.8*S}" height="${1.2*S}"/>`;
+    s+=`<line x1="${33*S}" y1="${46*S}" x2="${33*S}" y2="${50*S}" stroke="var(--steel)" stroke-width="3"/>`;
+    s+=`<text class="doorl" x="${33*S}" y="${51.8*S}" text-anchor="middle">STAHLTÜR · 4 m HOCH</text>`;
+    s+=`<text class="dim" x="${33*S}" y="${53.4*S}" text-anchor="middle">↑ von der Allee</text>`;
+  }
+  // Shortcuts
+  (SCPATH[floor]||[]).forEach(p=>{ s+=`<line class="scpath" x1="${p[0]*S}" y1="${p[1]*S}" x2="${p[2]*S}" y2="${p[3]*S}"/>`; });
+  SC.filter(c=>c[0]===floor).forEach(c=>{
+    const hid = (c[3]==='R'||c[3]==='K') ? ' secret-only' : '';
+    s+=`<g class="sc${hid}"><title>${c[4]}</title><circle cx="${c[1]*S}" cy="${c[2]*S}" r="9"/><text x="${c[1]*S}" y="${c[2]*S}">${c[3]}</text></g>`;
+  });
+  // Maßketten
+  s+=`<line class="dimline" x1="0" y1="${-17*S}" x2="${96*S}" y2="${-17*S}"/><line class="dimline" x1="0" y1="${-17.6*S}" x2="0" y2="${-16.4*S}"/><line class="dimline" x1="${96*S}" y1="${-17.6*S}" x2="${96*S}" y2="${-16.4*S}"/>`;
+  s+=`<text class="dim" x="${48*S}" y="${-17.4*S}" text-anchor="middle">96,00 m</text>`;
+  s+=`<line class="dimline" x1="${98.5*S}" y1="0" x2="${98.5*S}" y2="${48*S}"/><text class="dim" transform="translate(${99.6*S},${24*S}) rotate(90)" text-anchor="middle">48,00 m</text>`;
+  // Nordpfeil
+  s+=`<g transform="translate(${-1.5*S},${-14*S})"><path d="M0 -14 L6 8 L0 3 L-6 8 Z" fill="var(--ink)"/><text class="dim" x="0" y="20" text-anchor="middle">N</text></g>`;
+  s+=`</svg>`;
+  return s;
+}
+
+/* ---------- Lageplan ---------- */
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function mazeLines(ox,oy,cols,rows,cell,seed){
+  const r=rng(seed), right=[], bottom=[], seen=[];
+  for(let y=0;y<rows;y++){right.push(Array(cols).fill(true));bottom.push(Array(cols).fill(true));seen.push(Array(cols).fill(false));}
+  const st=[[cols>>1,rows>>1]]; seen[rows>>1][cols>>1]=true;
+  while(st.length){
+    const [cx,cy]=st[st.length-1];
+    const nb=[[1,0],[-1,0],[0,1],[0,-1]].map(d=>[cx+d[0],cy+d[1]]).filter(([x,y])=>x>=0&&y>=0&&x<cols&&y<rows&&!seen[y][x]);
+    if(!nb.length){st.pop();continue}
+    const [nx,ny]=nb[Math.floor(r()*nb.length)];
+    if(nx>cx) right[cy][cx]=false; else if(nx<cx) right[cy][nx]=false;
+    else if(ny>cy) bottom[cy][cx]=false; else bottom[ny][cx]=false;
+    seen[ny][nx]=true; st.push([nx,ny]);
+  }
+  let d='';
+  for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){
+    const X=ox+x*cell,Y=oy+y*cell;
+    if(right[y][x]&&x<cols-1) d+=`M${X+cell} ${Y}V${Y+cell}`;
+    if(bottom[y][x]&&y<rows-1) d+=`M${X} ${Y+cell}H${X+cell}`;
+  }
+  const gy=oy+(rows>>1)*cell, W=cols*cell, H=rows*cell;
+  d+=`M${ox} ${oy}H${ox+W}V${oy+H}H${ox}V${gy+cell}M${ox} ${gy}V${oy}`;
+  return d;
+}
+function site(){
+  const hx=152, hy=290; // Hausursprung
+  let s=`<svg viewBox="0 0 400 920" class="site" role="img" aria-label="Lageplan">`;
+  s+=`<rect class="s-bound" x="10" y="10" width="380" height="900" rx="4"/>`;
+  // Seitenhaine
+  const r=rng(7);
+  for(let i=0;i<170;i++){ const left=i%2===0; const x=left? 18+r()*80 : 302+r()*80; const y=40+r()*370; if(y>270&&y<420&&((left&&x>88)||(!left&&x<312))) continue; s+=`<circle class="s-tree" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(3+r()*2.5).toFixed(1)}"/>`; }
+  // Bosketts
+  s+=`<rect class="s-hedgefill" x="100" y="40" width="200" height="120"/>`;
+  const c=[200,100];
+  [[100,40],[200,40],[300,40],[300,100],[300,160],[200,160],[100,160],[100,100]].forEach(p=>{ s+=`<line class="s-gravel-s" stroke-width="5" x1="${c[0]}" y1="${c[1]}" x2="${p[0]}" y2="${p[1]}"/>`; });
+  [[150,70],[250,70],[150,130],[250,130]].forEach(p=>{ s+=`<circle cx="${p[0]}" cy="${p[1]}" r="8" class="s-gravel"/><circle cx="${p[0]}" cy="${p[1]}" r="2.4" class="s-water"/>`; });
+  s+=`<rect x="100" y="40" width="200" height="120" fill="none" class="s-gravel-s" stroke-width="5"/>`;
+  s+=`<circle cx="200" cy="100" r="12" class="s-gravel"/><circle cx="200" cy="100" r="5" class="s-water"/>`;
+  // Pavillon
+  s+=`<line class="s-gravel-s" stroke-width="6" x1="200" y1="40" x2="200" y2="24"/><rect x="186" y="14" width="28" height="12" class="s-house"/><text class="s-lbl" x="200" y="11" text-anchor="middle">AUSSICHTSPAVILLON</text>`;
+  // Parterre
+  s+=`<rect x="108" y="166" width="184" height="96" class="s-gravel"/>`;
+  [[114,172],[206,172],[114,218],[206,218]].forEach(([x,y],i)=>{
+    s+=`<rect class="s-flower" x="${x}" y="${y}" width="80" height="40"/><rect x="${x+3}" y="${y+3}" width="74" height="34" fill="var(--lawn)"/>`;
+    const cx=x+40, cy=y+20;
+    s+=`<ellipse cx="${cx}" cy="${cy}" rx="28" ry="12" fill="none" stroke="var(--hedge-d)" stroke-width="1.6"/>`;
+    s+=`<path d="M${cx-28} ${cy} C ${cx-14} ${cy-20}, ${cx+14} ${cy+20}, ${cx+28} ${cy}" fill="none" stroke="var(--hedge-d)" stroke-width="1.6"/>`;
+    s+=`<path d="M${cx-28} ${cy} C ${cx-14} ${cy+20}, ${cx+14} ${cy-20}, ${cx+28} ${cy}" fill="none" stroke="var(--hedge-d)" stroke-width="1.6"/>`;
+    [[x+8,y+8],[x+72,y+8],[x+8,y+32],[x+72,y+32]].forEach(p=>{ s+=`<circle class="s-tree" cx="${p[0]}" cy="${p[1]}" r="2.6"/>`; });
+  });
+  s+=`<circle cx="200" cy="214" r="9" class="s-water"/>`;
+  // Terrasse
+  s+=`<rect x="${hx+8}" y="${hy-6}" width="56" height="6" fill="var(--stone)"/>`;
+  // Haus
+  s+=`<rect class="s-house" x="${hx}" y="${hy}" width="96" height="48"/>`;
+  s+=`<rect x="${hx+26}" y="${hy+16}" width="18" height="16" fill="var(--lawn)" stroke="var(--ink)" stroke-width=".8"/>`;
+  s+=`<rect x="${hx}" y="${hy+16}" width="18" height="32" fill="var(--stone)" stroke="var(--ink)" stroke-width=".8"/>`;
+  s+=`<rect class="s-water" x="${hx+70}" y="${hy-14}" width="12" height="30"/>`;
+  s+=`<text class="s-lbl" x="${hx+48}" y="${hy+43}" text-anchor="middle">HAUS</text>`;
+  // Vorplatz
+  s+=`<ellipse cx="200" cy="380" rx="70" ry="34" class="s-gravel"/>`;
+  s+=`<ellipse cx="200" cy="380" rx="44" ry="18" fill="var(--lawn)"/>`;
+  s+=`<circle cx="200" cy="380" r="7" class="s-water"/>`;
+  s+=`<path d="M118 352 Q 104 380 118 408 Q 110 380 126 354 Z" class="s-flower"/><path d="M282 352 Q 296 380 282 408 Q 290 380 274 354 Z" class="s-flower"/>`;
+  for(let i=0;i<12;i++){ const a=(i/12)*Math.PI*2; const x=200+Math.cos(a)*58, y=380+Math.sin(a)*27; if(Math.abs(x-200)<10&&y>395) continue; s+=`<circle class="s-tree" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3"/><circle class="s-tree" cx="${(x+2.6).toFixed(1)}" cy="${(y-2.6).toFixed(1)}" r="1.5"/>`; }
+  s+=`<rect x="196" y="${hy+48}" width="8" height="10" class="s-gravel"/>`;
+  // Allee
+  s+=`<rect x="195" y="412" width="10" height="498" class="s-gravel"/>`;
+  for(let y=422;y<=900;y+=14){ s+=`<circle class="s-tree" cx="186" cy="${y}" r="5.5"/><circle class="s-tree" cx="214" cy="${y}" r="5.5"/>`; }
+  s+=`<rect x="188" y="904" width="24" height="5" fill="var(--steel)"/><text class="s-lbl" x="222" y="907">TOR</text>`;
+  // Weingarten
+  for(let x=26;x<=170;x+=4.5) s+=`<line class="s-vine" x1="${x}" y1="440" x2="${x}" y2="890"/>`;
+  // Labyrinth
+  s+=`<rect x="230" y="440" width="150" height="450" fill="var(--lawn)"/>`;
+  s+=`<path class="s-maze" fill="none" d="${mazeLines(230,440,15,45,10,42)}"/>`;
+  s+=`<circle cx="305" cy="665" r="4.5" fill="var(--brass)"/>`;
+  s+=`<line class="s-gravel-s" stroke-width="4" x1="205" y1="665" x2="230" y2="665"/>`;
+  // Beschriftung
+  const L=(x,y,t,cls='s-lbl')=>`<text class="${cls}" x="${x}" y="${y}" text-anchor="middle" paint-order="stroke" stroke="var(--sheet)" stroke-width="3">${t}</text>`;
+  s+=L(200,195,'Gartenparterre','s-lbl-b')+L(200,62,'Bosketts','s-lbl-b')+L(98,650,'Weingarten','s-lbl-b')+L(305,455,'Labyrinth','s-lbl-b')+L(200,425,'Vorplatz','s-lbl-b')+L(200,760,'Allee','s-lbl-b');
+  s+=L(305,680,'ZIEL');
+  // Klickflächen
+  const Z=[['bosquet',100,30,200,135],['parterre',108,166,184,96],['poolaussen',hx+68,hy-16,16,16],['vorplatz',128,346,144,66],['allee',178,412,44,498],['wein',20,436,156,460],['laby',226,436,158,460]];
+  Z.forEach(([id,x,y,w,h])=>{ s+=`<rect class="s-zone${state.sel===id?' on':''}" tabindex="0" data-id="${id}" x="${x}" y="${y}" width="${w}" height="${h}"><title>${T[id].n}</title></rect>`; });
+  s+=`<g class="hit" tabindex="0" data-id="haus-eg"><rect x="${hx}" y="${hy}" width="96" height="48" fill="transparent"><title>Zum Grundriss</title></rect></g>`;
+  // Maßstab + Norden
+  s+=`<g transform="translate(26,26)"><rect x="0" y="0" width="50" height="4" fill="var(--ink)"/><rect x="50" y="0" width="50" height="4" fill="var(--sheet)" stroke="var(--ink)" stroke-width=".8"/><text class="s-lbl" x="0" y="14">0</text><text class="s-lbl" x="50" y="14" text-anchor="middle">50</text><text class="s-lbl" x="100" y="14" text-anchor="middle">100 m</text></g>`;
+  s+=`<g transform="translate(372,34)"><path d="M0 -14 L6 8 L0 3 L-6 8 Z" fill="var(--ink)"/><text class="s-lbl" x="0" y="20" text-anchor="middle">N</text></g>`;
+  s+=`</svg>`;
+  return s;
+}
+
+/* ---------- Ansicht Süd ---------- */
+function elev(){
+  let s=`<svg viewBox="-6 -24 113 30" class="elev" role="img" aria-label="Ansicht Süd">`;
+  s+=`<rect x="-6" y="-24" width="113" height="30" fill="var(--sheet)"/>`;
+  // Bäume hinten
+  [[-3,-6,4],[100,-7,4.5]].forEach(t=>{ s+=`<circle cx="${t[0]}" cy="${t[1]}" r="${t[2]}" class="s-tree"/>`; });
+  // Ostflügel
+  s+=`<rect class="e-glass" x="80" y="-12" width="16" height="12"/>`;
+  for(let x=82;x<96;x+=2) s+=`<line x1="${x}" y1="-12" x2="${x}" y2="0" stroke="var(--ink)" stroke-width=".08"/>`;
+  s+=`<rect class="e-stone" x="64" y="-7" width="16" height="7"/>`;
+  for(let x=66;x<80;x+=3) s+=`<rect class="e-dark" x="${x}" y="-5" width=".7" height="3.4"/>`;
+  // Mittelbau
+  s+=`<rect class="e-stone" x="18" y="-10" width="46" height="10"/>`;
+  for(let x=18.6;x<64;x+=1.6) s+=`<rect class="e-stone" x="${x.toFixed(2)}" y="-11.4" width=".6" height="1.4"/>`;
+  for(let x=44;x<63;x+=3){ s+=`<rect class="e-dark" x="${x}" y="-4.6" width=".8" height="3.6"/><rect class="e-dark" x="${x}" y="-9" width=".8" height="3.4"/>`; }
+  for(let x=20;x<26;x+=3){ s+=`<rect class="e-dark" x="${x}" y="-4.6" width=".8" height="3.6"/><rect class="e-dark" x="${x}" y="-9" width=".8" height="3.4"/>`; }
+  // Portal
+  s+=`<rect class="e-stone" x="28" y="-11" width="10" height="11"/>`;
+  s+=`<rect class="e-glass" x="29.2" y="-9.6" width="7.6" height="5.4"/>`;
+  s+=`<rect class="e-steel" x="31.6" y="-4" width="2.8" height="4"/>`;
+  s+=`<line x1="33" y1="-4" x2="33" y2="0" stroke="var(--sheet)" stroke-width=".06"/>`;
+  s+=`<rect class="e-dark" x="29.2" y="-4" width="2.4" height="4" opacity=".25"/><rect class="e-dark" x="34.4" y="-4" width="2.4" height="4" opacity=".25"/>`;
+  // Turm
+  s+=`<rect class="e-stone" x="0" y="-13" width="18" height="13"/>`;
+  s+=`<rect class="e-glass" x="0.6" y="-16.4" width="16.8" height="3.4"/>`;
+  for(let x=0.6;x<18;x+=1.4) s+=`<line x1="${x.toFixed(1)}" y1="-16.4" x2="${x.toFixed(1)}" y2="-13" stroke="var(--ink)" stroke-width=".06"/>`;
+  s+=`<rect class="e-stone" x="-0.3" y="-17" width="18.6" height=".6"/>`;
+  for(let x=2;x<17;x+=3) s+=`<rect class="e-dark" x="${x}" y="-11" width=".7" height="9"/>`;
+  // Boden
+  s+=`<line class="e-ground" x1="-6" y1="0" x2="102" y2="0"/>`;
+  s+=`<rect x="-6" y="0" width="108" height="1.2" class="s-gravel"/>`;
+  // Person
+  s+=`<g transform="translate(40.5,0)"><circle cx="0" cy="-1.62" r=".2" class="e-dark"/><rect x="-.22" y="-1.42" width=".44" height="1.42" class="e-dark"/></g>`;
+  // Höhen
+  const H=(y,t)=>`<line x1="97.5" y1="${y}" x2="99" y2="${y}" class="dimline" style="stroke-width:.08"/><text class="e-lbl" x="99.3" y="${y+.35}">${t}</text>`;
+  s+=H(-17,'+17,0')+H(-12,'+12,0')+H(-10,'+10,0')+H(-4,'+4,0')+H(0,'±0');
+  s+=`<text class="e-lbl" x="9" y="2.4" text-anchor="middle">BIBLIOTHEKSTURM</text><text class="e-lbl" x="33" y="2.4" text-anchor="middle">PORTAL</text><text class="e-lbl" x="51" y="2.4" text-anchor="middle">MITTELBAU</text><text class="e-lbl" x="80" y="2.4" text-anchor="middle">FREIZEITFLÜGEL</text>`;
+  [['turm',0,-17.2,18,17.2],['portal',28,-11,10,11],['mittelbau',38,-11.4,26,11.4],['ost',64,-12,32,12]].forEach(([id,x,y,w,h])=>{ s+=`<rect class="e-zone${state.sel===id?' on':''}" tabindex="0" data-id="${id}" x="${x}" y="${y}" width="${w}" height="${h}"><title>${T[id].n}</title></rect>`; });
+  s+=`</svg>`;
+  return s;
+}
+
+/* ---------- Karte ---------- */
+function card(id){
+  const el=document.getElementById('card');
+  const t=T[id]||{};
+  const r=byId[id];
+  let name=t.n, meta=t.m?[t.m]:[], tag='';
+  if(r){
+    name=r[2];
+    tag = r[7]==='hidden' ? 'Geheimraum' : kindName[r[7]];
+    meta=[floorName[r[1]], `${fmt(r[5])} × ${fmt(r[6])} m`];
+    if(r[7]!=='void'&&r[7]!=='circ') meta.push(`${fmt(r[5]*r[6])} m²`);
+  }
+  if(r && r[7]==='hidden' && !state.secret){
+    el.innerHTML=`<header><div class="tag">Verborgen</div><h2>Hier ist nur Wand …</h2></header><div class="hint">Schalte oben „Geheimräume aufdecken“ ein, um zu sehen, was dahinter liegt.</div>`;
+    return;
+  }
+  const li=a=>a.map(x=>`<li>${x}</li>`).join('');
+  el.innerHTML=`<header>${tag?`<div class="tag">${tag}</div>`:''}<h2>${name}</h2><div class="meta">${meta.map(m=>`<span>${m}</span>`).join('')}</div></header>`+
+   (t.w?`<section><h3>Dein Wunsch</h3><ul class="wish">${li(t.w)}</ul></section>`:'')+
+   (t.i?`<section><h3>Mein Vorschlag</h3><ul class="idea">${li(t.i)}</ul></section>`:'')+
+   (!t.w&&!t.i?`<div class="hint">Für diesen Bereich gibt es noch keine Notizen.</div>`:'');
+}
+
+/* ---------- Ansicht wechseln ---------- */
+const firstOf={lageplan:'allee',eg:'bib',og:'master',ansicht:'portal'};
+function render(){
+  const st=document.getElementById('stage');
+  const v=state.view;
+  st.innerHTML = v==='lageplan'?site(): v==='ansicht'?elev(): plan(v);
+  document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected', b.dataset.view===v));
+  document.getElementById('toggles').hidden = !(v==='eg'||v==='og');
+  document.getElementById('legend').hidden = !(v==='eg'||v==='og');
+  document.getElementById('cap-l').textContent=VIEW_META[v].l;
+  document.getElementById('cap-r').textContent=VIEW_META[v].r;
+  card(state.sel);
+}
+function setView(v, keepSel){
+  state.view=v;
+  if(!keepSel){
+    const r=byId[state.sel];
+    const fits = (v==='eg'||v==='og') ? (r && r[1]===v) : (!r && T[state.sel] && ((v==='lageplan'&&!['turm','portal','mittelbau','ost'].includes(state.sel))||(v==='ansicht'&&['turm','portal','mittelbau','ost'].includes(state.sel))));
+    if(!fits) state.sel=firstOf[v];
+  }
+  try{ history.replaceState(null,'','#'+v); }catch(e){}
+  render();
+}
+function select(id){
+  if(id==='haus-eg'){ setView('eg'); return; }
+  const r=byId[id];
+  if(r && r[1]!==state.view){ state.sel=id; setView(r[1],true); }
+  else { state.sel=id; render(); }
+}
+
+document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button'); if(b) setView(b.dataset.view);});
+const stage=document.getElementById('stage');
+stage.addEventListener('click',e=>{const g=e.target.closest('[data-id]'); if(g) select(g.dataset.id);});
+stage.addEventListener('keydown',e=>{ if(e.key!=='Enter'&&e.key!==' ') return; const g=e.target.closest('[data-id]'); if(g){e.preventDefault(); select(g.dataset.id); const n=stage.querySelector(`[data-id="${g.dataset.id}"]`); n&&n.focus();}});
+[['tg-secret','secret'],['tg-short','short'],['tg-furn','furn']].forEach(([id,k])=>{
+  const inp=document.getElementById(id); inp.checked=state[k];
+  inp.addEventListener('change',()=>{state[k]=inp.checked; render(); if(k==='secret') table();});
+});
+
+/* ---------- Raumprogramm ---------- */
+function table(){
+  const tb=document.querySelector('#tbl tbody');
+  let html='', total=0, rooms=0;
+  ['eg','og'].forEach(f=>{
+    let sub=0;
+    html+=`<tr class="grp"><td colspan="3">${floorName[f]}</td></tr>`;
+    R.filter(r=>r[1]===f && r[7]!=='void' && r[7]!=='circ' && r[7]!=='bridge' && r[7]!=='garden').forEach(r=>{
+      const a=r[5]*r[6]; sub+=a; rooms++;
+      const hidden=r[7]==='hidden';
+      const nm = hidden && !state.secret ? '••••••' : r[2];
+      html+=`<tr data-id="${r[0]}"><td>${nm}${hidden?'<span class="secret-chip">geheim</span>':''}</td><td class="mono" style="font-size:12px;color:var(--muted)">${fmt(r[5])} × ${fmt(r[6])} m</td><td class="n">${fmt(a)} m²</td></tr>`;
+    });
+    html+=`<tr><td style="color:var(--muted)">Summe ${floorName[f]}</td><td></td><td class="n">${fmt(sub)} m²</td></tr>`;
+    total+=sub;
+  });
+  html+=`<tr class="sum"><td>Gesamt (ohne Flure, Innengarten, Lufträume)</td><td></td><td class="n">${fmt(total)} m²</td></tr>`;
+  tb.innerHTML=html;
+  document.getElementById('st-area').textContent=`${fmt(total)} m²`;
+  document.getElementById('st-rooms').textContent=rooms;
+  document.getElementById('st-secret').textContent=`${R.filter(r=>r[7]==='hidden').length} + Geheimtüren`;
+}
+document.querySelector('#tbl').addEventListener('click',e=>{const tr=e.target.closest('tr[data-id]'); if(tr){ select(tr.dataset.id); document.querySelector('.board').scrollIntoView({behavior:'smooth',block:'start'});}});
+
+const h=(location.hash||'').slice(1);
+table();
+setView(['lageplan','eg','og','ansicht'].includes(h)?h:'lageplan');
+})();
+</script>
