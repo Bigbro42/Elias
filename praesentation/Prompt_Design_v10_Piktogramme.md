@@ -48,6 +48,51 @@ Text in "TEXT:" blocks is final text. Copy it exactly.
 5. Keep one takeaway line on each content slide. Keep the source line on each slide with data.
 6. Use a lot of white space.
 
+### 1.5 Icon specification
+
+1. Use the style of an open-source line icon set, for example Lucide or Phosphor (style "regular").
+2. Use the same set for all slides.
+3. Line width: 1.5 pt for small circles, 2 pt for medium and large circles.
+4. Put the icon in the centre of the circle. Make the icon 50 % of the circle diameter.
+5. On dark slides (1, 16, 20), use white icons.
+
+### 1.6 Icon dictionary – one meaning, one icon
+
+Use each icon for one meaning only. Use the same icon each time this meaning occurs.
+
+| Meaning | Icon | Slides |
+|---|---|---|
+| Demand / buyer | shopping cart | 7, 9, 12, 13 |
+| Factor conditions | gear | 7, 12, 13 |
+| Related industries | puzzle piece | 7, 9, 12, 13 |
+| Strategy and rivalry | two opposite arrows | 7, 12, 13 |
+| CO₂ storage / Northern Lights | arrow down into ground | 8, 10, 14 |
+| Floating wind / Hywind | wind turbine | 8, 14 |
+| Petroleum | oil drop (as on slide 2) | 2, 4, 8 |
+| Exports | ship | 10 |
+| Knowledge / research | book | 9 |
+| Intellectual property | light bulb | 4, 5 |
+| Collaboration | handshake | 5, 6, 18 |
+| People / members | two persons | 6, 10, 11 |
+| Fund / money | safe or coin | 4 |
+| Funding / time line | calendar | 11 |
+| ECN | network of three nodes | 9, 11, 18 |
+
+If a slide needs a meaning that is not in the table, select one icon and use it consistently.
+
+### 1.7 Focus and quantity
+
+1. Give each slide one focal point. The focal point is the largest element or the only element in Orange. Examples: slide 12 = demand ring, slide 17 = gate 5, slide 4 = the two group headings.
+2. Use a maximum of 6 pictogram circles on a slide. Exceptions: slide 8 (5 phases + 0), slide 17 (6 gates + 3), slide 18 (6 actors).
+3. Do not put pictograms on slides 3 and 5 if the chart becomes less clear. The charts are more important than the icons.
+4. Labels below circles: maximum 4 words, lowercase except names, no full stop.
+
+### 1.8 Animation (optional)
+
+1. Use only "fade in, on click".
+2. Use animation only on slides 2, 12, 17 and 20.
+3. Slide 17: show gates 1 to 6 one after the other. Show gate 5 last.
+
 ## 2. Slide by slide
 
 | Slide | Action |
@@ -104,7 +149,10 @@ Text in "TEXT:" blocks is final text. Copy it exactly.
 
 - [ ] All content slides use only the building blocks A, B and C.
 - [ ] No content slide has a card, a box, a border or a shadow.
-- [ ] One icon family on all slides.
+- [ ] One icon family on all slides (style as Lucide or Phosphor, equal line width).
+- [ ] Each meaning has the same icon on all slides (table 1.6).
+- [ ] Each slide has one focal point and a maximum of 6 pictogram circles (exceptions in 1.7).
+- [ ] Labels below circles: maximum 4 words.
 - [ ] Slide 4 has two groups with three thin-rule items each. Figures 32 pt.
 - [ ] Each content block is in the vertical centre of its content area.
 - [ ] Each content slide has one takeaway line and, with data, one source line.
