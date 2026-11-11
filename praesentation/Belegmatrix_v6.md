@@ -142,6 +142,8 @@ Diese Einträge braucht ihr neu. Jeden bitte am Original prüfen, inklusive Tite
 - Port Esbjerg (n.d.). Offshore wind.
 - Porthos / Gasunie (n.d.). Porthos.
 - Danish Energy Agency (2025), Greensand Future.
+- Porter, M. E. (1990). The competitive advantage of nations. *Harvard Business Review, 68*(2), 73–93. Quelle des Eröffnungszitats „National prosperity is created, not inherited.“; Wortlaut im Original prüfen.
+- Hagesæther, O. (2026). Schriftliches Interview vom 25.10.2026, Antwort 4. Quelle des Schlusszitats; Zitieren mit Namen ist erlaubt.
 - Cooper, R. G. (1990). Stage-gate systems: A new tool for managing new products. *Business Horizons, 33*(3), 44–54.
 
 ---
